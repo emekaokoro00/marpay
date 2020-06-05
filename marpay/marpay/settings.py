@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'customer.apps.CustomerConfig',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'customer.apps.CustomerConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,17 +69,42 @@ TEMPLATES = [
     },
 ]
 
+# To disable the browseable API in production with this configuration:
+#===============================================================================
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',
+#     )
+# }
+#===============================================================================
+
+
 WSGI_APPLICATION = 'marpay.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+#===============================================================================
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+#===============================================================================
+             
+             
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'marpay_db',
+        'USER': 'root',
+        'PASSWORD': 'spartan123',
+        'HOST': 'localhost',
+        'PORT': '',
+        'ATOMIC_REQUESTS': True   # enables transaction saving... all or none
     }
+             
 }
 
 
