@@ -25,14 +25,15 @@ SECRET_KEY = 'cb2@grv9u3lw(s)z1454egkf88jcbug-x*)^(ewlr95djh_ici'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'10.0.2.2']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
-    'customer.apps.CustomerConfig',
+    'myuser.apps.MyUserConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -108,6 +109,7 @@ DATABASES = {
              
 }
 
+AUTH_USER_MODEL = 'myuser.MyUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

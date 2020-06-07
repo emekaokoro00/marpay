@@ -22,8 +22,8 @@
       
       <div class="bg-white relative flex flex-wrap py-6">
         <div class="lg:w-1/2 px-6">
-          <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm">Hi {{ user.username }}</h2>
-          <p class="leading-relaxed">Photo booth tattooed prism, portland taiyaki hoodie neutra typewriter</p>
+          <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm">Hi, {{ user.username }}</h2>
+          <p class="leading-relaxed">... at your service today</p>
         </div>
         <div class="lg:w-1/2 px-6 mt-4 lg:mt-0">
           <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm">EMAIL</h2>
@@ -34,9 +34,9 @@
       </div>
     </div>    
     
-    <!-- Original 700by600 dummy pic -->
+    <!--  Original 700by600 dummy pic -->
     <!-- <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-      <img class="object-cover object-center rounded" alt="hero" src="https://dummyimage.com/720x600">
+      <img class="object-cover object-center rounded" alt="hero" src="https://dummyimage.com/700x600">
     </div> -->
     
     
@@ -45,7 +45,7 @@
    
 {% else %}
   <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a>
+  <a href="{% url 'login' %}">login</a>  |  <a href="{% url 'signup' %}">signup</a>
 {% endif %}
 {% endblock %}
 
