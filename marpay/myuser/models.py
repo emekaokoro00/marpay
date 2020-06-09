@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 
-
+# Create your models here.
 class Role(models.Model):
   CUSTOMER = 1
   TELEHEALTHWORKER = 2
@@ -24,8 +24,6 @@ class MyUserDetails(models.Model):
     payment_profile_summary = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     
-
-# Create your models here.
 class MyUser(AbstractUser):
     roles = models.ManyToManyField(Role)
     # user_details = models.ForeignKey(MyUserDetails, on_delete=models.CASCADE, default=1)
