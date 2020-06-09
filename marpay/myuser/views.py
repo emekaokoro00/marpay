@@ -1,4 +1,5 @@
 from django.urls import reverse_lazy
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
@@ -10,7 +11,6 @@ class SignUpView(CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
-
 # def signup(request):
 #     if request.method == 'POST':
 #         form = SignUpForm(request.POST)
@@ -24,3 +24,10 @@ class SignUpView(CreateView):
 #     else:
 #         form = SignUpForm()
 #     return render(request, 'signup.html', {'form': form})
+
+
+class TestPageView(TemplateView): 
+    template_name = 'testpage.html'
+# def testpage(request):
+#     return render(request, 'testpage.html', {})
+

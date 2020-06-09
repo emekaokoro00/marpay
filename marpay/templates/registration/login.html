@@ -4,7 +4,7 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<form id="login-form" method="post" action="{% url 'login' %}" role=form>
+<form id="login-form" method="post" role=form>
   {% csrf_token %}  
   <section class="text-gray-700 body-font">
   <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
