@@ -1,11 +1,11 @@
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import SignUpForm, MyUserUpdateForm
 from .models import MyUser
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -29,9 +29,27 @@ class TestPageView(TemplateView):
     
 class MyUserDetailView(LoginRequiredMixin, DetailView):
     model = MyUser
-    # form_class = MealForm
-    # template_name_suffix = '_detail'
     
     def get_object(self):
         return self.request.user
+    
+    
+class MyUserUpdateView(LoginRequiredMixin, UpdateView):
+    model = MyUser
+    form_class = MyUserUpdateForm
+    
+    # suffix should match with latter part of actual html file 
+    # or use # template_name = 'myuser/myuser_update.html'
+    template_name_suffix = '_update' 
+    
+    
+    def get_object(self):
+        return self.request.user    
+
+    def form_valid(self, form):
+        form.save(self.request.user)
+        return super().form_valid(form)
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy("myuser_detail")
 

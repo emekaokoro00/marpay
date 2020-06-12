@@ -3,30 +3,31 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.db.models.fields import related
 from django.template.defaultfilters import default
+from _datetime import datetime
 
 # Create your models here.
 class Role(models.Model):
-  CUSTOMER = 1
-  TELEHEALTHWORKER = 2
-  PHYSICIAN = 3
+    CUSTOMER = 1
+    TELEHEALTHWORKER = 2
+    PHYSICIAN = 3
   
-  #the enum
-  ROLE_CHOICES = (
-      ( CUSTOMER, 'customer'),
-      (TELEHEALTHWORKER, 'telehealthworker'),
-      (PHYSICIAN, 'physician'),
-  )
+    #the enum
+    ROLE_CHOICES = (
+         ( CUSTOMER, 'customer'),
+         (TELEHEALTHWORKER, 'telehealthworker'),
+         (PHYSICIAN, 'physician'),
+     )
   
-  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
+    id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
   
-  def __init__(self, new_id):
-      super().__init__()
-      self.id = new_id
-  def __str__(self):
-      return self.get_id_display()
-  def set_role(self, new_id):
-      self.id = new_id
-      return self
+    def __init__(self, new_id):
+        super().__init__()
+        self.id = new_id
+    def __str__(self):
+        return self.get_id_display()
+    def set_role(self, new_id):
+        self.id = new_id
+        return self
   
 class CustomerDetails(models.Model):
     status = models.CharField(max_length=300)
@@ -34,7 +35,7 @@ class CustomerDetails(models.Model):
     insurance_provider_summary = models.CharField(max_length=300)
     payment_profile_summary = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+        
 class TeleHealthWorkerDetails(models.Model):
     status = models.CharField(max_length=300)
     
@@ -54,10 +55,16 @@ class MyUser(AbstractUser):
         return self.first_name 
     
     def save(self, *args, **kwargs): 
+        # create roles and details if they don't exist
+        if (self.customer_details is None):
+            self.customer_details = CustomerDetails(status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details 
+        self.customer_details.save()   # save to customerdetails if it doesn't exist, otherwise updates
+            
         if (self.current_role is None):
             self.current_role = Role(Role.CUSTOMER) # initialize to customer role 
             self.current_role.save()   # save to role if it doesn't exist, otherwise updates
         super().save(*args, **kwargs) 
         if (self.roles.count() == 0):
             self.roles.add(self.current_role) 
+        
         super().save(*args, **kwargs) 

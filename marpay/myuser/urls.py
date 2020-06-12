@@ -12,4 +12,5 @@ urlpatterns = [
         
     # path('<pk>/', GeeksDetailView.as_view()), # from a list
     path('profile/', views.MyUserDetailView.as_view(), name='myuser_detail'), 
+    path('update/', views.MyUserUpdateView.as_view(), name='myuser_update'), # 'name' here should match with actual html file
 ]
