@@ -18,9 +18,15 @@ class Role(models.Model):
   )
   
   id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
-
+  
+  def __init__(self, new_id):
+      super().__init__()
+      self.id = new_id
   def __str__(self):
       return self.get_id_display()
+  def set_role(self, new_id):
+      self.id = new_id
+      return self
   
 class CustomerDetails(models.Model):
     status = models.CharField(max_length=300)
@@ -46,3 +52,12 @@ class MyUser(AbstractUser):
      
     def __str__(self): 
         return self.first_name 
+    
+    def save(self, *args, **kwargs): 
+        if (self.current_role is None):
+            self.current_role = Role(Role.CUSTOMER) # initialize to customer role 
+            self.current_role.save()   # save to role if it doesn't exist, otherwise updates
+        super().save(*args, **kwargs) 
+        if (self.roles.count() == 0):
+            self.roles.add(self.current_role) 
+        super().save(*args, **kwargs) 

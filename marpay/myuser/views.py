@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from .models import MyUser
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -26,7 +27,7 @@ class TestPageView(TemplateView):
     template_name = 'testpage.html'
     
     
-class MyUserDetailView(DetailView):
+class MyUserDetailView(LoginRequiredMixin, DetailView):
     model = MyUser
     # form_class = MealForm
     # template_name_suffix = '_detail'
