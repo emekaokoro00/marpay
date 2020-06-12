@@ -30,4 +30,7 @@ class MyUserDetailView(DetailView):
     model = MyUser
     # form_class = MealForm
     # template_name_suffix = '_detail'
+    
+    def get_object(self):
+        return self.request.user
 

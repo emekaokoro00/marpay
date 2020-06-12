@@ -11,5 +11,5 @@ urlpatterns = [
     path('testpage/', TestPageView.as_view(), name='testpage'), 
         
     # path('<pk>/', GeeksDetailView.as_view()), # from a list
-    path('detail/', views.MyUserDetailView.as_view(), name='myuser_detail'), 
+    path('profile/', views.MyUserDetailView.as_view(), name='myuser_detail'), 
 ]
