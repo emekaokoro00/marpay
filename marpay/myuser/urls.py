@@ -9,4 +9,7 @@ urlpatterns = [
     # path('login/', LoginPageView.as_view(), name='login'),
     path('signup/', SignUpView.as_view(), name='signup'),
     path('testpage/', TestPageView.as_view(), name='testpage'), 
+        
+    # path('<pk>/', GeeksDetailView.as_view()), # from a list
+    path('detail/', views.MyUserDetailView.as_view(), name='myuser_detail'), 
 ]
