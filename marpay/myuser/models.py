@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
-from django.db.models.fields import related
-from django.template.defaultfilters import default
 from _datetime import datetime
 
 # Create your models here.
@@ -58,7 +55,7 @@ class MyUser(AbstractUser):
         # create roles and details if they don't exist
         if (self.customer_details is None):
             self.customer_details = CustomerDetails(status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details 
-        self.customer_details.save()   # save to customerdetails if it doesn't exist, otherwise updates
+        # self.customer_details.save()   # save to customerdetails if it doesn't exist, otherwise updates
             
         if (self.current_role is None):
             self.current_role = Role(Role.CUSTOMER) # initialize to customer role 

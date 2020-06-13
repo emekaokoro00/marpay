@@ -5,30 +5,29 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+	
+    
+ <section class="text-gray-700 body-font">
+  <div class="container px-5 py-24 flex flex-wrap items-center">		  
+	<div class="max-w-screen-sm bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+		    
+	    <form method="POST">
+		{% csrf_token %}	
+		     <h2>User Information:</h2>
+		     <!-- Make use of Django's automatic form templating -->
+		     {{ myuser_update_form.as_p }}
+		
+		     <!-- Now add the sub-form to this form -->
+		     <h3>More Details:</h3>
+		     {{ customer_details_update_form.as_p }}
+		     <p><button class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" type="submit">Update</button></p>
+		</form>
+	    
+	    
+	</div>
+  </div>
+ </section>
 
-	<form method="post">
-	  {% csrf_token %}	  
-	  <section class="text-gray-700 body-font">
-		  <div class="container px-5 py-24 flex flex-wrap items-center">		  
-			<div class="max-w-screen-sm bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
-			
-			  {% for field in form %}
-			    <p>
-			      {{ field.label_tag }}<br>
-			      {{ field }}
-			      {% if field.help_text %}
-			        <small style="color: grey">{{ field.help_text }}</small>
-			      {% endif %}
-			      {% for error in field.errors %}
-			        <p style="color: red">{{ error }}</p>
-			      {% endfor %}
-			    </p><br>
-			  {% endfor %}
-		  	  <button class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" type="submit">Update</button>
-			</div>
-		  </div>
-	  </section>
-	</form>
 
 {% endif %}
 {% endblock %}
