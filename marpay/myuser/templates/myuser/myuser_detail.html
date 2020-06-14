@@ -8,7 +8,7 @@
 
 
 <section class="text-gray-700 body-font overflow-hidden">
-  <div class="container px-5 py-24 mx-auto">
+  <div class="container px-5 py-8 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
       <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
         <h2 class="text-sm title-font text-gray-500 tracking-widest">PROFILE</h2>
@@ -23,21 +23,39 @@
           <span class="text-gray-500">Email</span>
           <span class="ml-auto text-gray-900">{{ user.email }}</span>
         </div>
-        <div class="flex flex-row-reverse">
-          <a class="text-lg text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_update' %}">Edit Profile</a>
+        <div class="flex flex-row-reverse align-middle">
+          <a class="text-lg text-green-500 hover:text-green-700 lex m-2 text-center cursor-pointer" onclick="revealMoreButtons()">More...</a>
           <a class="text-lg lex m-2">|</a>
-          <a class="text-lg text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_detail' %}">Medical History</a>
-          <!-- <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-            </svg>
-          </button> -->
+          <a class="text-lg text-green-500 hover:text-green-700 m-2 text-center" href="{% url 'myuser_update' %}">Edit Profile</a>
+          <a class="text-lg lex m-2">|</a>
+          <a class="text-lg text-green-500 hover:text-green-700 lex m-2  text-center" href="{% url 'myuser_detail' %}">Medical History</a>  
         </div>
+        <div class="flex flex-row-reverse">
+			<div id="div_more_buttons" class='hidden'>
+			
+		      <form method="POST">
+			  {% csrf_token %}			
+			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_register_thw_confirm' %}">Register as THW</a>
+			  </form>
+			  
+			</div>
+        </div>        
       </div>
       <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">
     </div>
   </div>
 </section> 
+
+<script>
+	function revealMoreButtons() {
+	  var x = document.getElementById("div_more_buttons");
+	  if (x.style.display === "block") {
+	    x.style.display = "none";
+	  } else {
+	    x.style.display = "block";
+	  }
+	}
+</script>
 
 {% endif %}
 {% endblock %}

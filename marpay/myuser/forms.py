@@ -4,9 +4,6 @@ from .models import MyUser, CustomerDetails
 from django.forms.models import ModelForm
 
 
-class MultipleForm(forms.Form):
-    action = forms.CharField(max_length=60, widget=forms.HiddenInput())
-
 class SignUpForm(UserCreationForm):
     username = forms.CharField(max_length=50, required=False, help_text='*. 50 characters or less. Letters, digits and @/./+/-/_ only.')
     first_name = forms.CharField(max_length=30, required=False)

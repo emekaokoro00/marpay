@@ -60,7 +60,7 @@ class MyUser(AbstractUser):
         if (self.current_role is None):
             self.current_role = Role(Role.CUSTOMER) # initialize to customer role 
             self.current_role.save()   # save to role if it doesn't exist, otherwise updates
-        super().save(*args, **kwargs) 
+        super().save(*args, **kwargs)  # consider indenting
         if (self.roles.count() == 0):
             self.roles.add(self.current_role) 
         

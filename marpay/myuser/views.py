@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import MyUser
+from .models import MyUser, Role
 from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
 
@@ -15,12 +15,32 @@ from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
 
 class TestPageView(TemplateView): 
     template_name = 'testpage.html'
-
+    
+class RegisterTHWConfirmView(UpdateView): 
+    template_name = 'myuser/myuser_register_thw_confirm.html'
+    form_class = MyUserUpdateForm
+    
+    def get_object(self):
+        myuser = self.request.user
+        new_role = Role(Role.TELEHEALTHWORKER)
+        if new_role not in myuser.roles.all():
+            new_role.save()
+            myuser.roles.add(new_role)
+        # add else statement, already a telehealth worker
+        myuser.save()
+        return myuser
+    
 # class LoginPageView(TemplateView):
 #     template_name = "registration/login.html"
 #     def post(self, request, **kwargs):     
 #         print(request)
-#         return render(request, 'registration/login.html')
+
+def register_thw(request):
+    if request.method == 'POST':
+        myuser = request.user
+        myuser.roles.add(Role.TELEHEALTHWORKER)   
+        myuser.save()   
+    return render(request, 'myuser/myuser_register_thw_confirm.html')
 
 class SignUpView(CreateView):
     form_class = SignUpForm
