@@ -13,7 +13,7 @@ urlpatterns = [
     # path('<pk>/', GeeksDetailView.as_view()), # from a list
     path('profile/', views.MyUserDetailView.as_view(), name='myuser_detail'), 
     # path('update/', views.MyUserUpdateView.as_view(), name='myuser_update'), # 'name' here should match with actual html file
-    path('update/', views.MyUserCustomerDetailsView.as_view(), name='myuser_update'),
+    path('update/', views.MyUserCustomerDetailsUpdateView.as_view(), name='myuser_update'),
     path('thw_confirm/', views.RegisterTHWConfirmView.as_view(), name='myuser_register_thw_confirm'), 
     # path('thw_confirm/', views.register_thw, name='myuser_register_thw_confirm'), 
 ]

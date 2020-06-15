@@ -35,7 +35,9 @@
 			
 		      <form method="POST">
 			  {% csrf_token %}			
-			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_register_thw_confirm' %}">Register as THW</a>
+			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_register_thw_confirm' %}">			  
+				{% if is_thw %} De-register as THW {% else %} Register as THW {% endif %}
+			  </a>
 			  </form>
 			  
 			</div>

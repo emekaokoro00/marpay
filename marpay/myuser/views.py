@@ -22,13 +22,23 @@ class RegisterTHWConfirmView(UpdateView):
     
     def get_object(self):
         myuser = self.request.user
-        new_role = Role(Role.TELEHEALTHWORKER)
-        if new_role not in myuser.roles.all():
-            new_role.save()
-            myuser.roles.add(new_role)
+        thw_role = Role(Role.TELEHEALTHWORKER)
+        if thw_role not in myuser.roles.all():
+            thw_role.save()
+            myuser.roles.add(thw_role)
         # add else statement, already a telehealth worker
+        else:
+            myuser.roles.remove(thw_role)
+        # context['is_thw'] = thw_role in myuser.roles.all()
         myuser.save()
         return myuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        myuser = self.request.user  
+        thw_role = Role(Role.TELEHEALTHWORKER)      
+        context['is_thw'] = thw_role in myuser.roles.all()
+        return context
     
 # class LoginPageView(TemplateView):
 #     template_name = "registration/login.html"
@@ -52,9 +62,15 @@ class MyUserDetailView(LoginRequiredMixin, DetailView):
     
     def get_object(self):
         return self.request.user
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        thw_role = Role(Role.TELEHEALTHWORKER)
+        context['is_thw'] = thw_role in self.request.user.roles.all()
+        return context
  
  
-class MyUserCustomerDetailsView(UpdateView):
+class MyUserCustomerDetailsUpdateView(UpdateView):
     template_name = 'myuser/myuser_update.html'
     template_redirect = 'myuser/myuser_detail.html'
     # model = MyUser
@@ -69,7 +85,7 @@ class MyUserCustomerDetailsView(UpdateView):
         return myuser
 
     def get_context_data(self, **kwargs):
-        context = super(MyUserCustomerDetailsView, self).get_context_data(**kwargs)
+        context = super(MyUserCustomerDetailsUpdateView, self).get_context_data(**kwargs)
         if 'myuser_update_form' not in context:
             context['myuser_update_form'] = \
                 self.form_class(initial={'first_name': self.request.user.first_name, 'last_name': self.request.user.last_name})
