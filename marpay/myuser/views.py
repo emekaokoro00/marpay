@@ -91,7 +91,7 @@ class MyUserCustomerDetailsUpdateView(UpdateView):
             context['myuser_update_form'] = \
                 self.form_class(initial={'first_name': self.request.user.first_name, 'last_name': self.request.user.last_name})
         if 'customer_details_update_form' not in context:
-            self.request.user = return_instance_or_new_customer_details(self.request.user)
+            self.request.user = return_user_with_instance_or_new_customer_details(self.request.user)
             context['customer_details_update_form'] = \
                 self.second_form_class(initial={'medical_record_summary': self.request.user.customer_details.medical_record_summary, 'insurance_provider_summary': self.request.user.customer_details.insurance_provider_summary})
         return context
@@ -109,7 +109,6 @@ class MyUserCustomerDetailsUpdateView(UpdateView):
         # get the user instance
         self.object = self.get_object()
                 
-        # the_customer_details = return_instance_or_new_customer(self.request.user)
         customer_details_update_form = CustomerDetailsUpdateForm(request.POST, instance=request.user.customer_details)        
         myuser_update_form = MyUserUpdateForm(request.POST, instance=request.user)
         
@@ -142,7 +141,7 @@ class MyUserCustomerDetailsUpdateView(UpdateView):
 #     def get_success_url(self, *args, **kwargs):
 #         return reverse_lazy("myuser_detail")
 
-def return_instance_or_new_customer_details(the_user):    
+def return_user_with_instance_or_new_customer_details(the_user):    
     if not the_user.has_customer_details():
         the_customer_details = CustomerDetails(user = the_user, status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details
         the_customer_details.save()
