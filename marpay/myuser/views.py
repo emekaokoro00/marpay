@@ -1,14 +1,16 @@
 from django.urls import reverse_lazy, reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,  Http404
 from django.template import RequestContext
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from _datetime import datetime
 from .models import MyUser, Role, CustomerDetails
-from business_logic.mvt_helper.multiforms import MultipleFormsView
+# from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
 
 
@@ -39,8 +41,8 @@ class RegisterTHWConfirmView(UpdateView):
         myuser = self.request.user  
         thw_role = Role(Role.TELEHEALTHWORKER)      
         context['is_thw'] = thw_role in myuser.roles.all()
-        return context
-    
+        return context 
+        
 # class LoginPageView(TemplateView):
 #     template_name = "registration/login.html"
 #     def post(self, request, **kwargs):     
@@ -52,6 +54,18 @@ def register_thw(request):
         myuser.roles.add(Role.TELEHEALTHWORKER)   
         myuser.save()   
     return render(request, 'myuser/myuser_register_thw_confirm.html')
+
+
+def get_thw_list(request):
+    # if request.method == "GET" and request.is_ajax():
+    if request.method == "POST":
+        data = dict()
+        data['form_is_valid'] = True  
+        user_thw_list = MyUser.objects.all() 
+        data['html_user_thw_list'] = render_to_string('myuser/myuser_thw_list.html', {'user_thw_list': user_thw_list }) 
+        return JsonResponse(data)
+    return JsonResponse({"success":False}, status=400)
+    
 
 class SignUpView(CreateView):
     form_class = SignUpForm
