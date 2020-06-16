@@ -54,13 +54,18 @@ class MyUser(AbstractUser):
     def save(self, *args, **kwargs): 
         # create roles and details if they don't exist
         if (self.customer_details is None):
-            self.customer_details = CustomerDetails(status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details 
+            the_customer_details = CustomerDetails(status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details
+            the_customer_details.save()
+            self.customer_details = the_customer_details
+            super().save(*args, **kwargs)  # consider indenting
         # self.customer_details.save()   # save to customerdetails if it doesn't exist, otherwise updates
             
         if (self.current_role is None):
-            self.current_role = Role(Role.CUSTOMER) # initialize to customer role 
-            self.current_role.save()   # save to role if it doesn't exist, otherwise updates
-        super().save(*args, **kwargs)  # consider indenting
+            the_current_role = Role(Role.CUSTOMER) # initialize to customer role 
+            the_current_role.save()   # save to role if it doesn't exist, otherwise updates
+            self.current_role = the_current_role  # save to role if it doesn't exist, otherwise updates
+            super().save(*args, **kwargs)  # consider indenting
+        
         if (self.roles.count() == 0):
             self.roles.add(self.current_role) 
         
