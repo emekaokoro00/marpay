@@ -61,7 +61,7 @@ def get_thw_list(request):
     if request.method == "POST":
         data = dict()
         data['form_is_valid'] = True  
-        user_thw_list = MyUser.objects.all() 
+        user_thw_list = MyUser.objects.all().filter(roles=Role(Role.TELEHEALTHWORKER))
         data['html_user_thw_list'] = render_to_string('myuser/myuser_thw_list.html', {'user_thw_list': user_thw_list }) 
         return JsonResponse(data)
     return JsonResponse({"success":False}, status=400)
@@ -100,7 +100,12 @@ class MyUserCustomerDetailsUpdateView(UpdateView):
         return myuser
 
     def get_context_data(self, **kwargs):
-        context = super(MyUserCustomerDetailsUpdateView, self).get_context_data(**kwargs)
+        context = super(MyUserCustomerDetailsUpdateView, self).get_context_data(**kwargs) 
+        
+        thw_role = Role(Role.TELEHEALTHWORKER)    
+        if 'is_thw' not in context:  
+            context['is_thw'] = thw_role in self.request.user.roles.all()
+        
         if 'myuser_update_form' not in context:
             context['myuser_update_form'] = \
                 self.form_class(initial={'first_name': self.request.user.first_name, 'last_name': self.request.user.last_name})

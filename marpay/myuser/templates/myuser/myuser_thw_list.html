@@ -1,11 +1,24 @@
-{% for user in user_thw_list %}
-  <tr>
-    <td>{{ user.id }}</td>
-    <td>{{ user.first_name }}</td>
-    <td>{{ user.last_name }}</td>
-  </tr>
-{% empty %}
-  <tr>
-    <td colspan="7" class="text-center bg-warning">No THW</td>
-  </tr>
-{% endfor %}
+<table class="table" id="user-table">
+    <!-- <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+      </tr>
+    </thead> -->
+    <tbody>    
+    {% for user in user_thw_list %}
+	  <tr>	  
+        <div class="flex border-t border-gray-300 py-2">
+          <span class="ml-auto text-gray-900 m-2 text-left">{{ user.first_name }} {{ user.last_name }}</span>
+          <span class="text-lg text-green-500 hover:text-green-700 m-2 text-center" href="">Hail</span>
+        </div>
+	  <tr></tr>
+	{% empty %}
+	  <tr>
+	    <td colspan="7" class="text-center bg-warning">No Available THW</td>
+	  </tr>
+	{% endfor %}  
+    
+	  			
+    </tbody>
+ </table>

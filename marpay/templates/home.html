@@ -28,34 +28,14 @@
       <iframe width="100%" height="100%" class="absolute inset-0" frameborder="0" title="map" marginheight="0" marginwidth="0" scrolling="no" 
       style="filter: grayscale(1) contrast(1.2) opacity(0.4);">
       </iframe>
-      <div class="bg-white relative flex flex-wrap py-6">
+      <div class="bg-white items-center relative flex flex-col w-full py-6">
         <div class="lg:w-1/2 px-6">
-          <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm">Hi, {{ user.username }}</h2>
-          <p class="leading-relaxed">... at your service today</p>
+          <h2 class="title-font font-medium text-gray-900 tracking-widest text-3xl">Hi, {{ user.first_name }}</h2>
+          <span class="text-center bg-warning text-sm">Available THWs in your area</span>
+		  <!--<p class="leading-relaxed">... at your service today</p> -->
         </div>
-        <div class="lg:w-1/2 px-6 mt-4 lg:mt-0">
-          <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm">EMAIL</h2>
-          <a class="text-green-500 leading-relaxed">{{ user.email }}</a>
-          <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mt-4">PHONE</h2>
-          <p class="leading-relaxed">123-456-7890</p>
-          
-          
-		  <table class="table" id="user-table">
-		    <thead>
-		      <tr>
-		        <th>#</th>
-		        <th>firstname</th>
-		        <th>lastname</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-    			{% include 'myuser/myuser_thw_list.html' %}
-		    </tbody>
-		  </table>
-          
-          
-          
-          
+        <div class="lg:w-1/2 px-6 mt-4 lg:mt-0">           
+        	{% include 'myuser/myuser_thw_list.html' %} 
         </div>
       </div>
       

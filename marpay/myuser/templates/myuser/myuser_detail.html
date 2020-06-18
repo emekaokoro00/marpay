@@ -23,12 +23,12 @@
           <span class="text-gray-500">Email</span>
           <span class="ml-auto text-gray-900">{{ user.email }}</span>
         </div>
-        <div class="flex flex-row-reverse align-middle">
-          <a class="text-lg text-green-500 hover:text-green-700 lex m-2 text-center cursor-pointer" onclick="revealMoreButtons()">More...</a>
-          <a class="text-lg lex m-2">|</a>
-          <a class="text-lg text-green-500 hover:text-green-700 m-2 text-center" href="{% url 'myuser_update' %}">Edit Profile</a>
-          <a class="text-lg lex m-2">|</a>
-          <a class="text-lg text-green-500 hover:text-green-700 lex m-2  text-center" href="{% url 'myuser_detail' %}">Medical History</a>  
+        <div class="flex flex-row-reverse justify-center">
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex cursor-pointer" onclick="revealMoreButtons()">More...</a>
+          <a class="text-lg text-center lex">&nbsp;&nbsp;|&nbsp;&nbsp;</a>
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="{% url 'myuser_update' %}">Edit Profile</a>
+          <a class="text-lg text-center lex">&nbsp;&nbsp;|&nbsp;&nbsp;</a>
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="{% url 'myuser_detail' %}">Medical History</a>  
         </div>
         <div class="flex flex-row-reverse">
 			<div id="div_more_buttons" class='hidden'>
