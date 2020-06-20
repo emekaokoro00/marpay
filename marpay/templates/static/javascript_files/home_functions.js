@@ -1,8 +1,10 @@
 var connected = false;
+const call_name = document.getElementById('call_name');
 const button = document.getElementById('call_leave');
-const container = document.getElementById('container');
+const container = document.getElementById('container_vid');
 const count = document.getElementById('count');
 var room; 
+
 
 function addLocalVideo() {
     Twilio.Video.createLocalVideoTrack().then(track => {
@@ -11,10 +13,23 @@ function addLocalVideo() {
     });
 }; 
 
+/*function addLocalVideo() {
+	// const { isSupported } = require('twilio-video');
+	const isSupported  =  true;
+	if (isSupported) {
+	    Twilio.Video.createLocalVideoTrack().then(track => {
+	        var video = document.getElementById('local').firstChild;
+	        video.appendChild(track.attach());
+	    });
+	} else {
+	  alert('This browser is not supported by twilio-video.js.');
+	}
+}; */
+
 function connectButtonHandler(e) {
     e.preventDefault();
     if (!connected) {
-        var username = 'test_name';
+        var username = call_name.textContent;
         /*if (!username) {
             alert('Enter your name before connecting');
             return;
@@ -65,7 +80,6 @@ function connect(username) {
             body: JSON.stringify({'username': username})
         }).then(res => res.json()).then(data => {
             // join video call
-        	alert('Here');
             return Twilio.Video.connect(data.token);
         }).then(_room => {
             room = _room;
