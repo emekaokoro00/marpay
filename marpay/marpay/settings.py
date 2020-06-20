@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
+from pathlib import Path  # python3 only
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,6 +29,11 @@ DEBUG = True
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'10.0.2.2', u'192.168.1.5',]
+
+
+load_dotenv() # calls the .env file in the same folder as this settings.py
+# env_path = Path('.') / '.env'
+# load_dotenv(dotenv_path=env_path)
 
 
 # Application definition
@@ -77,6 +84,12 @@ TEMPLATES = [
 #     'DEFAULT_RENDERER_CLASSES': (
 #         'rest_framework.renderers.JSONRenderer',
 #     )
+# }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication'
+#     ]
 # }
 #===============================================================================
 

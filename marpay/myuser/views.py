@@ -1,3 +1,5 @@
+import os
+import json
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect,  Http404
 from django.template import RequestContext
@@ -12,6 +14,14 @@ from _datetime import datetime
 from .models import MyUser, Role, CustomerDetails
 # from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
+from twilio.jwt.access_token import AccessToken
+from twilio.jwt.access_token.grants import VideoGrant
+
+
+
+twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')
+twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
 
 
 # Create your views here.
@@ -62,10 +72,20 @@ def get_thw_list(request):
         data = dict()
         data['form_is_valid'] = True  
         user_thw_list = MyUser.objects.all().filter(roles=Role(Role.TELEHEALTHWORKER))
+        # this takes the list, and the page and passes back to the javascript, which then renders it to the appropriate location and displays
         data['html_user_thw_list'] = render_to_string('myuser/myuser_thw_list.html', {'user_thw_list': user_thw_list }) 
         return JsonResponse(data)
     return JsonResponse({"success":False}, status=400)
     
+def start_call(request):
+    username = json.loads(request.body.decode("utf-8")).get('username')
+
+    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
+                        twilio_api_key_secret, identity=username)
+    token.add_grant(VideoGrant(room='My Room'))
+
+    return JsonResponse({'token': token.to_jwt().decode()})
+
 
 class SignUpView(CreateView):
     form_class = SignUpForm

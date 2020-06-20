@@ -18,4 +18,6 @@ urlpatterns = [
     
     path('get_thw_list/', views.get_thw_list, name='get_thw_list'),    
     # path('get_thw_list/', views.GetUserTHWListAjax.as_view(), name = 'get_thw_list')
+    
+    path('start_call/', views.start_call, name='start_call'),    
 ]

@@ -14,7 +14,10 @@
 			{% csrf_token %}	
 	        <button type="submit" class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">THW to Doctor</button>
 	    </form>
-        <button class="ml-4 inline-flex text-white bg-green-300 border-0 py-2 px-6 focus:outline-none hover:bg-green-400 rounded text-lg">Direct to Doctor</button>
+	    <form>
+	    	{% csrf_token %}
+        	<button id="call_leave" class="ml-4 inline-flex text-white bg-green-300 border-0 py-2 px-6 focus:outline-none hover:bg-green-400 rounded text-lg">Direct to Doctor</button>
+        </form>
       </div>
     </div>
     
@@ -28,7 +31,14 @@
       <iframe width="100%" height="100%" class="absolute inset-0" frameborder="0" title="map" marginheight="0" marginwidth="0" scrolling="no" 
       style="filter: grayscale(1) contrast(1.2) opacity(0.4);">
       </iframe>
+      
       <div class="bg-white items-center relative flex flex-col w-full py-6">
+      
+        <p id="count"></p>
+        <div id="container_vid" class="container_vid lg:w-1/2 px-6 mt-4 lg:mt-0">        
+            <div id="local" class="participant"><div></div><div>Me</div></div> 
+        	<hr>
+        </div>
         <div class="lg:w-1/2 px-6">
           <h2 class="title-font font-medium text-gray-900 tracking-widest text-3xl">Hi, {{ user.first_name }}</h2>
           <span class="text-center bg-warning text-sm">Available THWs in your area</span>
@@ -38,7 +48,7 @@
         	{% include 'myuser/myuser_thw_list.html' %} 
         </div>
       </div>
-      
+           
       
     </div>    
       
