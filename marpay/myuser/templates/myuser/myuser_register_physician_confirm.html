@@ -11,10 +11,10 @@
 	<div class="max-w-screen-sm bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
 		 
         <div class="max-w-screen-sm bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">        
-        <div class="border-t border-b mb-6 border-gray-300 py-2 text-sm text-center">      	
-				{% if is_thw %} After approval... Successfully registered as a Telemedical Health Worker  
-				{% else %} Successfully de-registered as a Telemedical Health Worker
-				{% endif %}   
+        <div class="border-t border-b mb-6 border-gray-300 py-2 text-sm text-center">   	
+				{% if is_physician %} After approval... Successfully registered as a Physician  
+				{% else %} Successfully de-registered as a Physician 
+				{% endif %}
          </div>
         <div class="border-t border-b mb-6 border-gray-300 py-2 text-center">
           	<a class="text-lg text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_detail' %}">Back to Profile</a> 

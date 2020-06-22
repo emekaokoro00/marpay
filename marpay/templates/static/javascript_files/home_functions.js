@@ -1,67 +1,87 @@
 var connected = false;
 const call_name = document.getElementById('call_name');
-const button = document.getElementById('call_leave');
+const button_call_leave = document.getElementById('call_leave');
 const container = document.getElementById('container_vid');
 const count = document.getElementById('count');
+var div_video = document.getElementById('local').firstChild;
 var room; 
+
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 
 function addLocalVideo() {
     Twilio.Video.createLocalVideoTrack().then(track => {
-        var video = document.getElementById('local').firstChild;
-        video.appendChild(track.attach());
+        // var video = document.getElementById('local').firstChild;
+    	div_video.appendChild(track.attach());
     });
 }; 
 
-/*function addLocalVideo() {
-	// const { isSupported } = require('twilio-video');
-	const isSupported  =  true;
-	if (isSupported) {
-	    Twilio.Video.createLocalVideoTrack().then(track => {
-	        var video = document.getElementById('local').firstChild;
-	        video.appendChild(track.attach());
-	    });
-	} else {
-	  alert('This browser is not supported by twilio-video.js.');
-	}
-}; */
-
-function connectButtonHandler(e) {
+function connectButtonHandler(e) {	
     e.preventDefault();
     if (!connected) {
-        var username = call_name.textContent;
+
+        Twilio.Video.createLocalVideoTrack().then(track => {
+            div_video.appendChild(track.attach());
+        });
+    	
+        var username_caller = call_name.textContent;
+        var username_callee = 'Ugo';
         /*if (!username) {
             alert('Enter your name before connecting');
             return;
         }*/
-        button.disabled = true;
-        button.innerHTML = 'Connecting...';
-        connect(username).then(() => {
-            button.innerHTML = 'End Call';
-            button.disabled = false;
+        
+        button_call_leave.disabled = true;
+        button_call_leave.innerHTML = 'Connecting...';
+        connect(username_caller, username_callee).then(() => {
+            button_call_leave.innerHTML = 'End Call';
+            button_call_leave.disabled = false;
         }).catch(() => {
             alert('Connection failed. Is the backend running?');
-            button.innerHTML = 'Direct to Doctor';
-            button.disabled = false;    
+            button_call_leave.innerHTML = 'Direct to Doctor';
+            button_call_leave.disabled = false;    
         });
     }
     else {
         disconnect();
-        button.innerHTML = 'Direct to Doctor';
+        button_call_leave.innerHTML = 'Direct to Doctor';
         connected = false;
     }
 };
 
-function disconnect() {
-    room.disconnect();
-    while (container.lastChild.id != 'local')
-        container.removeChild(container.lastChild);
-    button.innerHTML = 'Direct to Doctor';
+function disconnect() {   	
+	// trying to get camera to go off
+	const tracks = Array.from(room.localParticipant.videoTracks.values()).map(publication => publication.track);
+	let videoTrack = tracks.find(track => track.kind === 'video');
+	videoTrack.stop();
+    room.localParticipant.unpublishTrack(videoTrack);
+    
+    tracks.forEach(track => track.stop());
+    room.localParticipant.unpublishTracks(tracks);
+	
+//	room.localParticipant.videoTracks.forEach(function(track) { 
+//	// track.stop();
+//	// room.localParticipant.unpublishTrack(track);
+//		track.unpublish();
+//	});
+//	room.localParticipant.unpublishTracks(tracks);
+	
+    
+    room.disconnect();    
+    while (container.lastChild.id != 'local') { // remove all children of container div except for the video div
+        container.removeChild(container.lastChild);   
+    }
+    while (div_video.hasChildNodes()) { // remove all children of the video div
+    	div_video.removeChild(div_video.lastChild);
+    }    
+    button_call_leave.innerHTML = 'Direct to Doctor';
     connected = false;
     updateParticipantCount();
 };
 
-function connect(username) {
+function connect(username_caller, username_callee) {
     var promise = new Promise((resolve, reject) => {
         // get a token from the back end
         fetch('myuser/start_call/', {
@@ -77,7 +97,7 @@ function connect(username) {
             mode: 'same-origin',
             cache: 'default',
             credentials: 'include',
-            body: JSON.stringify({'username': username})
+            body: JSON.stringify({'username_caller': username_caller, 'username_callee': username_callee})
         }).then(res => res.json()).then(data => {
             // join video call
             return Twilio.Video.connect(data.token);
@@ -90,6 +110,7 @@ function connect(username) {
             updateParticipantCount();
             resolve();
         }).catch(() => {
+        	alert('Enter your name before connecting');
             reject();
         });
     });
@@ -156,13 +177,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
 // add local video
-addLocalVideo();
-button.addEventListener('click', connectButtonHandler);
+// addLocalVideo();
+// button_call_leave.addEventListener('click', addLocalVideo);
+button_call_leave.addEventListener('click', connectButtonHandler);
 
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 	
 //call the list of THWs
 $(".get_user_form").submit(function(e){
@@ -193,4 +215,9 @@ $(".get_user_form").submit(function(e){
 // $("#modal-book").on("submit", ".get_user_form", function(e){
 // $(".get_user_form").click(function(e){
 // .unbind('submit')
+
+//}).catch(function(e) {
+//	alert(e);
+//    reject();
+//});
  

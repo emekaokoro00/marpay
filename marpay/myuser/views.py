@@ -25,6 +25,11 @@ twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
 
 
 # Create your views here.
+        
+# class LoginPageView(TemplateView):
+#     template_name = "registration/login.html"
+#     def post(self, request, **kwargs):     
+#         print(request)
 
 class TestPageView(TemplateView): 
     template_name = 'testpage.html'
@@ -52,11 +57,30 @@ class RegisterTHWConfirmView(UpdateView):
         thw_role = Role(Role.TELEHEALTHWORKER)      
         context['is_thw'] = thw_role in myuser.roles.all()
         return context 
-        
-# class LoginPageView(TemplateView):
-#     template_name = "registration/login.html"
-#     def post(self, request, **kwargs):     
-#         print(request)
+    
+class RegisterPhysicianConfirmView(UpdateView): 
+    template_name = 'myuser/myuser_register_physician_confirm.html'
+    form_class = MyUserUpdateForm
+    
+    def get_object(self):
+        myuser = self.request.user
+        physician_role = Role(Role.PHYSICIAN)
+        if physician_role not in myuser.roles.all():
+            physician_role.save()
+            myuser.roles.add(physician_role)
+        # add else statement, already a telehealth worker
+        else:
+            myuser.roles.remove(physician_role)
+        # context['is_thw'] = thw_role in myuser.roles.all()
+        myuser.save()
+        return myuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        myuser = self.request.user  
+        physician_role = Role(Role.PHYSICIAN)      
+        context['is_physician'] = physician_role in myuser.roles.all()
+        return context
 
 def register_thw(request):
     if request.method == 'POST':
@@ -64,6 +88,13 @@ def register_thw(request):
         myuser.roles.add(Role.TELEHEALTHWORKER)   
         myuser.save()   
     return render(request, 'myuser/myuser_register_thw_confirm.html')
+
+def register_physician(request):
+    if request.method == 'POST':
+        myuser = request.user
+        myuser.roles.add(Role.PHYSICIAN)   
+        myuser.save()   
+    return render(request, 'myuser/myuser_register_physician_confirm.html')
 
 
 def get_thw_list(request):
@@ -76,13 +107,28 @@ def get_thw_list(request):
         data['html_user_thw_list'] = render_to_string('myuser/myuser_thw_list.html', {'user_thw_list': user_thw_list }) 
         return JsonResponse(data)
     return JsonResponse({"success":False}, status=400)
-    
+
+
+def get_physician_list(request):
+    # if request.method == "GET" and request.is_ajax():
+    if request.method == "POST":
+        data = dict()
+        data['form_is_valid'] = True  
+        user_physician_list = MyUser.objects.all().filter(roles=Role(Role.PHYSICIAN))
+        # this takes the list, and the page and passes back to the javascript, which then renders it to the appropriate location and displays
+        data['html_user_physician_list'] = render_to_string('myuser/user_physician_list.html', {'user_physician_list': user_physician_list }) 
+        return JsonResponse(data)
+    return JsonResponse({"success":False}, status=400)
+
+        
 def start_call(request):
-    username = json.loads(request.body.decode("utf-8")).get('username')
+    username_caller = json.loads(request.body.decode("utf-8")).get('username_caller')
+    username_callee = json.loads(request.body.decode("utf-8")).get('username_callee')
 
     token = AccessToken(twilio_account_sid, twilio_api_key_sid,
-                        twilio_api_key_secret, identity=username)
+                        twilio_api_key_secret, identity=username_caller)
     token.add_grant(VideoGrant(room='My Room'))
+    # token.add_grant(VideoGrant(room=username_caller + '_' + username_callee))
 
     return JsonResponse({'token': token.to_jwt().decode()})
 
@@ -101,7 +147,9 @@ class MyUserDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         thw_role = Role(Role.TELEHEALTHWORKER)
+        physician_role = Role(Role.PHYSICIAN)
         context['is_thw'] = thw_role in self.request.user.roles.all()
+        context['is_physician'] = physician_role in self.request.user.roles.all()
         return context
  
  
@@ -123,8 +171,11 @@ class MyUserCustomerDetailsUpdateView(UpdateView):
         context = super(MyUserCustomerDetailsUpdateView, self).get_context_data(**kwargs) 
         
         thw_role = Role(Role.TELEHEALTHWORKER)    
+        physician_role = Role(Role.PHYSICIAN)    
         if 'is_thw' not in context:  
             context['is_thw'] = thw_role in self.request.user.roles.all()
+        if 'is_physician' not in context:  
+            context['is_physician'] = physician_role in self.request.user.roles.all()
         
         if 'myuser_update_form' not in context:
             context['myuser_update_form'] = \

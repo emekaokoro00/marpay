@@ -10,14 +10,17 @@ urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
     path('testpage/', TestPageView.as_view(), name='testpage'), 
         
+    # 'name=myuser_detail' is the url-link in html page. 'profile/' is what is appended to the browser url. views.MyUserDetailView.as_view() is the views.py function
     # path('<pk>/', GeeksDetailView.as_view()), # from a list
     path('profile/', views.MyUserDetailView.as_view(), name='myuser_detail'), 
-    path('update/', views.MyUserCustomerDetailsUpdateView.as_view(), name='myuser_update'),
+    path('update/', views.MyUserCustomerDetailsUpdateView.as_view(), name='myuser_update'), 
     path('thw_confirm/', views.RegisterTHWConfirmView.as_view(), name='myuser_register_thw_confirm'), 
+    path('physician_confirm/', views.RegisterPhysicianConfirmView.as_view(), name='myuser_register_physician_confirm'), 
     # path('thw_confirm/', views.register_thw, name='myuser_register_thw_confirm'), 
     
+    # path('get_thw_list/', views.GetUserTHWListAjax.as_view(), name = 'get_thw_list')  
     path('get_thw_list/', views.get_thw_list, name='get_thw_list'),    
-    # path('get_thw_list/', views.GetUserTHWListAjax.as_view(), name = 'get_thw_list')
+    path('get_physician_list/', views.get_physician_list, name='get_physician_list'),  
     
-    path('start_call/', views.start_call, name='start_call'),    
+    path('start_call/', views.start_call, name='start_call'),
 ]

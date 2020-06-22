@@ -28,7 +28,7 @@ SECRET_KEY = 'cb2@grv9u3lw(s)z1454egkf88jcbug-x*)^(ewlr95djh_ici'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'10.0.2.2', u'192.168.1.5', u'd1cb6aeac172.ngrok.io']
+ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'10.0.2.2', u'192.168.1.5', u'2e57df7ab655.ngrok.io']
 # 192.168.56.56 is the local address, alos browseable from host if listening setup
 # 10.0.2.2 is the host computer emulator address
 # 192.168.1.5' is the host computer ip address on a WLAN... this is for an actual phont to browse
