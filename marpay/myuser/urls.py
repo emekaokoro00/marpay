@@ -16,11 +16,9 @@ urlpatterns = [
     path('update/', views.MyUserCustomerDetailsUpdateView.as_view(), name='myuser_update'), 
     path('thw_confirm/', views.RegisterTHWConfirmView.as_view(), name='myuser_register_thw_confirm'), 
     path('physician_confirm/', views.RegisterPhysicianConfirmView.as_view(), name='myuser_register_physician_confirm'), 
-    # path('thw_confirm/', views.register_thw, name='myuser_register_thw_confirm'), 
-    
-    # path('get_thw_list/', views.GetUserTHWListAjax.as_view(), name = 'get_thw_list')  
-    path('get_thw_list/', views.get_thw_list, name='get_thw_list'),    
-    path('get_physician_list/', views.get_physician_list, name='get_physician_list'),  
+     
+    path('get_thw_list/', views.get_thw_list, name='get_thw_list'), # temporary url that automatically adds thw role to customer
+    path('get_physician_list/', views.get_physician_list, name='get_physician_list'),   # temporary url that automatically adds physician role to customer
     
     path('start_call/', views.start_call, name='start_call'),
 ]

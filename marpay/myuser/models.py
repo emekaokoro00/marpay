@@ -8,7 +8,7 @@ class Role(models.Model):
     TELEHEALTHWORKER = 2
     PHYSICIAN = 3
   
-    #the enum
+    #the iterable
     ROLE_CHOICES = (
          ( CUSTOMER, 'customer'),
          (TELEHEALTHWORKER, 'telehealthworker'),
@@ -39,16 +39,16 @@ class MyUser(AbstractUser):
     def __str__(self): 
         return self.first_name 
     
+    # Check if the customer detals exist
     def has_customer_details(self):
         return hasattr(self, 'customer_details') and self.customer_details is not None
     
-    def save(self, *args, **kwargs): 
-        # create roles and details if they don't exist
-#         if (self.customer_details is None):
-#             the_customer_details = CustomerDetails(user = self, status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details
-#             the_customer_details.save()
-#             # super().save(*args, **kwargs)  # consider indenting
-            
+    # to retrieve name of current role.... for use with medsession/consumer
+    def _get_user_current_role(self):
+        return self.current_role.__str__()
+    
+    def save(self, *args, **kwargs):      
+        # if no role (such as first time save), a customer role is created       
         if (self.current_role is None):
             the_current_role = Role(Role.CUSTOMER) # initialize to customer role 
             the_current_role.save()   # save to role if it doesn't exist, otherwise updates
@@ -62,7 +62,9 @@ class MyUser(AbstractUser):
 
   
 class CustomerDetails(models.Model):
+    # ties the user to this object, related_name is how user object will refer to this e.g. user.customer_details
     user = models.OneToOneField(MyUser, on_delete=models.PROTECT, related_name='customer_details', null=True)
+    
     status = models.CharField(max_length=300)
     medical_record_summary = models.CharField(max_length=300)
     insurance_provider_summary = models.CharField(max_length=300)
@@ -70,9 +72,9 @@ class CustomerDetails(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
         
 class TeleHealthWorkerDetails(models.Model):
-    user = models.OneToOneField(MyUser, on_delete=models.PROTECT, related_name='telehealthworker_details', null=True)
+    user = models.OneToOneField(MyUser, on_delete=models.PROTECT, related_name='telehealthworker_details', null=True) # ties the user to this object
     status = models.CharField(max_length=300)
     
 class PhysicianDetails(models.Model):
-    user = models.OneToOneField(MyUser, on_delete=models.PROTECT, related_name='physician_details', null=True)
+    user = models.OneToOneField(MyUser, on_delete=models.PROTECT, related_name='physician_details', null=True) # ties the user to this object
     status = models.CharField(max_length=300)

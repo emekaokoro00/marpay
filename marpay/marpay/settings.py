@@ -29,23 +29,22 @@ DEBUG = True
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'10.0.2.2', u'192.168.1.5', u'2e57df7ab655.ngrok.io']
-# 192.168.56.56 is the local address, alos browseable from host if listening setup
+# 192.168.56.56 is the local address, also browseable from host if listening setup
 # 10.0.2.2 is the host computer emulator address
 # 192.168.1.5' is the host computer ip address on a WLAN... this is for an actual phont to browse
 # .....ngrok.io is the ngrok address.. will always change per session use [./ngrok http 192.168.56.56:8000] in /home/emekaokoro]
 
 
 load_dotenv() # calls the .env file in the same folder as this settings.py
-# env_path = Path('.') / '.env'
-# load_dotenv(dotenv_path=env_path)
-
 
 # Application definition
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'myuser.apps.MyUserConfig',
+    'medsession.apps.MedSessionConfig',
     'rest_framework',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -90,29 +89,29 @@ TEMPLATES = [
 #     )
 # }
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.SessionAuthentication'
-#     ]
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication'
+    ]
+}
 #===============================================================================
 
 
 WSGI_APPLICATION = 'marpay.wsgi.application'
 
+ASGI_APPLICATION = 'marpay.routing.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 #===============================================================================
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
-#===============================================================================
-             
-             
+# }
+#===============================================================================           
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -124,6 +123,17 @@ DATABASES = {
         'ATOMIC_REQUESTS': True   # enables transaction saving... all or none
     }
              
+}
+
+# Redis -- in-memory data store
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [REDIS_URL],
+        },
+    },
 }
 
 AUTH_USER_MODEL = 'myuser.MyUser'

@@ -27,4 +27,7 @@ urlpatterns = [
     path('myuser/', include('django.contrib.auth.urls')),
 #     path('accounts/', include('accounts.urls')),
 #     path('accounts/', include('django.contrib.auth.urls')),  
+
+    # path('medsession/', include('medsession.urls')),
+    path('medsession/', include('medsession.urls', 'medsession',)),
 ]

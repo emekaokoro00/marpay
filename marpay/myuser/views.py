@@ -16,6 +16,7 @@ from .models import MyUser, Role, CustomerDetails
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant
+from .serializers import MyUserSerializer
 
 
 
@@ -138,6 +139,10 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('home')
     template_name = 'signup.html'    
     
+# class SignUpView(generics.CreateAPIView):
+#     queryset = get_user_model().objects.all()
+#     serializer_class = MyUserSerializer
+    
 class MyUserDetailView(LoginRequiredMixin, DetailView):
     model = MyUser
     
@@ -231,6 +236,7 @@ class MyUserCustomerDetailsUpdateView(UpdateView):
 #     def get_success_url(self, *args, **kwargs):
 #         return reverse_lazy("myuser_detail")
 
+# Check if user has customer details... if not, generate new customer details, save and then add to user
 def return_user_with_instance_or_new_customer_details(the_user):    
     if not the_user.has_customer_details():
         the_customer_details = CustomerDetails(user = the_user, status = "", medical_record_summary = "", insurance_provider_summary = "", payment_profile_summary = "", created_at = datetime.now) # initialize to customer details
