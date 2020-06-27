@@ -11,6 +11,12 @@ from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from _datetime import datetime
+
+from django.contrib.auth import get_user_model, login, logout # new
+from django.contrib.auth.forms import AuthenticationForm # new
+from rest_framework import generics, permissions, status, views # new
+from rest_framework.response import Response
+
 from .models import MyUser, Role, CustomerDetails
 # from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
@@ -19,13 +25,92 @@ from twilio.jwt.access_token.grants import VideoGrant
 from .serializers import MyUserSerializer
 
 
-
 twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
 twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')
 twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
 
 
 # Create your views here.
+def register_thw(request):
+    if request.method == 'POST':
+        myuser = request.user
+        myuser.roles.add(Role.TELEHEALTHWORKER)   
+        myuser.save()   
+    return render(request, 'myuser/myuser_register_thw_confirm.html')
+
+def register_physician(request):
+    if request.method == 'POST':
+        myuser = request.user
+        myuser.roles.add(Role.PHYSICIAN)   
+        myuser.save()   
+    return render(request, 'myuser/myuser_register_physician_confirm.html')
+
+
+def get_thw_list(request):
+    # if request.method == "GET" and request.is_ajax():
+    if request.method == "POST":
+        data = dict()
+        data['form_is_valid'] = True  
+        user_thw_list = MyUser.objects.all().filter(roles=Role(Role.TELEHEALTHWORKER))
+        # this takes the list, and the page and passes back to the javascript, which then renders it to the appropriate location and displays
+        data['html_user_thw_list'] = render_to_string('myuser/myuser_thw_list.html', {'user_thw_list': user_thw_list }) 
+        return JsonResponse(data)
+    return JsonResponse({"success":False}, status=400)
+
+
+def get_physician_list(request):
+    # if request.method == "GET" and request.is_ajax():
+    if request.method == "POST":
+        data = dict()
+        data['form_is_valid'] = True  
+        user_physician_list = MyUser.objects.all().filter(roles=Role(Role.PHYSICIAN))
+        # this takes the list, and the page and passes back to the javascript, which then renders it to the appropriate location and displays
+        data['html_user_physician_list'] = render_to_string('myuser/user_physician_list.html', {'user_physician_list': user_physician_list }) 
+        return JsonResponse(data)
+    return JsonResponse({"success":False}, status=400)
+
+        
+def start_call(request):
+    username_caller = json.loads(request.body.decode("utf-8")).get('username_caller')
+    username_callee = json.loads(request.body.decode("utf-8")).get('username_callee')
+
+    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
+                        twilio_api_key_secret, identity=username_caller)
+    token.add_grant(VideoGrant(room='My Room'))
+    # token.add_grant(VideoGrant(room=username_caller + '_' + username_callee))
+
+    return JsonResponse({'token': token.to_jwt().decode()})
+
+
+class SignUpView(CreateView):
+    form_class = SignUpForm
+    success_url = reverse_lazy('home')
+    template_name = 'signup.html'    
+   
+# api call
+class SignUpAPIView(generics.CreateAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = MyUserSerializer
+
+# api call
+class LogInAPIView(views.APIView):
+    def post(self, request):
+        form = AuthenticationForm(data=request.data)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user=form.get_user())
+            return Response(MyUserSerializer(user).data)
+        else:
+            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# api call
+class LogOutAPIView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, *args, **kwargs):
+        logout(self.request)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
         
 # class LoginPageView(TemplateView):
 #     template_name = "registration/login.html"
@@ -82,66 +167,6 @@ class RegisterPhysicianConfirmView(UpdateView):
         physician_role = Role(Role.PHYSICIAN)      
         context['is_physician'] = physician_role in myuser.roles.all()
         return context
-
-def register_thw(request):
-    if request.method == 'POST':
-        myuser = request.user
-        myuser.roles.add(Role.TELEHEALTHWORKER)   
-        myuser.save()   
-    return render(request, 'myuser/myuser_register_thw_confirm.html')
-
-def register_physician(request):
-    if request.method == 'POST':
-        myuser = request.user
-        myuser.roles.add(Role.PHYSICIAN)   
-        myuser.save()   
-    return render(request, 'myuser/myuser_register_physician_confirm.html')
-
-
-def get_thw_list(request):
-    # if request.method == "GET" and request.is_ajax():
-    if request.method == "POST":
-        data = dict()
-        data['form_is_valid'] = True  
-        user_thw_list = MyUser.objects.all().filter(roles=Role(Role.TELEHEALTHWORKER))
-        # this takes the list, and the page and passes back to the javascript, which then renders it to the appropriate location and displays
-        data['html_user_thw_list'] = render_to_string('myuser/myuser_thw_list.html', {'user_thw_list': user_thw_list }) 
-        return JsonResponse(data)
-    return JsonResponse({"success":False}, status=400)
-
-
-def get_physician_list(request):
-    # if request.method == "GET" and request.is_ajax():
-    if request.method == "POST":
-        data = dict()
-        data['form_is_valid'] = True  
-        user_physician_list = MyUser.objects.all().filter(roles=Role(Role.PHYSICIAN))
-        # this takes the list, and the page and passes back to the javascript, which then renders it to the appropriate location and displays
-        data['html_user_physician_list'] = render_to_string('myuser/user_physician_list.html', {'user_physician_list': user_physician_list }) 
-        return JsonResponse(data)
-    return JsonResponse({"success":False}, status=400)
-
-        
-def start_call(request):
-    username_caller = json.loads(request.body.decode("utf-8")).get('username_caller')
-    username_callee = json.loads(request.body.decode("utf-8")).get('username_callee')
-
-    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
-                        twilio_api_key_secret, identity=username_caller)
-    token.add_grant(VideoGrant(room='My Room'))
-    # token.add_grant(VideoGrant(room=username_caller + '_' + username_callee))
-
-    return JsonResponse({'token': token.to_jwt().decode()})
-
-
-class SignUpView(CreateView):
-    form_class = SignUpForm
-    success_url = reverse_lazy('home')
-    template_name = 'signup.html'    
-    
-# class SignUpView(generics.CreateAPIView):
-#     queryset = get_user_model().objects.all()
-#     serializer_class = MyUserSerializer
     
 class MyUserDetailView(LoginRequiredMixin, DetailView):
     model = MyUser

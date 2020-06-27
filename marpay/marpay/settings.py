@@ -28,10 +28,12 @@ SECRET_KEY = 'cb2@grv9u3lw(s)z1454egkf88jcbug-x*)^(ewlr95djh_ici'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'10.0.2.2', u'192.168.1.5', u'2e57df7ab655.ngrok.io']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'127.0.0.1', u'0.0.0.0', u'10.0.2.2', u'192.168.1.5', u'2e57df7ab655.ngrok.io']
 # 192.168.56.56 is the local address, also browseable from host if listening setup
+# 0.0.0.0 was when trying to browse from docker
 # 10.0.2.2 is the host computer emulator address
-# 192.168.1.5' is the host computer ip address on a WLAN... this is for an actual phont to browse
+# 192.168.1.5' is the host computer ip address on a WLAN... this is for an actual phone to browse
 # .....ngrok.io is the ngrok address.. will always change per session use [./ngrok http 192.168.56.56:8000] in /home/emekaokoro]
 
 
@@ -105,25 +107,25 @@ ASGI_APPLICATION = 'marpay.routing.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 #===============================================================================
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-#===============================================================================           
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'marpay_db',
-        'USER': 'root',
-        'PASSWORD': 'spartan123',
-        'HOST': 'localhost',
-        'PORT': '',
-        'ATOMIC_REQUESTS': True   # enables transaction saving... all or none
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-             
 }
+#===============================================================================           
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'marpay_db',
+#         'USER': 'root',
+#         'PASSWORD': 'spartan123',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#         'ATOMIC_REQUESTS': True   # enables transaction saving... all or none
+#     }
+#               
+# }
 
 # Redis -- in-memory data store
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
@@ -175,11 +177,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "templates/static"),
+    os.path.join(BASE_DIR, "templates/static"), # for django serving
 ]
 
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 #===============================================================================
 # LOGIN_REDIRECT_URL = '/'
 # LOGOUT_REDIRECT_URL = '/'

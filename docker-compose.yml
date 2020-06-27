@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  marpay-redis:
+    container_name: marpay-redis
+    image: redis:5.0.6-alpine
+
+  marpay-server:
+    build:
+      context: ./marpay
+    volumes:
+      - ./marpay:/usr/src/app
+    command: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
+    container_name: marpay-server
+    depends_on:
+      - marpay-redis
+    environment:
+      - REDIS_URL=redis://marpay-redis:6379/0
+    ports:
+      - 8001:8000
+
+  marpay-client:
+    build:
+      context: ./client
+    volumes:
+      - ./client:/usr/src/app
+    command: ng serve --host 0.0.0.0
+    container_name: marpay-client
+    depends_on:
+      - marpay-server
+    environment:
+      - CHROME_BIN=chromium-browser
+    ports:
+      - 4201:4200
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: marpay-nginx
+    depends_on:
+      - marpay-server
+      - marpay-client
+    ports:
+      - 8080:80
+    restart: always
+    volumes:
+      - media:/usr/src/app/media
+      - static:/usr/src/app/static
+
+volumes:
+  media:
+  static:

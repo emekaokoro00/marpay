@@ -13,9 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
+
+from myuser.views import SignUpAPIView, LogInAPIView, LogOutAPIView
 
 
 urlpatterns = [
@@ -28,6 +32,11 @@ urlpatterns = [
 #     path('accounts/', include('accounts.urls')),
 #     path('accounts/', include('django.contrib.auth.urls')),  
 
+    path('api/sign_up/', SignUpAPIView.as_view(), name='sign_up'),
+    path('api/log_in/', LogInAPIView.as_view(), name='log_in'),
+    path('api/log_out/', LogOutAPIView.as_view(), name='log_out'),
+
     # path('medsession/', include('medsession.urls')),
     path('medsession/', include('medsession.urls', 'medsession',)),
-]
+] 
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # removed because nginx is now handling serving files
