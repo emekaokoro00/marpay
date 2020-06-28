@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { CustomerComponent } from './components/customer/customer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpComponent,
     LogInComponent,
-    LandingComponent
+    LandingComponent,
+    CustomerComponent
   ],
   imports: [
     HttpClientModule,
@@ -26,6 +28,7 @@ import { LandingComponent } from './components/landing/landing.component';
     RouterModule.forRoot([
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },
+      { path: 'customer', component: CustomerComponent },
       { path: '', component: LandingComponent }
     ], { useHash: true })
   ],

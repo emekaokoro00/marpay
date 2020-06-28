@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController
 import { AuthService, User } from './auth.service';
 import { UserFactory } from '../testing/factories';
 
-fdescribe('Authentication using a service', () => {
+describe('Authentication using a service', () => {
 	let authService: AuthService;
 	let httpMock: HttpTestingController;
 	beforeEach(() => {
@@ -35,7 +35,7 @@ fdescribe('Authentication using a service', () => {
 	    expect(user).toBe(userData);
 	  });
 
-	  const request = httpMock.expectOne('http://192.168.56.56:8000/api/sign_up/');
+	  const request = httpMock.expectOne('/api/sign_up/');
 	    request.flush(userData);
 	});
 
@@ -50,7 +50,7 @@ fdescribe('Authentication using a service', () => {
 	  ).subscribe(user => {
 	    expect(user).toBe(userData);
 	  });
-	  const request = httpMock.expectOne('http://192.168.56.56:8000/api/log_in/');
+	  const request = httpMock.expectOne('/api/log_in/');
 	  request.flush(userData);
 	  // Confirm that the expected data was written to local storage.
 	  expect(localStorage.getItem('marpay.user')).toBe(JSON.stringify(userData));
@@ -65,7 +65,7 @@ fdescribe('Authentication using a service', () => {
 	  authService.logOut().subscribe(user => {
 	    expect(user).toEqual(userData);
 	  });
-	  const request = httpMock.expectOne('http://192.168.56.56:8000/api/log_out/');
+	  const request = httpMock.expectOne('/api/log_out/');
 	  request.flush(userData);
 	  // Confirm that the local storage data was deleted.
 	  expect(localStorage.getItem('marpay.user')).toBeNull();
