@@ -8,7 +8,8 @@ export class UserFactory {
       id: faker.random.number(),
       username: faker.internet.email(),
       first_name: faker.name.firstName(),
-      last_name: faker.name.lastName()
+      last_name: faker.name.lastName(),
+      current_role: 'customer'
     }, data));
   }
 }

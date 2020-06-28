@@ -41,7 +41,8 @@ describe('SignUpComponent', () => {
       username: user.username,
       firstName: user.first_name,
       lastName: user.last_name,
-      password: 'pAssw0rd!'
+      password: 'pAssw0rd!',
+      currentRole: user.current_role
     };
     component.onSubmit();
     const request = httpMock.expectOne('/api/sign_up/');

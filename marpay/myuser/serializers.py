@@ -31,9 +31,9 @@ class MyUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         
         # handling foreign-key current_role to build up object and save
-        current_role_id = validated_data.pop('current_role')
+        current_role_name = validated_data.pop('current_role')
         current_role = Role(Role.CUSTOMER)
-        current_role = current_role.set_role(new_id=current_role_id)
+        current_role = current_role.set_role_from_name(role_name=current_role_name)
         
         data = {
             key: value for key, value in validated_data.items()

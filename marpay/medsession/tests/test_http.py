@@ -32,7 +32,7 @@ class AuthenticationTest(APITestCase):
             'last_name': 'User',
             'password1': PASSWORD,
             'password2': PASSWORD,
-            'current_role': the_current_role.id
+            'current_role': the_current_role.__str__()
             # 'current_role': the_current_role.set_role_from_name('customer')
         })
         user = get_user_model().objects.last()
@@ -41,7 +41,7 @@ class AuthenticationTest(APITestCase):
         self.assertEqual(response.data['username'], user.username)
         self.assertEqual(response.data['first_name'], user.first_name)
         self.assertEqual(response.data['last_name'], user.last_name)
-        self.assertEqual(response.data['current_role'], str(user.current_role.id))      
+        self.assertEqual(response.data['current_role'], user.current_role.__str__())      
         # self.assertIsNotNone(user.current_role) 
 
     def test_user_can_log_in(self):

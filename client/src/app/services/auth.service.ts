@@ -8,7 +8,8 @@ export class User {
 	    public id?: number,
 	    public username?: string,
 	    public first_name?: string,
-	    public last_name?: string
+	    public last_name?: string,
+	    public current_role?: string
 	) {}
 
 	static create(data: any): User {
@@ -16,7 +17,8 @@ export class User {
 	      data.id,
 	      data.username,
 	      data.first_name,
-	      data.last_name
+	      data.last_name,
+      	      data.current_role
 	    );
 	}
 
@@ -33,8 +35,24 @@ export class User {
 	  if (user === null) {
 	    return false;
 	  }
-	  return true;
-	  // return user.group === 'rider';
+	  // return true;
+	  return user.current_role === 'customer';
+	}
+
+	static isTelehealthWorker(): boolean {
+	  const user = User.getUser();
+	  if (user === null) {
+	    return false;
+	  }
+	  return user.current_role === 'telehealthworker';
+	}
+
+	static isPhysician(): boolean {
+	  const user = User.getUser();
+	  if (user === null) {
+	    return false;
+	  }
+	  return user.current_role === 'physician';
 	}
 }
 
@@ -48,7 +66,8 @@ export class AuthService {
 	    username: string,
 	    firstName: string,
 	    lastName: string,
-	    password: string
+	    password: string,
+	    current_role: string
 	  ): Observable<User> {
 	    const url = '/api/sign_up/';
 	    const formData = new FormData();
@@ -57,6 +76,7 @@ export class AuthService {
 	    formData.append('last_name', lastName);
 	    formData.append('password1', password);
 	    formData.append('password2', password);
+	    formData.append('current_role', current_role);
 	    return this.http.request<User>('POST', url, {body: formData});
 	}
 
