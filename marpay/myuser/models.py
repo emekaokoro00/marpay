@@ -19,12 +19,19 @@ class Role(models.Model):
   
     def __init__(self, new_id):
         super().__init__()
-        self.id = new_id
+        self.id = new_id      
     def __str__(self):
         return self.get_id_display()
     def set_role(self, new_id):
         self.id = new_id
-        return self
+        return self          
+    def set_role_from_name(self, role_name):
+        self = Role(Role.CUSTOMER)
+        if role_name == 'telehealthworker':
+            return Role(Role.TELEHEALTHWORKER)
+        if role_name == 'physician':
+            return Role(Role.PHYSICIAN)
+        return self   
 
     
 class MyUser(AbstractUser):
@@ -39,13 +46,13 @@ class MyUser(AbstractUser):
     def __str__(self): 
         return self.first_name 
     
-    # Check if the customer detals exist
+    # Check if the customer details exist
     def has_customer_details(self):
-        return hasattr(self, 'customer_details') and self.customer_details is not None
+        return hasattr(self, 'customer_details') and self.customer_details is not None 
     
     # to retrieve name of current role.... for use with medsession/consumer
     def _get_user_current_role(self):
-        return self.current_role.__str__()
+        return self.current_role.__str__()        
     
     def save(self, *args, **kwargs):      
         # if no role (such as first time save), a customer role is created       
