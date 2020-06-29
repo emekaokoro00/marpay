@@ -26,7 +26,8 @@ class MedSession(models.Model):
     session_telehealthworker = models.ForeignKey(MyUser, on_delete=models.PROTECT, related_name='session_telehealthworker', null=True, blank=True) 
     session_physician = models.ForeignKey(MyUser, on_delete=models.PROTECT, related_name='session_physician', null=True, blank=True) 
     session_attendants = models.ManyToManyField(MyUser) # enforce to least one attending worker i.e. physician. THW is optional.
-    session_address = models.CharField(max_length=255)
+    session_address = models.CharField(max_length=255, null=True, blank=True) # customer address/location
+    session_address_for_telehealthworker = models.CharField(max_length=255, null=True, blank=True) # thw address... might not need this
 
     def __str__(self):
         return f'{self.id}'

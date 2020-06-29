@@ -21,6 +21,8 @@ export class MedsessionFactory {
       id: faker.random.uuid(),
       created: faker.date.past(),
       updated: faker.date.past(),
+      session_address: faker.address.streetAddress(),
+      session_address_for_telehealthworker: faker.address.streetAddress(),
       status: 'REQUESTED',
       session_customer: UserFactory.create(),
       session_telehealthworker: UserFactory.create({current_role: 'telehealthworker'})

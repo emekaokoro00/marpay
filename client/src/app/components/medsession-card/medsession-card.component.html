@@ -1,0 +1,21 @@
+<h4 class="card-header">{{ title }}</h4>
+<div *ngIf="medsessions?.length > 0; then thenBlock; else elseBlock;"></div>
+<ng-template #thenBlock>
+  <div class="card-body">
+    <ul class="list-unstyled">
+      <li class="media mb-3" [routerLink]="['.', medsession.id]" *ngFor="let medsession of completedMedsessions">
+        <!-- <img class="mr-3 rounded-circle" [src]="medsession.otherUser.photo" width="80" height="80"> -->
+        <div class="media-body">
+            <h5 class="mt-0 mb-1">{{ medsession.session_telehealthworker.username }}</h5>
+            at {{ medsession.session_address }} <br>
+            {{ medsession.status }}
+        </div>
+      </li>
+    </ul>
+  </div>
+</ng-template>
+<ng-template #elseBlock>
+  <div class="card-body text-center">
+     No  Telemedicine Sessions.
+  </div>
+</ng-template>

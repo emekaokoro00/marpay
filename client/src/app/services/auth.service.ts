@@ -39,7 +39,7 @@ export class User {
 	  return user.current_role === 'customer';
 	}
 
-	static isTelehealthWorker(): boolean {
+	static isTelehealthworker(): boolean {
 	  const user = User.getUser();
 	  if (user === null) {
 	    return false;

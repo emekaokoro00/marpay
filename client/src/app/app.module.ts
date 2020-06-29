@@ -4,8 +4,14 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { environment } from '../environments/environment';
+import { AgmCoreModule } from '@agm/core';
+
+import { GoogleMapsService } from './services/google-maps.service';
 import { AuthService } from './services/auth.service';
 import { IsCustomer } from './services/is-customer.service';
+import { IsTelehealthworker } from './services/is-telehealthworker.service';
+import { MedsessionDetailResolver } from './services/medsession-detail.resolver';
 import { MedsessionService } from './services/medsession.service';
 import { MedsessionListResolver } from './services/medsession-list.resolver';
 
@@ -15,6 +21,12 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
+import { CustomerRequestComponent } from './components/customer-request/customer-request.component';
+import { CustomerDetailComponent } from './components/customer-detail/customer-detail.component';
+import { MedsessionCardComponent } from './components/medsession-card/medsession-card.component';
+import { TelehealthworkerComponent } from './components/telehealthworker/telehealthworker.component';
+import { TelehealthworkerDashboardComponent } from './components/telehealthworker-dashboard/telehealthworker-dashboard.component';
+import { TelehealthworkerDetailComponent } from './components/telehealthworker-detail/telehealthworker-detail.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +35,13 @@ import { CustomerDashboardComponent } from './components/customer-dashboard/cust
     LogInComponent,
     LandingComponent,
     CustomerComponent,
-    CustomerDashboardComponent
+    CustomerDashboardComponent,
+    CustomerRequestComponent,
+    CustomerDetailComponent,
+    MedsessionCardComponent,
+    TelehealthworkerComponent,
+    TelehealthworkerDashboardComponent,
+    TelehealthworkerDetailComponent
   ],
   imports: [
     HttpClientModule,
@@ -33,22 +51,54 @@ import { CustomerDashboardComponent } from './components/customer-dashboard/cust
     RouterModule.forRoot([
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },
-      { path: 'customer', component: CustomerComponent , canActivate: [ IsCustomer ],
+      {     path: 'customer', 
+	    component: CustomerComponent , 
+	    canActivate: [ IsCustomer ],
 	    children: [
+	      { path: 'request', 
+		component: CustomerRequestComponent
+	      },
+	      { path: 'id', 
+		component: CustomerDetailComponent,
+        	resolve: { medsession: MedsessionDetailResolver }
+	      },
 	      { path: '', 
 		component: CustomerDashboardComponent,
 		resolve: { medsessions: MedsessionListResolver }
-		 }
+	      }
+	    ]
+      },
+      {     path: 'telehealthworker', 
+	    component: TelehealthworkerComponent,
+            canActivate: [ IsTelehealthworker ],
+	    children: [
+	      {
+	        path: '',
+	        component: TelehealthworkerDashboardComponent,
+	        resolve: { medsessions: MedsessionListResolver }
+	      },
+	      {
+	        path: ':id',
+	        component: TelehealthworkerDetailComponent,
+	        resolve: { medsession: MedsessionDetailResolver }
+	      }
 	    ]
       },
       { path: '', component: LandingComponent }
-    ], { useHash: true })
+    ], { useHash: true }),
+    AgmCoreModule.forRoot({
+      apiKey: environment.GOOGLE_API_KEY
+    })
   ],
   providers: [
+    	GoogleMapsService,
 	AuthService, 
 	IsCustomer,
+	IsTelehealthworker,
 	MedsessionService,
-	MedsessionListResolver],
+	MedsessionListResolver,
+	MedsessionDetailResolver
+	],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,6 +12,11 @@
     ></app-medsession-card>
     <app-medsession-card
       class="card mb-3"
+      [title]="'Requested medical sessions'"
+      [medsessions]="requestedMedsessions"
+    ></app-medsession-card>
+    <app-medsession-card
+      class="card mb-3"
       [title]="'Recent medical sessions'"
       [medsessions]="completedMedsessions"
     ></app-medsession-card>

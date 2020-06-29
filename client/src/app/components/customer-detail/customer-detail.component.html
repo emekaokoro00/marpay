@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/rider']">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Medical sessions</li>
+      </ol>
+    </nav>
+    <div class="card">
+      <h4 class="card-header">Medical sessions</h4>
+      <div class="card-body">
+        <ul class="list-unstyled mb-0">
+          <li class="media">
+           <!-- <img
+              class="mr-3 rounded-circle"
+              [src]="trip.driver.photo"
+              width="80"
+              height="80"
+            > -->
+            <div class="media-body">
+              <h5 class="mt-0 mb-1">{{ medsession.session_telehealthworker.username }}</h5>
+              at {{ medsession.session_address }} <br>
+              {{ medsession.status }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
