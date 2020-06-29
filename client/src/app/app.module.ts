@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environment1';
 import { AgmCoreModule } from '@agm/core';
 
 import { GoogleMapsService } from './services/google-maps.service';

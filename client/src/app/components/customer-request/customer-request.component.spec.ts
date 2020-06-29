@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { AgmCoreModule } from '@agm/core';
+
+import { GoogleMapsService } from '../../services/google-maps.service';
 import { MedsessionService } from '../../services/medsession.service';
 import { MedsessionFactory } from '../../testing/factories';
 import { CustomerRequestComponent } from './customer-request.component';
@@ -14,15 +17,21 @@ describe('CustomerRequestComponent', () => {
   let medsessionService: MedsessionService;
   let router: Router;
 
+  class MockGoogleMapsService {}
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        AgmCoreModule.forRoot({})
       ],
       declarations: [ CustomerRequestComponent ],
-      providers: [ MedsessionService ]
+      providers: [ 
+		// MedsessionService	
+        { provide: GoogleMapsService, useClass: MockGoogleMapsService }
+	 ]
     });
     fixture = TestBed.createComponent(CustomerRequestComponent);
     component = fixture.componentInstance;

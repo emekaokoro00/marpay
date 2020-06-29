@@ -3,10 +3,16 @@ import { TestBed } from '@angular/core/testing';
 import { GoogleMapsService } from './google-maps.service';
 
 describe('GoogleMapsService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  let googleMapsService: GoogleMapsService;
 
-  it('should be created', () => {
-    const service: GoogleMapsService = TestBed.get(GoogleMapsService);
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [ GoogleMapsService ]
+    });
+    googleMapsService = TestBed.get(GoogleMapsService);
+  });
+
+  it('should exist', () => {
+    expect(googleMapsService).toBeTruthy();
   });
 });
