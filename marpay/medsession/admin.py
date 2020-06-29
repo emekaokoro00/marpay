@@ -6,10 +6,10 @@ from .models import MedSession
 @admin.register(MedSession)
 class MedSessionAdmin(admin.ModelAdmin):
     fields = (
-        'id', 'session_address', 'status', 'created', 'updated', 'session_customer',
+        'id', 'session_address', 'status', 'created', 'updated', 'session_customer', 'session_telehealthworker', 'session_physician',
     )
     list_display = (
-        'id', 'session_address', 'status', 'created', 'updated', 'session_customer',
+        'id', 'session_address', 'status', 'created', 'updated', 'session_customer', 'session_telehealthworker', 'session_physician',
     )
     list_filter = (
         'status',

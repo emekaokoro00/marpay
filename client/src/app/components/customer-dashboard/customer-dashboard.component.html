@@ -1,0 +1,53 @@
+
+<div class="card mb-3">
+  <h4 class="card-header">Current Telemedicine Session</h4>
+  <div *ngIf="currentMedsessions.length > 0; then thenBlock; else elseBlock;"></div>
+  <ng-template #thenBlock>
+    <div class="card-body">
+      <ul class="list-unstyled">
+        <li class="media mb-3" *ngFor="let medsession of currentMedsessions">
+          <img
+            class="mr-3 rounded-circle"
+            width="80"
+            height="80"
+          >
+          <div class="media-body">
+            <h5 class="mt-0 mb-1">{{ medsession.session_telehealthworker.username }}</h5>
+            {{ medsession.status }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+  <ng-template #elseBlock>
+    <div class="card-body text-center">
+      No Telemedicine Sessions.
+    </div>
+  </ng-template>
+</div>
+<div class="card mb-3">
+  <h4 class="card-header">Recent Telemedicine Sessions</h4>
+  <div *ngIf="completedMedsessions.length > 0; then thenBlock; else elseBlock;"></div>
+  <ng-template #thenBlock>
+    <div class="card-body">
+      <ul class="list-unstyled">
+        <li class="media mb-3" *ngFor="let medsession of completedMedsessions">
+          <img
+            class="mr-3 rounded-circle"
+            width="80"
+            height="80"
+          >
+          <div class="media-body">
+            <h5 class="mt-0 mb-1">{{ medsession.session_telehealthworker.username }}</h5>
+            {{ medsession.status }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+  <ng-template #elseBlock>
+    <div class="card-body text-center">
+      No  Telemedicine Sessions.
+    </div>
+  </ng-template>
+</div>
