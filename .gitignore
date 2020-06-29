@@ -2,3 +2,6 @@
 #=================
 #stores twilio keys
 *.env
+
+#stores google keys
+environment.ts
