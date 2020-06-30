@@ -5,8 +5,10 @@ from .models import MedSession
 from .serializers import MedSessionSerializer, ReadOnlyMedSessionSerializer
 
 
+#PUT IN config file LATER
+user_group_names = ['customer', 'telehealthworker', 'physician'];
 
-class MedSessionConsumer(AsyncJsonWebsocketConsumer):
+class MedsessionConsumer(AsyncJsonWebsocketConsumer):
 
     def __init__(self, scope):
         super().__init__(scope)
@@ -19,22 +21,22 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         if user.is_anonymous:
             await self.close()
         else:            
-#             # Get med sessions and add rider to each one's group.
-#             channel_groups = []
-#             
-#                          
-#             user_group = await self._get_user_group(self.scope['user'])
-#             if user_group == 'physician':
-#                 channel_groups.append(self.channel_layer.group_add(
-#                     group='physicians',
-#                     channel=self.channel_name
-#                 ))
-#             self.medsessions = set([
-#                 str(medsession_id) for medsession_id in await self._get_medsessions(self.scope['user'])
-#             ])
-#             for medsession in self.medsession:
-#                 channel_groups.append(self.channel_layer.group_add(medsession, self.channel_name))
-#             asyncio.gather(*channel_groups)
+            # Get med sessions and add rider to each one's group.
+            channel_groups = []
+             
+                          
+            user_group = await self._get_user_group(self.scope['user'])
+            if user_group == user_group_names[1]: # 'telehealthworkers'
+                channel_groups.append(self.channel_layer.group_add(
+                    group=user_group_names[1],
+                    channel=self.channel_name
+                ))
+            self.medsessions = set([
+                str(medsession_id) for medsession_id in await self._get_medsessions(self.scope['user'])
+            ])
+            for medsession in self.medsession:
+                channel_groups.append(self.channel_layer.group_add(medsession, self.channel_name))
+            asyncio.gather(*channel_groups)
                              
             await self.accept()
      
@@ -53,9 +55,9 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         medsession_id = f'{medsession.id}'
         medsession_data = ReadOnlyMedSessionSerializer(medsession).data        
         
-        # self.medsessions.add(medsession_id)
         
-        await self.channel_layer.group_send(group='physicians', message={
+        # Send customer requests to all telehealthworkers.
+        await self.channel_layer.group_send(group=user_group_names[1], message={
             'type': 'echo.message',
             'data': medsession_data
         })        
@@ -80,7 +82,7 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         medsession_id = f'{medsession.id}'
         medsession_data = ReadOnlyMedSessionSerializer(medsession).data
 
-        # Send updates to riders that subscribe to this medsession.
+        # Send updates to customers that subscribe to this medsession.
         await self.channel_layer.group_send(group=medsession_id, message={
             'type': 'echo.message',
             'data': medsession_data
@@ -111,11 +113,11 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
             for medsession in self.medsessions
         ]       
         
-        # Discard physician from 'physicians' group.           
+        # Discard physician from 'teleheatlhworker' group.           
         user_group = await self._get_user_group(self.scope['user'])
-        if user_group == 'physician':
+        if user_group == user_group_names[1]:
             channel_groups.append(self.channel_layer.group_discard(
-                group='physicians',
+                group=user_group_names[1],
                 channel=self.channel_name
             ))
             
@@ -140,12 +142,12 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         if not user.is_authenticated:
             raise Exception('User is not authenticated.')
         # user_groups = user.groups.values_list('name', flat=True)
-        user_groups = user.roles.values_list('name', flat=True) ############## DEBUG
-        if 'physician' in user_groups:
+        user_groups = user.groups.values_list('name', flat=True) ############## DEBUG
+        if user_group_names[2] in user_groups:
             return user.medsessions_as_session_physician.exclude(
                 status=MedSession.COMPLETED
             ).only('id').values_list('id', flat=True)
-        elif 'telehealthworker' in user_groups:
+        elif user_group_names[1] in user_groups:
             return user.medsessions_as_session_telehealthworker.exclude(
                 status=MedSession.COMPLETED
             ).only('id').values_list('id', flat=True)
@@ -158,9 +160,10 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
     def _get_user_group(self, user):
         if not user.is_authenticated:
             raise Exception('User is not authenticated.')        
-        # return user.groups.first().name
-        return user._get_user_current_role() # getting the role as the group
-                
+        return user.groups.first().name # or _.get_user_current_group()
+        # return user._get_user_current_role() # getting the role as the group
+    
+                   
     @database_sync_to_async
     def _update_medsession(self, content):
         instance = MedSession.objects.get(id=content.get('id'))

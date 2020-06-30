@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 import { Subscription } from 'rxjs';
 
@@ -17,7 +18,8 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private medsessionService: MedsessionService
+    private medsessionService: MedsessionService,
+    private toastr: ToastrManager
   ) {}
 
   get currentMedsessions(): Medsession[] {
@@ -40,17 +42,28 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
 
   // this is where we connect to the medsesson service created
   ngOnInit(): void {
-    this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
-    this.medsessionService.connect();
-    this.messages = this.medsessionService.messages.subscribe((message: any) => {
+      this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
+      this.medsessionService.connect();
+      this.messages = this.medsessionService.messages.subscribe((message: any) => {
       const medsession: Medsession = Medsession.create(message.data);
       this.updateMedsessions(medsession);
+      this.updateToast(medsession);
     });
   }
 
   updateMedsessions(medsession: Medsession): void {
     this.medsessions = this.medsessions.filter(thisMedsession => thisMedsession.id !== medsession.id);
     this.medsessions.push(medsession);
+  }
+
+  updateToast(medsession: Medsession): void {
+    if (medsession.status === 'STARTED') {
+      this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is has agreed to see you.`);
+    } else if (medsession.status === 'IN_PROGRESS') {
+      this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is headed to your destination.`);
+    } else if (medsession.status === 'COMPLETED') {
+      this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is finished.`);
+    }
   }
 
   ngOnDestroy(): void {

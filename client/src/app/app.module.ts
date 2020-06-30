@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'; //new HttpClientXsrfModule for csrf issue
 
 import { environment } from '../environments/environment';
 import { AgmCoreModule } from '@agm/core';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 import { GoogleMapsService } from './services/google-maps.service';
 import { AuthService } from './services/auth.service';
@@ -45,6 +47,7 @@ import { TelehealthworkerDetailComponent } from './components/telehealthworker-d
   ],
   imports: [
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({ cookieName: 'csrftoken', headerName: 'X-CSRFToken' }), //new
     BrowserModule,
     FormsModule,
     BrowserModule,
@@ -88,7 +91,8 @@ import { TelehealthworkerDetailComponent } from './components/telehealthworker-d
     ], { useHash: true }),
     AgmCoreModule.forRoot({
       apiKey: environment.GOOGLE_API_KEY
-    })
+    }),
+    ToastrModule.forRoot()
   ],
   providers: [
     	GoogleMapsService,

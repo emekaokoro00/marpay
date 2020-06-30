@@ -10,6 +10,7 @@ export class UserFactory {
       username: faker.internet.email(),
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),
+      current_group: 'customer',
       current_role: 'customer'
     }, data));
   }

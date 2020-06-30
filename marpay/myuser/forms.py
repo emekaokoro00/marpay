@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import MyUser, CustomerDetails
+from .models import MyUser, Role, CustomerDetails
 from django.forms.models import ModelForm
 
 
@@ -9,11 +9,11 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
     email = forms.EmailField(max_length=254, help_text='*. Enter a valid email address.')
+    # current_role = forms.ChoiceField(choices=Role.ROLE_CHOICES)
     
     class Meta:
         model = MyUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
-        
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )        
 
 class MyUserUpdateForm(ModelForm):
     password = None
@@ -34,5 +34,14 @@ class CustomerDetailsUpdateForm(ModelForm):
     class Meta:
         model = CustomerDetails
         fields = ('medical_record_summary', 'insurance_provider_summary',)
+        
+#========================================================================================================
+
+class AdminUserCreateForm(UserCreationForm):
+    
+    class Meta:
+        model = MyUser
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', ) 
+        
         
         

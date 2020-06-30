@@ -42,6 +42,7 @@ describe('SignUpComponent', () => {
       firstName: user.first_name,
       lastName: user.last_name,
       password: 'pAssw0rd!',
+      currentGroup: user.current_group,
       currentRole: user.current_role
     };
     component.onSubmit();

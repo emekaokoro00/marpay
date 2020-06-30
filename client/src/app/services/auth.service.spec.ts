@@ -31,6 +31,7 @@ describe('Authentication using a service', () => {
 	    userData.first_name,
 	    userData.last_name,
 	    'pAssw0rd!',
+	    userData.current_group,
 	    userData.current_role
 	  ).subscribe(user => {
 	    expect(user).toBe(userData);

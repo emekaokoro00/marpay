@@ -1,7 +1,10 @@
 <div class="middle-center">
-  <h1 class="landing logo">Marpyx</h1>
+  <!--<h1 class="landing logo">Marpyx {{ getUser().current_group }} to debug user-mapping </h1> -->
+  <h1 class="landing logo">Marpyx </h1>
   <div *ngIf="getUser(); then thenBlock; else elseBlock;"></div>
   <ng-template #thenBlock>
+    <span>{{ getUser().current_group }} </span>
+    <hr>
     <a class="btn btn-primary" [routerLink]="isCustomer() ? '/customer' : '/telehealthworker'">Dashboard</a>
     <button class="btn btn-primary" (click)="logOut()">Log out</button>
   </ng-template>

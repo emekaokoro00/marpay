@@ -8,7 +8,7 @@ describe('IsCustomer', () => {
   it('should allow a customer to access a route', () => {
     const isCustomer: IsCustomer = new IsCustomer();
     localStorage.setItem('marpay.user', JSON.stringify(
-      UserFactory.create({current_role: 'customer'})
+      UserFactory.create({current_group: 'customer'})
     ));
     expect(isCustomer.canActivate()).toBeTruthy();
   });
@@ -16,7 +16,7 @@ describe('IsCustomer', () => {
   it('should not allow a telehealthworker to access a route', () => {
     const isCustomer: IsCustomer = new IsCustomer();
     localStorage.setItem('marpay.user', JSON.stringify(
-      UserFactory.create({current_role: 'telehealthworker'})
+      UserFactory.create({current_group: 'telehealthworker'})
     ));
     expect(isCustomer.canActivate()).toBeFalsy();
   });
@@ -24,7 +24,7 @@ describe('IsCustomer', () => {
   it('should not allow a physician to access a route', () => {
     const isCustomer: IsCustomer = new IsCustomer();
     localStorage.setItem('marpay.user', JSON.stringify(
-      UserFactory.create({current_role: 'physician'})
+      UserFactory.create({current_group: 'physician'})
     ));
     expect(isCustomer.canActivate()).toBeFalsy();
   });

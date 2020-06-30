@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ActivatedRoute, Data } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 import { Observable, of } from 'rxjs';
 
@@ -31,7 +32,8 @@ describe('TelehealthworkerDashboardComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+  	ToastrModule.forRoot()
       ],
       declarations: [
         TelehealthworkerDashboardComponent,

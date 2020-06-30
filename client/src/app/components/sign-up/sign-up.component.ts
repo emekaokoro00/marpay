@@ -9,6 +9,7 @@ class UserData {
     public firstName?: string,
     public lastName?: string,
     public password?: string,
+    public currentGroup?: string,
     public currentRole?: string
   ) {}
 }
@@ -35,6 +36,7 @@ export class SignUpComponent {
       this.user.firstName,
       this.user.lastName,
       this.user.password,
+      this.user.currentGroup,
       this.user.currentRole
     ).subscribe(() => {
       this.router.navigateByUrl('/log-in');

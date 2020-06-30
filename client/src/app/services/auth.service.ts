@@ -9,6 +9,7 @@ export class User {
 	    public username?: string,
 	    public first_name?: string,
 	    public last_name?: string,
+    	    public current_group?: string,
 	    public current_role?: string
 	) {}
 
@@ -18,6 +19,7 @@ export class User {
 	      data.username,
 	      data.first_name,
 	      data.last_name,
+      	      data.current_group,
       	      data.current_role
 	    );
 	}
@@ -35,8 +37,8 @@ export class User {
 	  if (user === null) {
 	    return false;
 	  }
-	  // return true;
-	  return user.current_role === 'customer';
+	  //return true;
+	  return user.current_group === 'customer';
 	}
 
 	static isTelehealthworker(): boolean {
@@ -44,7 +46,7 @@ export class User {
 	  if (user === null) {
 	    return false;
 	  }
-	  return user.current_role === 'telehealthworker';
+	  return user.current_group === 'telehealthworker';
 	}
 
 	static isPhysician(): boolean {
@@ -52,7 +54,7 @@ export class User {
 	  if (user === null) {
 	    return false;
 	  }
-	  return user.current_role === 'physician';
+	  return user.current_group === 'physician';
 	}
 }
 
@@ -67,6 +69,7 @@ export class AuthService {
 	    firstName: string,
 	    lastName: string,
 	    password: string,
+	    current_group: string,
 	    current_role: string
 	  ): Observable<User> {
 	    const url = '/api/sign_up/';
@@ -76,6 +79,7 @@ export class AuthService {
 	    formData.append('last_name', lastName);
 	    formData.append('password1', password);
 	    formData.append('password2', password);
+	    formData.append('current_group', current_group);
 	    formData.append('current_role', current_role);
 	    return this.http.request<User>('POST', url, {body: formData});
 	}

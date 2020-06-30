@@ -6,7 +6,7 @@ describe('IsTelehealthworker', () => {
   it('should allow a thw to access a route', () => {
     const isTelehealthworker: IsTelehealthworker = new IsTelehealthworker();
     localStorage.setItem('marpay.user', JSON.stringify(
-      UserFactory.create({current_role: 'telehealthworker'})
+      UserFactory.create({current_group: 'telehealthworker'})
     ));
     expect(isTelehealthworker.canActivate()).toBeTruthy();
   });
@@ -14,7 +14,7 @@ describe('IsTelehealthworker', () => {
   it('should not allow a non-thw to access a route', () => {
     const isTelehealthworker: IsTelehealthworker = new IsTelehealthworker();
     localStorage.setItem('marpay.user', JSON.stringify(
-      UserFactory.create({current_role: 'customer'})
+      UserFactory.create({current_group: 'customer'})
     ));
     expect(isTelehealthworker.canActivate()).toBeFalsy();
   });
