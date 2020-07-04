@@ -42,7 +42,9 @@ class MyUser(AbstractUser):
     roles = models.ManyToManyField(Role) # user can have multiple major roles
     current_role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name='current_role', null=True) # however, user can only be in one of the major roles at a time; many-to-one
     
-    current_group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='current_group', null=True, default=Group.objects.get(name=user_group_names[0])) # choose the active group
+    # choose the active group
+    # cannot seem to set default value to customer here. Move it to on-first save
+    current_group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='current_group', null=True) 
     
     #one-to-one because of the uniqueness of each detail
     # customer_details = models.OneToOneField(CustomerDetails, on_delete=models.CASCADE, null=True, blank=True)

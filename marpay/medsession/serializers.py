@@ -9,8 +9,9 @@ class MedSessionSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created', 'updated',)
         
 class ReadOnlyMedSessionSerializer(serializers.ModelSerializer):
-    driver = MyUserSerializer(read_only=True)
-    rider = MyUserSerializer(read_only=True)
+    session_customer = MyUserSerializer(read_only=True)
+    session_telehealthworker = MyUserSerializer(read_only=True)
+    session_telehealthworker = MyUserSerializer(read_only=True)
 
     class Meta:
         model = MedSession

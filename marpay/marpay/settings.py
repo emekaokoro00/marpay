@@ -28,8 +28,8 @@ SECRET_KEY = 'cb2@grv9u3lw(s)z1454egkf88jcbug-x*)^(ewlr95djh_ici'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'127.0.0.1', u'0.0.0.0', u'10.0.2.2', u'192.168.1.5', u'f3412a90f58b.ngrok.io']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'127.0.0.1', u'0.0.0.0', u'10.0.2.2', u'192.168.1.5', u'f3412a90f58b.ngrok.io']
 # 192.168.56.56 is the local address, also browseable from host if listening setup
 # 0.0.0.0 was when trying to browse from docker
 # 10.0.2.2 is the host computer emulator address
@@ -185,7 +185,6 @@ STATICFILES_DIRS = [
 
 
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 #===============================================================================
 # LOGIN_REDIRECT_URL = '/'
