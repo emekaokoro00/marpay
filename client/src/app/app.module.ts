@@ -61,7 +61,7 @@ import { TelehealthworkerDetailComponent } from './components/telehealthworker-d
 	      { path: 'request', 
 		component: CustomerRequestComponent
 	      },
-	      { path: 'id', 
+	      { path: ':id', 
 		component: CustomerDetailComponent,
         	resolve: { medsession: MedsessionDetailResolver }
 	      },
@@ -76,14 +76,14 @@ import { TelehealthworkerDetailComponent } from './components/telehealthworker-d
             canActivate: [ IsTelehealthworker ],
 	    children: [
 	      {
-	        path: '',
-	        component: TelehealthworkerDashboardComponent,
-	        resolve: { medsessions: MedsessionListResolver }
-	      },
-	      {
 	        path: ':id',
 	        component: TelehealthworkerDetailComponent,
 	        resolve: { medsession: MedsessionDetailResolver }
+	      },
+	      {
+	        path: '',
+	        component: TelehealthworkerDashboardComponent,
+	        resolve: { medsessions: MedsessionListResolver }
 	      }
 	    ]
       },

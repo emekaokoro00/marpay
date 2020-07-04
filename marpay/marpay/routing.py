@@ -8,7 +8,7 @@ from medsession.consumers import MedSessionConsumer
 application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter([
-            path('medsession_consumer/', MedSessionConsumer),
+            path('marpay/', MedSessionConsumer),
         ])
     )
 })

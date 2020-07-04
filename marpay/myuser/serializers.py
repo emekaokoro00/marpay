@@ -11,7 +11,7 @@ class MyUserSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)   
     # current_role = serializers.CharField() 
-    # current_group = serializers.CharField()
+    current_group = serializers.CharField() # set so that the group is made string on client side
     
     #HANDLE password1 and password2 in sigun-up.cmponents.html file
 
@@ -28,15 +28,6 @@ class MyUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         
-        # DELETE LATER
-        # handling foreign-key current_role to build up object and save
-        current_role_name = validated_data.pop('current_role')
-        current_role = Role(Role.CUSTOMER)
-        current_role = current_role.set_role_from_name(role_name=current_role_name)
-        
-#         current_group_data = validated_data.pop('current_group')
-#         current_group, _ = Group.objects.get_or_create(name=current_group_data)
-        
         data = {
             key: value for key, value in validated_data.items()
             if key not in ('password1', 'password2')
@@ -46,11 +37,10 @@ class MyUserSerializer(serializers.ModelSerializer):
         
         user = self.Meta.model.objects.create_user(**data)
         
-        # user.current_role = current_role  # DELETE LATER
-        
-#         user.set_current_group(current_group)
-#         user.groups.add(current_group)
-                                  
+        current_group_data = validated_data.pop('current_group')
+        current_group, _ = Group.objects.get_or_create(name=current_group_data)
+        user.current_group = current_group
+        user.groups.add(current_group)                                  
         user.save() 
         return user
 

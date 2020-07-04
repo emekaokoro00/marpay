@@ -11,7 +11,7 @@ class MedSessionSerializer(serializers.ModelSerializer):
 class ReadOnlyMedSessionSerializer(serializers.ModelSerializer):
     session_customer = MyUserSerializer(read_only=True)
     session_telehealthworker = MyUserSerializer(read_only=True)
-    session_telehealthworker = MyUserSerializer(read_only=True)
+    session_physician = MyUserSerializer(read_only=True)
 
     class Meta:
         model = MedSession

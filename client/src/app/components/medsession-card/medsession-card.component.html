@@ -3,12 +3,12 @@
 <ng-template #thenBlock>
   <div class="card-body">
     <ul class="list-unstyled">
-      <li class="media mb-3" [routerLink]="['.', medsession.id]" *ngFor="let medsession of completedMedsessions">
+      <li class="media mb-3" [routerLink]="['.', medsession.id]" *ngFor="let medsession of medsessions">
         <!-- <img class="mr-3 rounded-circle" [src]="medsession.otherUser.photo" width="80" height="80"> -->
         <div class="media-body">
-            <h5 class="mt-0 mb-1">{{ medsession.session_telehealthworker.username }}</h5>
+            <h5 class="mt-0 mb-1" *ngIf="medsession.otherUser">{{ medsession.otherUser.username }} </h5>
             at {{ medsession.session_address }} <br>
-            {{ medsession.status }}
+            {{ medsession.status }} 
         </div>
       </li>
     </ul>

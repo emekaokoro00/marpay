@@ -7,6 +7,11 @@
     </nav>
     <app-medsession-card
       class="card mb-3"
+      [title]="'Requested medical sessions'"
+      [medsessions]="requestedMedsessions"
+    ></app-medsession-card>
+    <app-medsession-card
+      class="card mb-3"
       [title]="'Current medical sessions'"
       [medsessions]="currentMedsessions"
     ></app-medsession-card>

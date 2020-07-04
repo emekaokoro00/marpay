@@ -52,6 +52,8 @@ def create_user(
 @pytest.mark.django_db(transaction=True)
 class TestWebsockets:
 
+### test functions##################################################################
+
     async def test_authorized_user_can_connect(self, settings):        
         # Use in-memory channel layers for testing.
         settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
@@ -305,14 +307,7 @@ class TestWebsockets:
         await communicator.disconnect()
 
 
-
-
-
-
-
-
-
-
+### helper functions##################################################################
 
 
 
@@ -325,7 +320,7 @@ async def auth_connect(user):
     # Pass session ID in headers to authenticate.
     communicator = WebsocketCommunicator(
         application=application,
-        path='/medsession_consumer/',
+        path='/marpay/',
         headers=[(
             b'cookie',
             f'sessionid={client.cookies["sessionid"].value}'.encode('ascii')

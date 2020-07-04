@@ -18,8 +18,7 @@ export class Medsession {
     public session_address_for_telehealthworker?: string,
     public status?: string,
     public session_customer?: any,
-    public session_telehealthworker?: any,
-    public session_physician?: any
+    public session_telehealthworker?: any
   ) {
 	this.otherUser = User.isCustomer() ? this.session_telehealthworker : this.session_customer;
     }
@@ -53,7 +52,7 @@ export class MedsessionService {
   // calling connect initializes the websocket
   connect(): void {
     if (!this.webSocket || this.webSocket.closed) {
-      this.webSocket = webSocket('ws://localhost:8080/medsession_consumer/');
+      this.webSocket = webSocket('ws://localhost:8080/marpay/');
       this.messages = this.webSocket.pipe(share());
       this.messages.subscribe(message => console.log(message));
     }
@@ -81,7 +80,6 @@ export class MedsessionService {
       map(medsession => Medsession.create(medsession))
     );
   }
-
 
   updateMedsession(medsession: Medsession): void {
     this.connect();

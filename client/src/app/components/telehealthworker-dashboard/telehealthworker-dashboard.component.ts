@@ -11,7 +11,7 @@ import { Medsession, MedsessionService } from '../../services/medsession.service
   templateUrl: './telehealthworker-dashboard.component.html',
   styleUrls: ['./telehealthworker-dashboard.component.css']
 })
-export class TelehealthworkerDashboardComponent implements OnInit {
+export class TelehealthworkerDashboardComponent implements OnInit, OnDestroy {
   messages: Subscription;
   medsessions: Medsession[];
 
