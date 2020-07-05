@@ -29,6 +29,7 @@ import { MedsessionCardComponent } from './components/medsession-card/medsession
 import { TelehealthworkerComponent } from './components/telehealthworker/telehealthworker.component';
 import { TelehealthworkerDashboardComponent } from './components/telehealthworker-dashboard/telehealthworker-dashboard.component';
 import { TelehealthworkerDetailComponent } from './components/telehealthworker-detail/telehealthworker-detail.component';
+import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.component';
 
 @NgModule({
   declarations: [
@@ -43,15 +44,17 @@ import { TelehealthworkerDetailComponent } from './components/telehealthworker-d
     MedsessionCardComponent,
     TelehealthworkerComponent,
     TelehealthworkerDashboardComponent,
-    TelehealthworkerDetailComponent
+    TelehealthworkerDetailComponent,
+    TopmenuCardComponent
   ],
   imports: [
     HttpClientModule,
     HttpClientXsrfModule.withOptions({ cookieName: 'csrftoken', headerName: 'X-CSRFToken' }), //new
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
-    BrowserModule,
     RouterModule.forRoot([
+      { path: '', component: LandingComponent },
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },
       {     path: 'customer', 
@@ -86,8 +89,7 @@ import { TelehealthworkerDetailComponent } from './components/telehealthworker-d
 	        resolve: { medsessions: MedsessionListResolver }
 	      }
 	    ]
-      },
-      { path: '', component: LandingComponent }
+      }
     ], { useHash: true }),
     AgmCoreModule.forRoot({
       apiKey: environment.GOOGLE_API_KEY

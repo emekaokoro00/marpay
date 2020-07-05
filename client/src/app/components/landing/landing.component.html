@@ -1,15 +1,22 @@
-<div class="middle-center">
-  <!--<h1 class="landing logo">Marpyx {{ getUser().current_group }} to debug user-mapping </h1> -->
-  <h1 class="landing logo">Marpyx </h1>
-  <div *ngIf="getUser(); then thenBlock; else elseBlock;"></div>
-  <ng-template #thenBlock>
-    <span>{{ getUser().current_group }} </span>
-    <hr>
-    <a class="btn btn-primary" [routerLink]="isCustomer() ? '/customer' : '/telehealthworker'">Dashboard</a>
-    <button class="btn btn-primary" (click)="logOut()">Log out</button>
+<div *ngIf="getUser(); then thenBlock; else elseBlock;"></div>
+<!-- <div class="middle-center">
+</div> USE THIS FOR THE VIDEO CALL DIV -->
+ <ng-template #thenBlock>
+    <app-topmenu-card class="card mb-3"></app-topmenu-card>
+    <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span>
   </ng-template>
   <ng-template #elseBlock>
-    <a class="btn btn-primary" [routerLink]="['/log-in']">Log in</a>
-    <a class="btn btn-primary" [routerLink]="['/sign-up']">Sign up</a>
+	<div class="middle-center">
+		<span class="ml-3 text-xl">marpyx</span> <br>
+		You are currently logged out. <hr>
+  <a
+    class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg"
+    [routerLink]="['/log-in']"
+  >Log in
+  </a>
+
+	</div> 
   </ng-template>
-</div>
+
+
+		

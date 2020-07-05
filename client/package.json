@@ -26,6 +26,7 @@
     "ng6-toastr-notifications": "^1.0.4",
     "popper.js": "^1.16.0",
     "rxjs": "~6.4.0",
+    "tailwindcss": "^1.4.6",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

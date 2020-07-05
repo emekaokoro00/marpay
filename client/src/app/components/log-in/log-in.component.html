@@ -1,43 +1,45 @@
-<div class="row">
-  <div class="col-lg-offset-4 col-lg-4">
-    <div class="card">
-      <div class="card-header">Log in</div>
-      <div class="card-body">
-        <form novalidate (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input
-              id="username"
-              class="form-control"
-              type="text"
-              [(ngModel)]="user.username"
-              name="username"
-              required
-            >
-          </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input
-              id="password"
-              class="form-control"
-              type="password"
-              [(ngModel)]="user.password"
-              name="password"
-              required
-            >
-          </div>
-          <button
-            class="btn btn-primary btn-block"
-            type="submit"
-            [disabled]="false"
-          >Log in
-          </button>
-        </form>
-      </div>
+<form novalidate (ngSubmit)="onSubmit()">
+<section class="text-gray-700 body-font">
+  <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
+    <div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
+      <h1 class="title-font font-black text-3xl text-gray-900">marpyx</h1>
+      <!-- <h1 class="title-font font-medium text-3xl text-gray-900">Marpay. Health delivery re-imagined</h1> -->
+      <p class="leading-relaxed mt-4">Health delivery re-imagined</p>
     </div>
-    <p class="mt-3 text-center">
-      <span>Don't have an account? </span>
-      <a [routerLink]="['/sign-up']">Sign up!</a>
-    </p>
+    <div class="lg:w-2/6 md:w-1/2 bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+      <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Sign In</h2>
+	  <div class="form-group">
+	    <input
+	      id="username"
+	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
+	      placeholder="username"
+	      type="text"
+	      [(ngModel)]="user.username"
+	      name="username"
+	      autocomplete="on"
+	      required
+	    >
+	  </div>
+	  <div class="form-group">
+	    <input
+	      id="password"
+	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
+	      placeholder="password"
+	      type="password"
+	      [(ngModel)]="user.password"
+	      name="password"
+	      autocomplete="on"
+	      required
+	    >
+	  </div>
+	  <button
+	    class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg"
+	    type="submit"
+	    [disabled]="false"
+	  >Log in
+	  </button>
+      <p class="text-lg text-green-500 mt-3 text-right"><a [routerLink]="['/sign-up']">Sign up</a></p>
+    </div>
   </div>
-</div>
+</section>
+</form>

@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+	      "src/static/output.css",	
    	      "node_modules/bootswatch/dist/lumen/bootstrap.min.css",
               "src/styles.css"
             ],
