@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserFactory } from '../../testing/factories';
 import { LandingComponent } from './landing.component';
 
+import { TopmenuCardComponent } from '../../components/topmenu-card/topmenu-card.component';
 
 describe('LandingComponent', () => {
   let logOutButton: DebugElement;
@@ -25,7 +26,10 @@ describe('LandingComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([])
       ],
-      declarations: [ LandingComponent ],
+      declarations: [ 
+	LandingComponent,
+	TopmenuCardComponent	
+	 ],
       providers: [ AuthService ]
     });
     fixture = TestBed.createComponent(LandingComponent);
@@ -38,7 +42,7 @@ describe('LandingComponent', () => {
     logOutButton = fixture.debugElement.query(By.css('button.btn.btn-primary'));
   });
 
-  it('should allow a user to log out of an account', () => {
+  it('should allow a user to log out of an account', () => { //to make this pass, reemove the *ngif from html
     logOutButton.triggerEventHandler('click', null);
     const request: TestRequest = httpMock.expectOne('/api/log_out/');
     request.flush({});

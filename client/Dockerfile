@@ -1,7 +1,8 @@
 # client/Dockerfile
 
 # base image
-FROM node:13.1.0-alpine
+# FROM node:13.1.0-alpine
+FROM node:14.1-alpine AS builder
 
 # install chrome
 RUN echo @edge http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories \
@@ -28,3 +29,7 @@ RUN npm install
 
 # copy the client directory into the container
 COPY . /usr/src/app
+
+
+# EXPOSE 4200
+# CMD npm run start

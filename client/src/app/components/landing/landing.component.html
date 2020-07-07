@@ -5,21 +5,9 @@
     <app-topmenu-card class="card mb-3"></app-topmenu-card>
     <!-- <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span> -->
 
-		<!--<md-card class="card1">
-		  <md-card-header>
-		    <md-card-title><h1>Dialog Demo</h1></md-card-title>
-		  </md-card-header>
-		  <hr>
-		  <md-card-content>
-		    <button md-raised-button (click)="openDialog()">Open Dialog</button>
-		    <hr>
-		    <strong>Result: {{dialogResult}}</strong>
-		  </md-card-content>
-		</md-card>-->
-
-
 	<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
-           <form #requestForm="ngForm" novalidate (ngSubmit)="onSubmit()">
+           <!--<span *ngIf="address">You chose: {{ address }} </span> -->
+           <form #requestForm="ngForm" novalidate (ngSubmit)="openDialog()"><!-- changed from onSubmit() -->
 		<div class="flex justify-center">
 		<button type="submit"
             		[disabled]="!requestForm.form.valid"

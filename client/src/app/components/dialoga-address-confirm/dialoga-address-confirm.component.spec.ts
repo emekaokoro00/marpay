@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogAddressConfirmComponent } from './dialog-address-confirm.component';
+import { DialogaAddressConfirmComponent } from './dialog-address-confirm.component';
 
-describe('DialogAddressConfirmComponent', () => {
+describe('DialogaAddressConfirmComponent', () => {
   let component: DialogAddressConfirmComponent;
-  let fixture: ComponentFixture<DialogAddressConfirmComponent>;
+  let fixture: ComponentFixture<DialogaAddressConfirmComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogAddressConfirmComponent ]
+      declarations: [ DialogaAddressConfirmComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogAddressConfirmComponent);
+    fixture = TestBed.createComponent(DialogaAddressConfirmComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

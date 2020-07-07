@@ -4,9 +4,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-//import {MdCardModule} from '@angular/material';
-//import {MdButtonModule} from '@angular/material';
-//import { MatDialogModule } from '@angular/material';
+import {MatDialogModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field'
+import {MatInputModule} from '@angular/material/input';
+
+
 
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'; //new HttpClientXsrfModule for csrf issue
 
@@ -35,6 +39,7 @@ import { TelehealthworkerComponent } from './components/telehealthworker/telehea
 import { TelehealthworkerDashboardComponent } from './components/telehealthworker-dashboard/telehealthworker-dashboard.component';
 import { TelehealthworkerDetailComponent } from './components/telehealthworker-detail/telehealthworker-detail.component';
 import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.component';
+import { DialogaAddressConfirmComponent } from './components/dialoga-address-confirm/dialoga-address-confirm.component';
 
 @NgModule({
   declarations: [
@@ -50,16 +55,27 @@ import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.com
     TelehealthworkerComponent,
     TelehealthworkerDashboardComponent,
     TelehealthworkerDetailComponent,
-    TopmenuCardComponent
+    TopmenuCardComponent,
+    DialogaAddressConfirmComponent
+  ],
+  entryComponents: [
+     DialogaAddressConfirmComponent
   ],
   imports: [
     HttpClientModule,
-    HttpClientXsrfModule.withOptions({ cookieName: 'csrftoken', headerName: 'X-CSRFToken' }), //new
+    HttpClientXsrfModule.withOptions({ cookieName: 'csrftoken', headerName: 'X-CSRFToken' }), //for csrf tken
     BrowserModule,
     BrowserAnimationsModule,
-    //MdCardModule,
-    //MdButtonModule,
-    //MatDialogModule,
+    MatDialogModule,
+
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+
+
+    //MatDialog, 
+    //MatDialogRef, 
+    // MAT_DIALOG_DATA,
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: LandingComponent },
@@ -111,7 +127,8 @@ import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.com
 	IsTelehealthworker,
 	MedsessionService,
 	MedsessionListResolver,
-	MedsessionDetailResolver
+	MedsessionDetailResolver,
+        // {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
 	],
   bootstrap: [AppComponent]
 })
