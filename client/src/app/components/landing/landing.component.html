@@ -1,9 +1,46 @@
 <div *ngIf="getUser(); then thenBlock; else elseBlock;"></div>
 <!-- <div class="middle-center">
 </div> USE THIS FOR THE VIDEO CALL DIV -->
- <ng-template #thenBlock>
+  <ng-template #thenBlock>
     <app-topmenu-card class="card mb-3"></app-topmenu-card>
-    <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span>
+    <!-- <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span> -->
+
+		<!--<md-card class="card1">
+		  <md-card-header>
+		    <md-card-title><h1>Dialog Demo</h1></md-card-title>
+		  </md-card-header>
+		  <hr>
+		  <md-card-content>
+		    <button md-raised-button (click)="openDialog()">Open Dialog</button>
+		    <hr>
+		    <strong>Result: {{dialogResult}}</strong>
+		  </md-card-content>
+		</md-card>-->
+
+
+	<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
+           <form #requestForm="ngForm" novalidate (ngSubmit)="onSubmit()">
+		<div class="flex justify-center">
+		<button type="submit"
+            		[disabled]="!requestForm.form.valid"
+			class="inline-flex text-white bg-green-500 border-0 py-2 px-12 
+			focus:outline-none hover:bg-green-600 rounded text-lg">Request Session</button>
+		<!-- <button [routerLink]="['customer/request']" class="ml-4 inline-flex text-white bg-green-300 border-0 py-2 px-6 
+			focus:outline-none hover:bg-green-400 rounded text-lg">Direct to Doctor</button> -->			
+		
+		</div>
+		<br>
+		<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+			<agm-marker
+				*ngFor="let marker of markers"
+				[latitude]="marker.lat"
+				[longitude]="marker.lng"
+				[label]="marker.label"
+			>
+			</agm-marker>
+		</agm-map>
+           </form>
+	</div>
   </ng-template>
   <ng-template #elseBlock>
 	<div class="middle-center">

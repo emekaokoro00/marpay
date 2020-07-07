@@ -3,6 +3,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
+//import {MdCardModule} from '@angular/material';
+//import {MdButtonModule} from '@angular/material';
+//import { MatDialogModule } from '@angular/material';
+
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'; //new HttpClientXsrfModule for csrf issue
 
 import { environment } from '../environments/environment';
@@ -52,6 +57,9 @@ import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.com
     HttpClientXsrfModule.withOptions({ cookieName: 'csrftoken', headerName: 'X-CSRFToken' }), //new
     BrowserModule,
     BrowserAnimationsModule,
+    //MdCardModule,
+    //MdButtonModule,
+    //MatDialogModule,
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: LandingComponent },
