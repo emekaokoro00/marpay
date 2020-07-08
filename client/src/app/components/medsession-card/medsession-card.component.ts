@@ -8,6 +8,7 @@ import { Medsession } from '../../services/medsession.service';
 })
 export class MedsessionCardComponent {
   @Input() title: string;
+  @Input() midURL: string;
   @Input() medsessions: Medsession[];
   constructor() {  }
 }

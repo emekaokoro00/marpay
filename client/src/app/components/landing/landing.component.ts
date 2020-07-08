@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService, User } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { GoogleMapsService } from '../../services/google-maps.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { Subscription } from 'rxjs';
+
 import { DialogaAddressConfirmComponent } from '../dialoga-address-confirm/dialoga-address-confirm.component';
 
 import { Medsession, MedsessionService } from '../../services/medsession.service';
+
 
 class Marker {
   constructor(
@@ -20,7 +25,7 @@ class Marker {
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent {
+export class LandingComponent implements OnInit, OnDestroy {
 
   current_user: User = new User();
   medsession: Medsession = new Medsession();
@@ -32,14 +37,19 @@ export class LandingComponent {
   zoom = 13;
   markers: Marker[];
 
+  messages: Subscription;
+  medsessions: Medsession[];
+
   constructor(
     private authService: AuthService,
     private googleMapsService: GoogleMapsService,
     private router: Router,
     public matdialog: MatDialog,
-    private medsessionService: MedsessionService
-  ) {}
+    private medsessionService: MedsessionService,
 
+    private route: ActivatedRoute,
+    private toastr: ToastrManager
+  ) {}
 
   getUser(): User {
     return User.getUser();
@@ -53,54 +63,45 @@ export class LandingComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.current_user = this.getUser();
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position: Position) => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-        this.markers = [
-          new Marker(this.lat, this.lng)
-        ];
-      });
-    }
-
-    // get address here
-
+  get requestedMedsessions(): Medsession[] {
+    return this.medsessions.filter(medsession => {
+      return medsession.status === 'REQUESTED';
+    });
   }
 
 
-   geocodeLatLng(geocoder, map, infowindow): string {
-     // var input = document.getElementById('latlng').value;
-     // var latlngStr = input.split(',', 2);
-     var geocoder = new google.maps.Geocoder;
-     var latlng = {lat: parseFloat(this.markers[0]), lng: parseFloat(this.markers[1])};
-     geocoder.geocode({'location': latlng}, function(results, status) {
-       if (status === 'OK') {
-         if (results[0]) {
-           map.setZoom(11);
-           var marker = new google.maps.Marker({
-             position: latlng,
-             map: map
-           });
-           infowindow.setContent(results[0].formatted_address);
-           infowindow.open(map, marker);
-         } else {
-           window.alert('No results found');
-         }
-       } else {
-         window.alert('Geocoder failed due to: ' + status);
-       }
-     });
-   }
+  ngOnInit(): void {
+    this.current_user = User.getUser();
+    if (!this.current_user) { return; }
 
+    if (this.current_user.current_group === 'customer'){
+    // if (true){
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position: Position) => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          this.markers = [
+            new Marker(this.lat, this.lng)
+          ];
+        });
+      }
 
+      // get address here
+    }
+    else if (this.current_user.current_group === 'telehealthworker'){
+    // else {
+      this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
+      this.medsessionService.connect();
+      this.messages = this.medsessionService.messages.subscribe((message: any) => {
+      const medsession: Medsession = Medsession.create(message.data);
+      this.updateMedsessions(medsession);
+      this.updateToast(medsession);
+      });
+    }
 
+  }
 
-
-
-
+// customer_section///////////////////////////////////////////////////////////
 
   openDialog(): void {
 
@@ -128,6 +129,27 @@ export class LandingComponent {
     this.medsession.session_address = dialog_address
     this.medsessionService.createMedsession(this.medsession);
     this.router.navigateByUrl('/customer');
+  }
+
+
+// telehealthworker_section///////////////////////////////////////////////////////////
+
+  updateMedsessions(medsession: Medsession): void {
+    this.medsessions = this.medsessions.filter(thisMedsession => thisMedsession.id !== medsession.id);
+    this.medsessions.push(medsession);
+  }
+
+  updateToast(medsession: Medsession): void {
+    if (medsession.session_telehealthworker === null) {
+      this.toastr.infoToastr(`Customer ${medsession.session_customer.username} has requested a medsession.`);
+    }
+  }
+
+  ngOnDestroy(): void {
+   if (!this.current_user) { return; }
+   if (this.current_user.current_group === 'telehealthworker') {
+     this.messages.unsubscribe();
+   }
   }
 
 }

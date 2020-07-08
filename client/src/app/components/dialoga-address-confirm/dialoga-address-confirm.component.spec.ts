@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogaAddressConfirmComponent } from './dialog-address-confirm.component';
+import { DialogaAddressConfirmComponent } from './dialoga-address-confirm.component';
 
 describe('DialogaAddressConfirmComponent', () => {
-  let component: DialogAddressConfirmComponent;
+  let component: DialogaAddressConfirmComponent;
   let fixture: ComponentFixture<DialogaAddressConfirmComponent>;
 
   beforeEach(async(() => {

@@ -18,7 +18,7 @@ class MedSessionView(viewsets.ReadOnlyModelViewSet):
     
     # queryset = MedSession.objects.all()
     
-    def get_queryset(self): # new
+    def get_queryset(self): 
         user = self.request.user        
 #         customer_role = Role(Role.CUSTOMER)
 #         thw_role = Role(Role.TELEHEALTHWORKER)

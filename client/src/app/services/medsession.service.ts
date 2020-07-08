@@ -19,9 +19,9 @@ export class Medsession {
     public status?: string,
     public session_customer?: any,
     public session_telehealthworker?: any
-  ) {
-	this.otherUser = User.isCustomer() ? this.session_telehealthworker : this.session_customer;
-    }
+    ) {
+        this.otherUser = User.isCustomer() ? this.session_telehealthworker : this.session_customer;
+      }
 
   static create(data: any): Medsession {
     return new Medsession(

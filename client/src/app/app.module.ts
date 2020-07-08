@@ -78,7 +78,11 @@ import { DialogaAddressConfirmComponent } from './components/dialoga-address-con
     // MAT_DIALOG_DATA,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: LandingComponent },
+      //{ path: '', component: LandingComponent },
+      {     path: '', 
+	    component: LandingComponent,
+	    resolve: { medsessions: MedsessionListResolver }
+      },
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },
       {     path: 'customer', 

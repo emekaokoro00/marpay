@@ -16,3 +16,4 @@ class ReadOnlyMedSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedSession
         fields = '__all__'
+        

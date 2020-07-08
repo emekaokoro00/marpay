@@ -4,31 +4,57 @@
   <ng-template #thenBlock>
     <app-topmenu-card class="card mb-3"></app-topmenu-card>
     <!-- <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span> -->
-
-	<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
-           <!--<span *ngIf="address">You chose: {{ address }} </span> -->
-           <form #requestForm="ngForm" novalidate (ngSubmit)="openDialog()"><!-- changed from onSubmit() -->
-		<div class="flex justify-center">
-		<button type="submit"
-            		[disabled]="!requestForm.form.valid"
-			class="inline-flex text-white bg-green-500 border-0 py-2 px-12 
-			focus:outline-none hover:bg-green-600 rounded text-lg">Request Session</button>
-		<!-- <button [routerLink]="['customer/request']" class="ml-4 inline-flex text-white bg-green-300 border-0 py-2 px-6 
-			focus:outline-none hover:bg-green-400 rounded text-lg">Direct to Doctor</button> -->			
-		
+	<div *ngIf="isCustomer(); then customerBlock; else otherUserGroupBlock;"></div>
+	<ng-template #customerBlock>
+		<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
+			<!--<span *ngIf="address">You chose: {{ address }} </span> -->
+			<form #requestForm="ngForm" novalidate (ngSubmit)="openDialog()"><!-- changed from onSubmit() -->
+			<div class="flex justify-center">
+			<button type="submit"
+						[disabled]="!requestForm.form.valid"
+				class="inline-flex text-white bg-green-500 border-0 py-2 px-12 
+				focus:outline-none hover:bg-green-600 rounded text-lg">Request Session</button>
+			<!-- <button [routerLink]="['customer/request']" class="ml-4 inline-flex text-white bg-green-300 border-0 py-2 px-6 
+				focus:outline-none hover:bg-green-400 rounded text-lg">Direct to Doctor</button> -->
+			</div>
+			<br>
+			<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+				<agm-marker
+					*ngFor="let marker of markers"
+					[latitude]="marker.lat"
+					[longitude]="marker.lng"
+					[label]="marker.label"
+				>
+				</agm-marker>
+			</agm-map>
+			</form>
 		</div>
-		<br>
-		<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-			<agm-marker
-				*ngFor="let marker of markers"
-				[latitude]="marker.lat"
-				[longitude]="marker.lng"
-				[label]="marker.label"
-			>
-			</agm-marker>
-		</agm-map>
-           </form>
-	</div>
+	</ng-template>
+
+	<ng-template #otherUserGroupBlock>
+		<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
+						
+			<div class="row">
+				<div class="col-lg-12">
+					<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item active">Dashboard</li>
+					</ol>
+					</nav>
+					<app-medsession-card
+					class="card mb-3"
+					[title]="'Requested medical sessions'"
+					[midURL]="'telehealthworker/'"
+					[medsessions]="requestedMedsessions"
+					></app-medsession-card>
+				</div>
+			</div>
+
+
+
+		</div>
+	</ng-template>
+
   </ng-template>
   <ng-template #elseBlock>
 	<div class="middle-center">
