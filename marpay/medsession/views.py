@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, status, views, viewsets
 from django.db.models import Q
 
+# from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+
 from .models import MedSession
 from .serializers import ReadOnlyMedSessionSerializer
 from myuser.models import Role
@@ -15,6 +17,8 @@ class MedSessionView(viewsets.ReadOnlyModelViewSet):
     lookup_url_kwarg = 'medsession_id'
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ReadOnlyMedSessionSerializer
+    # authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    
     
     # queryset = MedSession.objects.all()
     

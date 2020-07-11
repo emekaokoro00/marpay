@@ -20,6 +20,7 @@ import { ToastrModule } from 'ng6-toastr-notifications';
 
 import { GoogleMapsService } from './services/google-maps.service';
 import { AuthService } from './services/auth.service';
+import { AuthguardService } from './services/authguard.service';
 import { IsCustomer } from './services/is-customer.service';
 import { IsTelehealthworker } from './services/is-telehealthworker.service';
 import { MedsessionDetailResolver } from './services/medsession-detail.resolver';
@@ -81,6 +82,7 @@ import { DialogaAddressConfirmComponent } from './components/dialoga-address-con
       //{ path: '', component: LandingComponent },
       {     path: '', 
 	    component: LandingComponent,
+	    canActivate: [ AuthguardService ],
 	    resolve: { medsessions: MedsessionListResolver }
       },
       { path: 'sign-up', component: SignUpComponent },
@@ -126,7 +128,7 @@ import { DialogaAddressConfirmComponent } from './components/dialoga-address-con
   ],
   providers: [
     	GoogleMapsService,
-	AuthService, 
+	AuthguardService, 
 	IsCustomer,
 	IsTelehealthworker,
 	MedsessionService,

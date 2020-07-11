@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService, User } from '../../services/auth.service';
 import { Router } from '@angular/router';
+
 import { GoogleMapsService } from '../../services/google-maps.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -153,3 +154,4 @@ export class LandingComponent implements OnInit, OnDestroy {
   }
 
 }
+
