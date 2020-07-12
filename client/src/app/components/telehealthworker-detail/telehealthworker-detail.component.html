@@ -27,27 +27,30 @@
           </li>
         </ul>
       </div>
-      <div class="card-footer" [ngSwitch]="medsession.status">
+      <div class="card-footer content-center" [ngSwitch]="medsession.status">
         <button
-          class="btn btn-primary btn-block"
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
           *ngSwitchCase="'REQUESTED'"
           (click)="updateMedsessionStatus('STARTED')"
         >
-          Medical session to start soon
+          Accept Request
         </button>
         <button
-          class="btn btn-primary btn-block"
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
           *ngSwitchCase="'STARTED'"
           (click)="updateMedsessionStatus('IN_PROGRESS')"
         >
-          Medical session in progress
+          Start Session
         </button>
         <button
-          class="btn btn-primary btn-block"
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
           *ngSwitchCase="'IN_PROGRESS'"
           (click)="updateMedsessionStatus('COMPLETED')"
         >
-          Medical session completed
+          End Session
         </button>
         <span class="text-center" *ngSwitchDefault>Completed</span>
       </div>
