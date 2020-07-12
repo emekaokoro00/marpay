@@ -2,21 +2,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {MatDialogModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatStepperModule} from '@angular/material/stepper';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field'
 import {MatInputModule} from '@angular/material/input';
-
-
 
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'; //new HttpClientXsrfModule for csrf issue
 
 import { environment } from '../environments/environment';
 import { AgmCoreModule } from '@agm/core';
 import { ToastrModule } from 'ng6-toastr-notifications';
+
+/* Routing Module */
+import { AppRoutingModule }   from './app-routing.module';
 
 import { GoogleMapsService } from './services/google-maps.service';
 import { AuthService } from './services/auth.service';
@@ -41,6 +43,7 @@ import { TelehealthworkerDashboardComponent } from './components/telehealthworke
 import { TelehealthworkerDetailComponent } from './components/telehealthworker-detail/telehealthworker-detail.component';
 import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.component';
 import { DialogaAddressConfirmComponent } from './components/dialoga-address-confirm/dialoga-address-confirm.component';
+import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-session-details/dialoga-session-details.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,8 @@ import { DialogaAddressConfirmComponent } from './components/dialoga-address-con
     TelehealthworkerDashboardComponent,
     TelehealthworkerDetailComponent,
     TopmenuCardComponent,
-    DialogaAddressConfirmComponent
+    DialogaAddressConfirmComponent,
+    DialogaSessionDetailsComponent
   ],
   entryComponents: [
      DialogaAddressConfirmComponent
@@ -68,59 +72,15 @@ import { DialogaAddressConfirmComponent } from './components/dialoga-address-con
     BrowserModule,
     BrowserAnimationsModule,
     MatDialogModule,
-
+    MatStepperModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
 
-
-    //MatDialog, 
-    //MatDialogRef, 
-    // MAT_DIALOG_DATA,
     FormsModule,
-    RouterModule.forRoot([
-      //{ path: '', component: LandingComponent },
-      {     path: '', 
-	    component: LandingComponent,
-	    canActivate: [ AuthguardService ],
-	    resolve: { medsessions: MedsessionListResolver }
-      },
-      { path: 'sign-up', component: SignUpComponent },
-      { path: 'log-in', component: LogInComponent },
-      {     path: 'customer', 
-	    component: CustomerComponent , 
-	    canActivate: [ IsCustomer ],
-	    children: [
-	      { path: 'request', 
-		component: CustomerRequestComponent
-	      },
-	      { path: ':id', 
-		component: CustomerDetailComponent,
-        	resolve: { medsession: MedsessionDetailResolver }
-	      },
-	      { path: '', 
-		component: CustomerDashboardComponent,
-		resolve: { medsessions: MedsessionListResolver }
-	      }
-	    ]
-      },
-      {     path: 'telehealthworker', 
-	    component: TelehealthworkerComponent,
-            canActivate: [ IsTelehealthworker ],
-	    children: [
-	      {
-	        path: ':id',
-	        component: TelehealthworkerDetailComponent,
-	        resolve: { medsession: MedsessionDetailResolver }
-	      },
-	      {
-	        path: '',
-	        component: TelehealthworkerDashboardComponent,
-	        resolve: { medsessions: MedsessionListResolver }
-	      }
-	    ]
-      }
-    ], { useHash: true }),
+    ReactiveFormsModule,
+
+    AppRoutingModule, // from app-routing.module.ts
     AgmCoreModule.forRoot({
       apiKey: environment.GOOGLE_API_KEY
     }),
