@@ -31,6 +31,11 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
                     group='telehealthworker_channel_group', # replace by channel_group_names indexing later
                     channel=self.channel_name
                 ))
+            if user_group_name == user_group_names[2]:
+                channel_groups.append(self.channel_layer.group_add(
+                    group='physician_channel_group', # replace by channel_group_names indexing later
+                    channel=self.channel_name
+                ))
               
             # Get medsessions and add customer to each one's group.
             self.medsessions = await self.retrieve_medsessions()
@@ -81,8 +86,75 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         medsession = await self._update_medsession(event.get('data'))
         medsession_id = f'{medsession.id}'
         medsession_data =  await self._get_medsession_data(medsession)
-  
-        # Send updates to riders that subscribe to this trip.
+        
+        # Send updates to customers that subscribe to this trip.
+        await self.channel_layer.group_send(group=medsession_id, message={
+            'type': 'echo.message',
+            'data': medsession_data
+        })
+           
+        if medsession_id not in self.medsessions:
+            self.medsessions.add(medsession_id)
+            await self.channel_layer.group_add(
+                group=medsession_id,
+                channel=self.channel_name
+            )
+        
+#         if True: # check if the thw should be updated
+#             await self.update_channel_telehealthworker(medsession_id, medsession_data)
+#             
+#         if False: # do the update of physician
+#         #handle call to physician
+#             await self.create_or_update_channel_physician(medsession_id, medsession_data)
+            
+        # send back data
+        await self.send_json({
+            'type': 'update.medsession',
+            'data': medsession_data
+        })
+          
+    async def update_medsessionforphysician(self, event):   
+        medsession = await self._update_medsession(event.get('data'))
+        medsession_id = f'{medsession.id}'
+        medsession_data =  await self._get_medsession_data(medsession)
+                     
+        # first contact of physician
+        if (medsession.status == MedSession.IN_PROGRESS and medsession.status_to_physician == MedSession.REQUESTED):         # first time call from thw to physician      
+            # Send thw requests to all physicians.
+            await self.channel_layer.group_send(group='physician_channel_group', message={
+                'type': 'echo.message',
+                'data': medsession_data
+            })
+        
+            if medsession_id not in self.medsessions:
+                self.medsessions.add(medsession_id)                
+                await self.channel_layer.group_add(
+                    group=medsession_id,
+                    channel=self.channel_name
+                )  
+        # subsequent update of phhysician          
+        else:
+            # Send updates to customers that subscribe to this trip.
+            await self.channel_layer.group_send(group=medsession_id, message={
+                'type': 'echo.message',
+                'data': medsession_data
+            })
+              
+            if medsession_id not in self.medsessions:
+                self.medsessions.add(medsession_id)
+                await self.channel_layer.group_add(
+                    group=medsession_id,
+                    channel=self.channel_name
+                )
+                
+        # send back data
+        await self.send_json({
+            'type': 'update.medsessionforphysician',
+            'data': medsession_data
+        })
+        
+    async def update_channel_telehealthworker(self, medsession_id, medsession_data):  
+        # Send updates to customers that subscribe to this trip.
         await self.channel_layer.group_send(group=medsession_id, message={
             'type': 'echo.message',
             'data': medsession_data
@@ -94,11 +166,6 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
                 group=medsession_id,
                 channel=self.channel_name
             )
-  
-        await self.send_json({
-            'type': 'update.medsession',
-            'data': medsession_data
-        })
       
     async def disconnect(self, code):         
         # Remove this channel from every medsession's group.
@@ -115,6 +182,11 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         if user_group_name == user_group_names[1]:
             channel_groups.append(self.channel_layer.group_discard(
                 group='telehealthworker_channel_group',
+                channel=self.channel_name
+            ))
+        if user_group_name == user_group_names[2]:
+            channel_groups.append(self.channel_layer.group_discard(
+                group='physician_channel_group',
                 channel=self.channel_name
             ))
           
@@ -172,14 +244,29 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
     def _get_medsessions(self, user):
         if not user.is_authenticated:
             raise Exception('User is not authenticated.')        
-        user_groups = user.groups.values_list('name', flat=True)
+#         user_groups = user.groups.values_list('name', flat=True)
+#         # user_groups = await get_user_group_value_list_data(user)
+#         if 'telehealthworker' in user_groups:
+#             return user.session_telehealthworker.exclude(
+#                 status=MedSession.COMPLETED
+#             ).only('id').values_list('id', flat=True)
+#         else:
+#             return user.session_customer.exclude(
+#                 status=MedSession.COMPLETED
+#             ).only('id').values_list('id', flat=True)  
+                 
+        current_group = user._get_user_current_group()
         # user_groups = await get_user_group_value_list_data(user)
-        if 'telehealthworker' in user_groups:
+        if current_group == 'customer':
+            return user.session_customer.exclude(
+                status=MedSession.COMPLETED
+            ).only('id').values_list('id', flat=True) 
+        elif current_group == 'telehealthworker':
             return user.session_telehealthworker.exclude(
                 status=MedSession.COMPLETED
             ).only('id').values_list('id', flat=True)
         else:
-            return user.session_customer.exclude(
+            return user.session_physician.exclude(
                 status=MedSession.COMPLETED
             ).only('id').values_list('id', flat=True)   
     

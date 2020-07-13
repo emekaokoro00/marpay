@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+    <app-medsession-card
+      class="card mb-3"
+      [title]="'Current medical sessions'"
+      [midURL]="'.'"
+      [medsessions]="currentMedsessions"
+    ></app-medsession-card>
+    <app-medsession-card
+      class="card mb-3"
+      [title]="'Requested medical sessions'"
+      [midURL]="'.'"
+      [medsessions]="requestedMedsessions"
+    ></app-medsession-card>
+    <app-medsession-card
+      class="card mb-3"
+      [title]="'Recent medical sessions'"
+      [midURL]="'.'"
+      [medsessions]="completedMedsessions"
+    ></app-medsession-card>
+  </div>
+</div>

@@ -58,6 +58,9 @@ export class LandingComponent implements OnInit, OnDestroy {
   isCustomer(): boolean {
     return User.isCustomer();
   }
+  isTelehealthworker(): boolean {
+    return User.isTelehealthworker();
+  }
   logOut(): void {
     this.authService.logOut().subscribe(() => {}, (error) => {
       console.error(error);

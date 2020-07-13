@@ -30,29 +30,31 @@
 			</form>
 		</div>
 	</ng-template>
-
-	<ng-template #otherUserGroupBlock>
-		<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
-						
-			<div class="row">
-				<div class="col-lg-12">
-					<nav>
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item active">Dashboard</li>
-					</ol>
-					</nav>
-					<app-medsession-card
-					class="card mb-3"
-					[title]="'Requested medical sessions'"
-					[midURL]="'telehealthworker/'"
-					[medsessions]="requestedMedsessions"
-					></app-medsession-card>
+	
+	<ng-template #otherUserGroupBlock>		
+		<div *ngIf="isTelehealthworker(); then telehealthworkerBlock; else otherBlock;"></div>
+		<ng-template #telehealthworkerBlock>
+			<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
+				<div class="row">
+					<div class="col-lg-12">
+						<nav>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item active">Dashboard</li>
+						</ol>
+						</nav>
+						<app-medsession-card
+						class="card mb-3"
+						[title]="'Requested medical sessions'"
+						[midURL]="'telehealthworker/'"
+						[medsessions]="requestedMedsessions"
+						></app-medsession-card>
+					</div>
 				</div>
 			</div>
-
-
-
-		</div>
+		</ng-template>
+		<ng-template #otherBlock>
+			<div class="justify-center"> GOT TO PHYSICIAN </div>
+		</ng-template>
 	</ng-template>
 
   </ng-template>

@@ -25,8 +25,10 @@ export class MedsessionFactory {
       session_address: faker.address.streetAddress(),
       session_address_for_telehealthworker: faker.address.streetAddress(),
       status: 'REQUESTED',
+      status_to_physician: 'REQUESTED',
+      session_reason: 'reason',
       session_customer: UserFactory.create(),
-      session_telehealthworker: UserFactory.create({current_role: 'telehealthworker'})
+      session_telehealthworker: UserFactory.create({current_group: 'telehealthworker'})
     }, data));
   }
 }

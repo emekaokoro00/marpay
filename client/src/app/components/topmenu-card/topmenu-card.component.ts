@@ -20,6 +20,9 @@ export class TopmenuCardComponent implements OnInit {
   isTelehealthworker(): boolean {
     return User.isTelehealthworker();
   }
+  isPhysician(): boolean {
+    return User.isPhysician();
+  }
   logOut(): void {
     // this.router.navigate(['/']);
     this.authService.logOut().subscribe(() => {}, (error) => {

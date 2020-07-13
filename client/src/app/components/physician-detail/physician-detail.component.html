@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/telehealthworker']">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Medical session</li>
+      </ol>
+    </nav>
+    <div class="card">
+      <h4 class="card-header">Medical session</h4>
+      <div class="card-body">
+        <ul class="list-unstyled mb-0">
+          <li class="media">
+           <!-- <img
+              class="mr-3 rounded-circle"
+              [src]="medsession.session_customer.photo"
+              width="80"
+              height="80"
+            > -->
+            <div class="media-body">
+              <h5 class="mt-0 mb-1">{{ medsession.session_customer.username }}</h5>
+              Reason {{ medsession.session_reason }} <br>
+              {{ medsession.status }}
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer content-center" [ngSwitch]="medsession.status">
+        <button
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
+          *ngSwitchCase="'REQUESTED'"
+          (click)="updateMedsessionStatus('STARTED')"
+        >
+          Accept Request
+        </button>
+        <!-- <button
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
+          *ngSwitchCase="'STARTED'"
+          (click)="updateMedsessionStatus('IN_PROGRESS')"
+        >
+          Start Session
+        </button> -->
+	<button
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
+          *ngSwitchCase="'STARTED'"
+          (click)="openCallDialog()"
+        >
+          Start Session
+        </button>
+        <button
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
+          *ngSwitchCase="'IN_PROGRESS'"
+          (click)="updateMedsessionStatus('COMPLETED')"
+        >
+          End Session
+        </button>
+        <span class="text-center" *ngSwitchDefault>Completed</span>
+      </div>
+    </div>
+  </div>
+</div>

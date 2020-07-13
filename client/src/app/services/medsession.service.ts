@@ -17,8 +17,11 @@ export class Medsession {
     public session_address?: string,
     public session_address_for_telehealthworker?: string,
     public status?: string,
+    public status_to_physician?: string,
+    public session_reason?: string,
     public session_customer?: any,
-    public session_telehealthworker?: any
+    public session_telehealthworker?: any,
+    public session_physician?: any
     ) {
         this.otherUser = User.isCustomer() ? this.session_telehealthworker : this.session_customer;
       }
@@ -31,8 +34,11 @@ export class Medsession {
       data.session_address,
       data.session_address_for_telehealthworker,
       data.status,
+      data.status_to_physician,
+      data.session_reason,
       User.create(data.session_customer),
-      data.session_telehealthworker ? User.create(data.session_telehealthworker) : null
+      data.session_telehealthworker ? User.create(data.session_telehealthworker) : null,
+      data.session_physician ? User.create(data.session_physician) : null
     );
   }
 }
@@ -87,6 +93,17 @@ export class MedsessionService {
       type: 'update.medsession',
       data: {
         ...medsession, session_telehealthworker: medsession.session_telehealthworker.id, session_customer: medsession.session_customer.id
+      }
+    };
+    this.webSocket.next(message);
+  }
+
+  updateMedsessionForPhysician(medsession: Medsession): void {
+    this.connect();
+    const message: any = {
+      type: 'update.medsessionforphysician',
+      data: {
+        ...medsession, session_physician: medsession.session_physician.id, session_telehealthworker: medsession.session_telehealthworker.id, session_customer: medsession.session_customer.id
       }
     };
     this.webSocket.next(message);

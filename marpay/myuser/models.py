@@ -62,7 +62,7 @@ class MyUser(AbstractUser):
     def _get_user_current_role(self):
         return self.current_role.__str__()   
     
-    # to retrieve name of current role.... for use with medsession/consumer
+    # to retrieve name of current group.... for use with medsession/consumer
     def _get_user_current_group(self):
         return self.current_group.__str__()  
     

@@ -20,7 +20,10 @@ class MedSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=20, choices=STATUSES, default=REQUESTED)
+    status = models.CharField(max_length=20, choices=STATUSES, default=REQUESTED) # status between customer and thw
+    status_to_physician = models.CharField(max_length=20, choices=STATUSES, default=REQUESTED) # status between customer/thw and physician
+    
+    session_reason = models.CharField(max_length=1000, null=True, blank=True)
     
     session_customer = models.ForeignKey(MyUser, on_delete=models.PROTECT, related_name='session_customer', null=True, blank=True) # related_name is user.sessions_as_customer
     session_telehealthworker = models.ForeignKey(MyUser, on_delete=models.PROTECT, related_name='session_telehealthworker', null=True, blank=True)
