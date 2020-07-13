@@ -85,11 +85,11 @@ import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-se
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
-
     FormsModule,
     ReactiveFormsModule,
 
     AppRoutingModule, // from app-routing.module.ts
+
     AgmCoreModule.forRoot({
       apiKey: environment.GOOGLE_API_KEY
     }),

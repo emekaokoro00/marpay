@@ -7,7 +7,7 @@ from myuser.models import MyUser
 
 class MedSession(models.Model):
     REQUESTED = 'REQUESTED'
-    STARTED = 'STARTED'
+    STARTED = 'STARTED' # this means accepted
     IN_PROGRESS = 'IN_PROGRESS'
     COMPLETED = 'COMPLETED'
     STATUSES = (

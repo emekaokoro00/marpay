@@ -32,7 +32,8 @@ export class PhysicianDetailComponent implements OnInit {
     this.medsessionService.updateMedsessionForPhysician(this.medsession); // see if you can integrate into updateMedsession later
   }
 
-
+  
+  // disable 'Call' button; after call end, enable 'End Session';
   openCallDialog(): void {
     const dialogRef = this.matdialog.open(DialogaSessionDetailsComponent, {
       // width: '300px',

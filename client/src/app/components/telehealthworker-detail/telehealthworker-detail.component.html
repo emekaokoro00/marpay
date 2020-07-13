@@ -20,9 +20,11 @@
               height="80"
             > -->
             <div class="media-body">
-              <h5 class="mt-0 mb-1">{{ medsession.session_customer.username }}</h5>
+              <h5 class="mt-0 mb-1 inline-block">{{ medsession.session_customer.username }}</h5>
+	      <h6 class="mt-0 mb-1 inline-block" *ngIf="medsession.session_physician"> -- speak to Physician: {{ medsession.session_physician.username }}</h6> <br>
               at {{ medsession.session_address }} <br>
-              {{ medsession.status }}
+              {{ medsession.status }} <br>
+              Physician Status: {{ medsession.status_to_physician }}
             </div>
           </li>
         </ul>

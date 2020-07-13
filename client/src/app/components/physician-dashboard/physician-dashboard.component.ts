@@ -29,8 +29,8 @@ export class PhysicianDashboardComponent implements OnInit, OnDestroy {
 
   get requestedMedsessions(): Medsession[] {
     return this.medsessions.filter(medsession => {
-      // return medsession.session_telehealthworker !== null && medsession.status_to_physician === 'REQUESTED';
-      return medsession.status_to_physician === 'REQUESTED';
+      return medsession.session_telehealthworker !== null && medsession.status_to_physician === 'REQUESTED';
+      // return medsession.status_to_physician === 'REQUESTED';
     });
   }
 
@@ -45,10 +45,10 @@ export class PhysicianDashboardComponent implements OnInit, OnDestroy {
       this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
       this.medsessionService.connect();
       this.messages = this.medsessionService.messages.subscribe((message: any) => {
-      const medsession: Medsession = Medsession.create(message.data);
-      this.updateMedsessions(medsession);
-      this.updateToast(medsession);
-    });
+        const medsession: Medsession = Medsession.create(message.data);
+        this.updateMedsessions(medsession);
+        this.updateToast(medsession);
+      });
   }
 
   updateMedsessions(medsession: Medsession): void {

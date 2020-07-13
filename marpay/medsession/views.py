@@ -36,7 +36,7 @@ class MedSessionView(viewsets.ReadOnlyModelViewSet):
             )
         if user.current_group.name == user_group_names[2]:
             return MedSession.objects.filter(
-                Q(status=MedSession.REQUESTED) | Q(session_physician=user)
+                Q(status_to_physician=MedSession.REQUESTED) | Q(session_physician=user)
             )
         if user.current_group.name == user_group_names[0]:
             return MedSession.objects.filter(session_customer=user)

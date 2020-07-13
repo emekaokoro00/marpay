@@ -39,7 +39,7 @@ export class TelehealthworkerDetailComponent implements OnInit {
        	// if (extraData.length > 1) { this.medsession.new_field = session_reason; }
     }
     this.medsessionService.updateMedsession(this.medsession);
-    this.medsessionService.updateMedsessionForPhysician(this.medsession);
+    this.medsessionService.updateMedsessionForPhysician(this.medsession); // change later to avoid updating medsession twice
   }
 
 

@@ -119,9 +119,10 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         medsession_data =  await self._get_medsession_data(medsession)
                      
         # first contact of physician
-        if (medsession.status == MedSession.IN_PROGRESS and medsession.status_to_physician == MedSession.REQUESTED):         # first time call from thw to physician      
+        if (True):  
+        # if (medsession.status == MedSession.IN_PROGRESS and medsession.status_to_physician == MedSession.REQUESTED):         # first time call from thw to physician      
             # Send thw requests to all physicians.
-            await self.channel_layer.group_send(group='physician_channel_group', message={
+            await self.channel_layer.group_send(group='telehealthworker_channel_group', message={
                 'type': 'echo.message',
                 'data': medsession_data
             })
