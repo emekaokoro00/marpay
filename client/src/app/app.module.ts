@@ -10,6 +10,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field'
 import {MatInputModule} from '@angular/material/input';
+import {MatRadioModule} from '@angular/material/radio'
 
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'; //new HttpClientXsrfModule for csrf issue
 
@@ -76,6 +77,7 @@ import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-se
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRadioModule,
 
     FormsModule,
     ReactiveFormsModule,

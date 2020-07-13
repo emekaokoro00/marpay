@@ -1,40 +1,68 @@
-<button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
   {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button>
+</button> -->
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
+      <ng-template matStepLabel>Platform</ng-template>
+     <!-- <mat-form-field>
+        <mat-label>How do you hope to talk to the doctor?</mat-label>
         <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
+	<br> -->
+      <mat-radio-group required
+            class="radio-group" formControlName="firstCtrlFormat"
+            [(ngModel)]="data.preferredPlatform">
+      	  <mat-label>How do you hope to talk to the doctor?</mat-label>
+          <!--<div *ngFor="let err of getErrorList(firstFormGroup.controls.firstCtrlFormat.errors)">{{err}}</div>-->
+          <div class="text-red-600" *ngIf="firstFormGroup.controls.firstCtrlFormat.errors">required</div>
+	  <mat-radio-button class="radio-button" *ngFor="let platform of platforms" [value]="platform">
+	    {{platform}}
+	  </mat-radio-button>
+      </mat-radio-group>
+
+      <div class="flex justify-center">
+        <button mat-button (click)="onCancelClick()"
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-5 focus:outline-none rounded"
+		>Cancel</button>&nbsp;&nbsp;
+        <button  mat-button matStepperNext
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-5 focus:outline-none rounded"
+		>Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
+      <ng-template matStepLabel>Fill out your reason for the call</ng-template>
       <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" [(ngModel)]="data.address"
-               required>
+        <mat-label>Reason</mat-label>
+        <textarea matInput formControlName="secondCtrl" placeholder="I am feeling..." [(ngModel)]="data.sessionReason"
+               required></textarea>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+      <div class="flex justify-center">
+        <button mat-button matStepperPrevious
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-5 focus:outline-none rounded"
+		>Back</button>&nbsp;&nbsp;
+        <button mat-button matStepperNext
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-5 focus:outline-none rounded"
+		>Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div mat-dialog-actions>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-      <button mat-button [mat-dialog-close]="data.address" cdkFocusInitial>Ok</button>
+    <p>Requesting a {{data.preferredPlatform}} for {{data.sessionCustomer.username}}.</p>
+    <p>{{data.sessionReason}}</p>
+    <div mat-dialog-actions class="flex justify-center">
+      <button mat-button matStepperPrevious
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-5 focus:outline-none rounded"
+		>Back</button>&nbsp;&nbsp;
+      <!-- <button mat-button (click)="stepper.reset()"
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-3 focus:outline-none rounded"
+		>Reset</button>&nbsp;&nbsp; -->
+      <button mat-button [mat-dialog-close]="data" cdkFocusInitial
+		class="inline-flex text-white bg-green-500 border-0 py-2 px-5 focus:outline-none rounded"
+		>Confirm</button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

@@ -37,14 +37,13 @@ export class TelehealthworkerDetailComponent implements OnInit {
     const dialogRef = this.matdialog.open(DialogaSessionDetailsComponent, {
       // width: '300px',
       // height: '250px',
-      // data: { address: this.address }
-      data: { address: 'test' }
+      data: { sessionCustomer: this.medsession.session_customer }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed' + result);
+      console.log('The dialog was closed ' + result);
       if (result) {
-         // result = 'empty';
+         // result = 'empty'; // result is currently a data object with session_customer, and physician-relevant details
          this.updateMedsessionStatus('IN_PROGRESS');
       }
     });
