@@ -49,6 +49,7 @@ import { MedsessionCardComponent } from './components/medsession-card/medsession
 import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.component';
 import { DialogaAddressConfirmComponent } from './components/dialoga-address-confirm/dialoga-address-confirm.component';
 import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-session-details/dialoga-session-details.component';
+import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-confirm/dialoga-call-confirm.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-se
     MedsessionCardComponent,
     TopmenuCardComponent,
     DialogaAddressConfirmComponent,
-    DialogaSessionDetailsComponent
+    DialogaSessionDetailsComponent,
+    DialogaCallConfirmComponent
   ],
   entryComponents: [
      DialogaAddressConfirmComponent

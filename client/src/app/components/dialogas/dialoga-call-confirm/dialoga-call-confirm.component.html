@@ -1,0 +1,19 @@
+<div class="middle-center">
+	<!--<div mat-dialog-content>
+	  <p>Proceed with Call</p>
+	</div> -->
+	<div class="flex justify-center">
+		<div mat-dialog-actions>
+		  <button mat-button (click)="onCancelClick()">Go back</button>
+		  <button id="call_leave" mat-button cdkFocusInitial>Make call</button>
+		</div>
+		<br>
+		<p id="count"></p>
+		<div id="container_vid" class="container_vid lg:w-1/2 px-6 mt-4 lg:mt-0">        
+		    <div id="local" class="participant"><div></div><div>Me</div></div> 
+			<hr>
+		</div>
+		Hi, <div id="call_name" class="inline-flex">chk</div>
+		<!-- Hi, <div id="call_name" class="inline-flex">{{ calleeUser.username }}</div> -->
+	</div>
+</div>

@@ -46,6 +46,7 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
               
             await self.accept()          
   
+    # ENTRY POINT FOR JSON RECEIVED BY SERVER
     async def receive_json(self, content, **kwargs):        
         # RECEIVES JSON FROM CLIENT
         # DELEGATE BUSINESS LOGIC TO DO DIFFERENT THINGS  
@@ -53,7 +54,9 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         if message_type == 'create.medsession':
             await self.create_medsession(content)
         elif message_type == 'update.medsession':
-            await self.update_medsession(content)      
+            await self.update_medsession(content) 
+        elif message_type == 'update.medsessionforphysician':
+            await self.update_medsessionforphysician(content)      
       
     async def echo_message(self, event):    
         # await self.send_json({'type': 'echo.message','data': event['data']})
@@ -61,7 +64,7 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
      
     async def create_medsession(self, event):
         medsession = await self._create_medsession(event.get('data'))
-        medsession_id = f'{medsession.id}'
+        medsession_id = f'{medsession.id}' # get medsession.id and quickly convert to string literal
         medsession_data = await self._get_medsession_data(medsession)
                                   
         # Send customer requests to all telehealthworkers.
@@ -84,7 +87,7 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
           
     async def update_medsession(self, event):
         medsession = await self._update_medsession(event.get('data'))
-        medsession_id = f'{medsession.id}'
+        medsession_id = f'{medsession.id}' # get medsession.id and quickly convert to string literal
         medsession_data =  await self._get_medsession_data(medsession)
         
         # Send updates to customers that subscribe to this trip.
@@ -117,16 +120,16 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         medsession = await self._update_medsession(event.get('data'))
         medsession_id = f'{medsession.id}'
         medsession_data =  await self._get_medsession_data(medsession)
-                     
+                      
         # first contact of physician
-        if (True):  
-        # if (medsession.status == MedSession.IN_PROGRESS and medsession.status_to_physician == MedSession.REQUESTED):         # first time call from thw to physician      
+        # if (True):  
+        if (medsession.status == MedSession.IN_PROGRESS and medsession.status_to_physician == MedSession.REQUESTED):         # first time call from thw to physician      
             # Send thw requests to all physicians.
             await self.channel_layer.group_send(group='telehealthworker_channel_group', message={
                 'type': 'echo.message',
                 'data': medsession_data
             })
-        
+         
             if medsession_id not in self.medsessions:
                 self.medsessions.add(medsession_id)                
                 await self.channel_layer.group_add(
@@ -140,19 +143,19 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
                 'type': 'echo.message',
                 'data': medsession_data
             })
-              
+               
             if medsession_id not in self.medsessions:
                 self.medsessions.add(medsession_id)
                 await self.channel_layer.group_add(
                     group=medsession_id,
                     channel=self.channel_name
                 )
-                
+                 
         # send back data
         await self.send_json({
             'type': 'update.medsessionforphysician',
             'data': medsession_data
-        })
+        })  
         
     async def update_channel_telehealthworker(self, medsession_id, medsession_data):  
         # Send updates to customers that subscribe to this trip.
