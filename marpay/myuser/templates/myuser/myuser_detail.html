@@ -26,19 +26,19 @@
         <div class="flex flex-row-reverse justify-center">
           <a class="text-lg text-green-500 hover:text-green-700 text-center lex cursor-pointer" onclick="revealMoreButtons()">More...</a>
           <a class="text-lg text-center lex">&nbsp;&nbsp;|&nbsp;&nbsp;</a>
-          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="{% url 'myuser_update' %}">Edit Profile</a>
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="{% url 'myuser:myuser_update' %}">Edit Profile</a>
           <a class="text-lg text-center lex">&nbsp;&nbsp;|&nbsp;&nbsp;</a>
-          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="{% url 'myuser_detail' %}">Medical History</a>  
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="{% url 'myuser:myuser_detail' %}">Medical History</a>  
         </div>
         <div class="flex flex-row-reverse">
 			<div id="div_more_buttons" class='hidden'>
 			
 		      <form method="POST">
 			  {% csrf_token %}			
-			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_register_thw_confirm' %}">			  
+			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser:myuser_register_thw_confirm' %}">			  
 				{% if is_thw %} De-register as THW {% else %} Register as THW {% endif %}
 			  </a>			  			
-			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser_register_physician_confirm' %}">			  
+			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser:myuser_register_physician_confirm' %}">			  
 				{% if is_physician %} De-register as Physician {% else %} Register as Physician {% endif %}
 			  </a>
 			  </form>

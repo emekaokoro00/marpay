@@ -25,22 +25,37 @@ export class DialogaCallConfirmComponent implements OnInit {
     this.dialogRef.close();
   }
   
-  //ngOnInit() {
-  //}
+  // ngOnInit() {
+  // }
+  // "src/home_functions.js",
+  // "src/assets/js/twilio-video.min.js",
+  // "src/assets/js/require.js",
   
-	ngOnInit() {
-	   this.loadScript("src/assets/js/home_functions.js");
-	    this.loadScript("src/assets/js/twilio-video.min.js");
-	    this.loadScript("src/assets/js/require.js");
-	}
+  ngOnInit() {
+    this.loadScript("assets/js/jquery-3.5.1.min.js");
+    this.loadScript("assets/js/twilio-video.min.js");
+    // this.loadScript("assets/js/require.js");
+    this.loadScript("assets/js/home_functions.js");
+  }
 
-	public loadScript(url) {
-	    let node = document.createElement('script');
-	    node.src = url;
-	    node.type = 'text/javascript';
-    	    node.async = true;
-    	    node.charset = "utf-8";
-	    document.getElementsByTagName('head')[0].appendChild(node);
-	}
-  
+	public loadScript(url) {   
+	    // to check if the url has already been added previously   
+	    var isFound = false;
+	    var scripts = document.getElementsByTagName("script")
+	    for (var i = 0; i < scripts.length; ++i) {
+		if (scripts[i].getAttribute('src') != null && scripts[i].getAttribute('src').includes(url)) {
+		    isFound = true;
+		}
+	    }
+
+	    // if not found, add resource
+	    if (!isFound) {
+		    let node = document.createElement('script');
+		    node.src = url;
+		    node.type = 'text/javascript';
+	    	    node.async = true;
+	    	    node.charset = "utf-8";
+		    document.getElementsByTagName('head')[0].appendChild(node);
+	    }
+	}  
 }

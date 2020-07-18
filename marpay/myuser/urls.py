@@ -4,6 +4,8 @@ from django.views.generic.base import TemplateView
 from .views import SignUpView, TestPageView
 from . import views
 
+app_name = 'myuser' # if not included, it gives error 'Specifying a namespace in include() without providing an app_name '
+
 urlpatterns = [
     # path('', LoginPageView.as_view(), name='login'),
     # path('login/', LoginPageView.as_view(), name='login'),

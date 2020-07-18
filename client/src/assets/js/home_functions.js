@@ -40,13 +40,13 @@ function connectButtonHandler(e) {
             button_call_leave.disabled = false;
         }).catch(() => {
             alert('Connection failed. Is the backend running?');
-            button_call_leave.innerHTML = 'Direct to Doctor';
+            button_call_leave.innerHTML = 'Make Call';
             button_call_leave.disabled = false;    
         });
     }
     else {
         disconnect();
-        button_call_leave.innerHTML = 'Direct to Doctor';
+        button_call_leave.innerHTML = 'Make Call';
         connected = false;
     }
 };
@@ -76,7 +76,7 @@ function disconnect() {
     while (div_video.hasChildNodes()) { // remove all children of the video div
     	div_video.removeChild(div_video.lastChild);
     }    
-    button_call_leave.innerHTML = 'Direct to Doctor';
+    button_call_leave.innerHTML = 'Make Call';
     connected = false;
     updateParticipantCount();
 };
@@ -84,7 +84,7 @@ function disconnect() {
 function connect(username_caller, username_callee) {
     var promise = new Promise((resolve, reject) => {
         // get a token from the back end
-        fetch('myuser/start_call/', {
+        fetch('api/myuser/start_call/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -109,8 +109,8 @@ function connect(username_caller, username_callee) {
             connected = true;
             updateParticipantCount();
             resolve();
-        }).catch(() => {
-        	alert('Enter your name before connecting');
+        }).catch((err) => {
+        	alert(err);
             reject();
         });
     });
@@ -185,39 +185,4 @@ button_call_leave.addEventListener('click', connectButtonHandler);
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-	
-//call the list of THWs
-$(".get_user_form").submit(function(e){
-	// alert("Submitted");
-	 
-	 // the next two lines stop the function from being called twice
-	e.preventDefault();
-	e.stopPropagation();
-	
-	var form = $(this);
-   	$.ajax({
-        url: form.attr("action"),
-        data: form.serialize(),
-        type: form.attr("method"), // address the method in the view function called
-        dataType: 'json',
-        success: function (data) {
-            if (data.form_is_valid) {
-              $("#user-table tbody").html(data.html_user_thw_list); // go to table with id=user-table and fill its body with the fetched contents
-            }
-          },
-   		error : function(response){
-   			var a = response;
-            alert("failed");
-   			console.log(response)
-   		}
-   	})     	  	
-});
-// $("#modal-book").on("submit", ".get_user_form", function(e){
-// $(".get_user_form").click(function(e){
-// .unbind('submit')
-
-//}).catch(function(e) {
-//	alert(e);
-//    reject();
-//});
  

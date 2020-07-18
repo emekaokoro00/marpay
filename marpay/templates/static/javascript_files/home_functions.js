@@ -109,8 +109,9 @@ function connect(username_caller, username_callee) {
             connected = true;
             updateParticipantCount();
             resolve();
-        }).catch(() => {
-        	alert('Enter your name before connecting');
+        }).catch((err) => {
+        	// alert('Enter your name before connecting');
+        	alert(err);
             reject();
         });
     });

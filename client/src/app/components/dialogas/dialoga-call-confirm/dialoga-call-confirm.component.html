@@ -1,19 +1,27 @@
-<div class="middle-center">
-	<!--<div mat-dialog-content>
-	  <p>Proceed with Call</p>
-	</div> -->
-	<div class="flex justify-center">
-		<div mat-dialog-actions>
-		  <button mat-button (click)="onCancelClick()">Go back</button>
-		  <button id="call_leave" mat-button cdkFocusInitial>Make call</button>
-		</div>
-		<br>
+<div class="flex justify-center">
+<section class="text-gray-700 body-font relative">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-col text-center w-full mb-12">
+        <div class="p-2 w-full">
+	  <button mat-button (click)="onCancelClick()"
+		class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Go back</button>&nbsp;&nbsp;
+	  <button id="call_leave" mat-button cdkFocusInitial
+		class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Make call</button>
+        </div>
+      <!-- <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify.</p> -->
+    </div>
+    <div class="lg:w-1/2 md:w-2/3 mx-auto">
+      <div class="flex flex-wrap -m-2">
+        <div class="p-2 w-full">	
 		<p id="count"></p>
 		<div id="container_vid" class="container_vid lg:w-1/2 px-6 mt-4 lg:mt-0">        
 		    <div id="local" class="participant"><div></div><div>Me</div></div> 
 			<hr>
 		</div>
 		Hi, <div id="call_name" class="inline-flex">chk</div>
-		<!-- Hi, <div id="call_name" class="inline-flex">{{ calleeUser.username }}</div> -->
-	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </div>
