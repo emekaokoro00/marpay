@@ -1,15 +1,17 @@
 var connected = false;
-const call_name = document.getElementById('call_name');
-const button_call_leave = document.getElementById('call_leave');
-const container = document.getElementById('container_vid');
-const count = document.getElementById('count');
+var call_name = document.getElementById('call_name');
+var button_call_leave = document.getElementById('call_leave');
+var container = document.getElementById('container_vid');
+var count = document.getElementById('count');
+//const call_name = document.getElementById('call_name');
+//const button_call_leave = document.getElementById('call_leave');
+//const container = document.getElementById('container_vid');
+// const count = document.getElementById('count');
 var div_video = document.getElementById('local').firstChild;
 var room; 
 
-
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-
 
 function addLocalVideo() {
     Twilio.Video.createLocalVideoTrack().then(track => {
@@ -20,6 +22,14 @@ function addLocalVideo() {
 
 function connectButtonHandler(e) {	
     e.preventDefault();
+
+    // had to recreate this on each dialog load, so as to 'reload' the variables
+    // also had to initialize them as var insteaad of const
+    button_call_leave = document.getElementById('call_leave')
+    count = document.getElementById('count');
+    div_video = document.getElementById('local').firstChild;
+
+
     if (!connected) {
 
         Twilio.Video.createLocalVideoTrack().then(track => {
@@ -31,8 +41,7 @@ function connectButtonHandler(e) {
         /*if (!username) {
             alert('Enter your name before connecting');
             return;
-        }*/
-        
+        }*/        
         button_call_leave.disabled = true;
         button_call_leave.innerHTML = 'Connecting...';
         connect(username_caller, username_callee).then(() => {
@@ -66,8 +75,8 @@ function disconnect() {
 //	// room.localParticipant.unpublishTrack(track);
 //		track.unpublish();
 //	});
-//	room.localParticipant.unpublishTracks(tracks);
-	
+//	room.localParticipant.unpublishTracks(tracks);	
+console.log('got past camera off trial');
     
     room.disconnect();    
     while (container.lastChild.id != 'local') { // remove all children of container div except for the video div
@@ -75,7 +84,7 @@ function disconnect() {
     }
     while (div_video.hasChildNodes()) { // remove all children of the video div
     	div_video.removeChild(div_video.lastChild);
-    }    
+    }
     button_call_leave.innerHTML = 'Make Call';
     connected = false;
     updateParticipantCount();
@@ -179,8 +188,7 @@ function getCookie(name) {
 
 // add local video
 // addLocalVideo();
-// button_call_leave.addEventListener('click', addLocalVideo);
-button_call_leave.addEventListener('click', connectButtonHandler);
+//button_call_leave.addEventListener('click', connectButtonHandler);
 
 
 //////////////////////////////////////////////////////////////////////////////

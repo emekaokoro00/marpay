@@ -22,6 +22,10 @@ export class DialogaCallConfirmComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onCancelClick(): void {
+    //this.unloadScript("assets/js/jquery-3.5.1.min.js", "js");
+    //this.unloadScript("assets/js/twilio-video.min.js", "js");
+    //this.unloadScript("assets/js/home_functions.js", "js") //remove all occurences "home_functions.js" on page
+
     this.dialogRef.close();
   }
   
@@ -36,6 +40,7 @@ export class DialogaCallConfirmComponent implements OnInit {
     this.loadScript("assets/js/twilio-video.min.js");
     // this.loadScript("assets/js/require.js");
     this.loadScript("assets/js/home_functions.js");
+    // console.log('init runs');
   }
 
 	public loadScript(url) {   
@@ -58,4 +63,19 @@ export class DialogaCallConfirmComponent implements OnInit {
 		    document.getElementsByTagName('head')[0].appendChild(node);
 	    }
 	}  
+
+	public unloadScript2(src) {
+		$('script[src="' + src + '"]').remove();
+	}
+
+	public unloadScript(filename, filetype){
+	 var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist from
+	 var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+	 var allsuspects=document.getElementsByTagName(targetelement)
+	 for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+	  if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1)
+	   allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
+	 }
+	}    
+
 }
