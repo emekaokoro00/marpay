@@ -27,6 +27,9 @@ class MyUserSerializer(serializers.ModelSerializer):
 #         return instance
 
     def create(self, validated_data):
+        # pop out group first
+        current_group_data = validated_data.pop('current_group')
+        current_group, _ = Group.objects.get_or_create(name=current_group_data)
         
         data = {
             key: value for key, value in validated_data.items()
@@ -37,8 +40,6 @@ class MyUserSerializer(serializers.ModelSerializer):
         
         user = self.Meta.model.objects.create_user(**data)
         
-        current_group_data = validated_data.pop('current_group')
-        current_group, _ = Group.objects.get_or_create(name=current_group_data)
         user.current_group = current_group
         user.groups.add(current_group)                                  
         user.save() 
@@ -48,6 +49,6 @@ class MyUserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = (
             'id', 'username', 'password1', 'password2',
-            'first_name', 'last_name', 'current_role', 'current_group'
+            'first_name', 'last_name', 'current_group'
         )
         read_only_fields = ('id',)

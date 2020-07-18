@@ -68,20 +68,21 @@ export class AuthService {
 	    username: string,
 	    firstName: string,
 	    lastName: string,
-	    password: string,
-	    current_group: string,
-	    current_role: string
+	    password1: string,
+	    password2: string,
+	    currentGroup: string,
+	    currentRole: string
 	  ): Observable<User> {
 	    const url = '/api/sign_up/';
 	    const formData = new FormData();
 	    formData.append('username', username);
 	    formData.append('first_name', firstName);
 	    formData.append('last_name', lastName);
-	    formData.append('password1', password);
-	    formData.append('password2', password);
-	    formData.append('current_group', current_group);
-	    formData.append('current_role', current_role);
+	    formData.append('password1', password1);
+	    formData.append('password2', password2);
+	    formData.append('current_group', currentGroup);
 	    return this.http.request<User>('POST', url, {body: formData});
+		console.log(formData);
 	}
 
 	logIn(username: string, password: string): Observable<User> {
