@@ -33,21 +33,19 @@ export class PhysicianDetailComponent implements OnInit {
     this.medsessionService.updateMedsessionForPhysician(this.medsession); // see if you can integrate into updateMedsession later
   }
 
-  
-  // disable 'Call' button; after call end, enable 'End Session';
   openCallDialog(): void {
+    this.updateMedsessionStatus('IN_PROGRESS');
     const dialogRef = this.matdialog.open(DialogaCallConfirmComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',
       width: '100%',
-      data: { calleeUser: this.medsession.session_telehealthworker ? this.medsession.session_telehealthworker : this.medsession.session_customer }
+      data: {  user_host: this.medsession.session_physician, user_callee: this.medsession.session_telehealthworker ? this.medsession.session_telehealthworker : this.medsession.session_customer, user_caller: this.medsession.session_physician }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed ' + result);
       if (result) {
-         this.updateMedsessionStatus('IN_PROGRESS');
+         // this.updateMedsessionStatus('IN_PROGRESS');
 	 // this.router.navigate(['/call']);
       }
     });

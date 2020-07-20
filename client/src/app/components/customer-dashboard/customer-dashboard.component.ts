@@ -45,10 +45,10 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
       this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
       this.medsessionService.connect();
       this.messages = this.medsessionService.messages.subscribe((message: any) => {
-      const medsession: Medsession = Medsession.create(message.data);
-      this.updateMedsessions(medsession);
-      this.updateToast(medsession);
-    });
+        const medsession: Medsession = Medsession.create(message.data);
+        this.updateMedsessions(medsession);
+        this.updateToast(medsession);
+      });
   }
 
   updateMedsessions(medsession: Medsession): void {
@@ -58,11 +58,12 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
 
   updateToast(medsession: Medsession): void {
     if (medsession.status === 'STARTED') {
-      this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is has agreed to see you.`);
+      //this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} has agreed to see you.`)
+      this.toastr.successToastr(`Telehealthworker ${medsession.session_telehealthworker.username} has agreed to see you.`);
     } else if (medsession.status === 'IN_PROGRESS') {
-      this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is headed to your destination.`);
+      this.toastr.successToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is headed to your destination.`);
     } else if (medsession.status === 'COMPLETED') {
-      this.toastr.infoToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is finished.`);
+      this.toastr.successToastr(`Telehealthworker ${medsession.session_telehealthworker.username} is finished.`);
     }
   }
 

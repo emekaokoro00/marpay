@@ -5,7 +5,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 
 
 export interface DialogData {
-  calleeUser: User;
+  user_host: User;
+  user_caller: User;
+  user_callee: User;
 }
 
 @Component({

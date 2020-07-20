@@ -1,96 +1,79 @@
-var connected = false;
-var call_name = document.getElementById('call_name');
+let connected = false;
+
+var username_host = document.getElementById('username_host');
+var username_caller = document.getElementById('username_caller');
+var username_callee = document.getElementById('username_callee');
 var button_call_leave = document.getElementById('call_leave');
-var container = document.getElementById('container_vid');
-var count = document.getElementById('count');
+let user_name = username_host.textContent;
+let room_name = username_caller.textContent + '_' + username_callee.textContent;
+let room; 
+
+//var container = document.getElementById('container_vid');
+//var count = document.getElementById('count');
 //const call_name = document.getElementById('call_name');
 //const button_call_leave = document.getElementById('call_leave');
-//const container = document.getElementById('container_vid');
-// const count = document.getElementById('count');
-var div_video = document.getElementById('local').firstChild;
-var room; 
+const container = document.getElementById('container_vid');
+const count = document.getElementById('count');
+let div_video = document.getElementById('local').firstChild;
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
-function addLocalVideo() {
-    Twilio.Video.createLocalVideoTrack().then(track => {
-        // var video = document.getElementById('local').firstChild;
-    	div_video.appendChild(track.attach());
-    });
-}; 
 
 function connectButtonHandler(e) {	
     e.preventDefault();
 
     // had to recreate this on each dialog load, so as to 'reload' the variables
-    // also had to initialize them as var insteaad of const
+    // also had to initialize them as var instead of const
     button_call_leave = document.getElementById('call_leave')
-    count = document.getElementById('count');
-    div_video = document.getElementById('local').firstChild;
+    // count = document.getElementById('count');
+    // div_video = document.getElementById('local').firstChild;
 
 
     if (!connected) {
 
-        Twilio.Video.createLocalVideoTrack().then(track => {
-            div_video.appendChild(track.attach());
-        });
+	// // Instead of doing this, get [...room.localParticipant.videoTracks.values()][0].track and append after connect
+        //Twilio.Video.createLocalVideoTrack().then(track => {
+            // let div_video = document.getElementById('local').firstChild;
+        //    div_video.appendChild(track.attach());
+        //});
     	
-        var username_caller = call_name.textContent;
-        var username_callee = 'Ugo';
-        /*if (!username) {
-            alert('Enter your name before connecting');
-            return;
-        }*/        
         button_call_leave.disabled = true;
         button_call_leave.innerHTML = 'Connecting...';
-        connect(username_caller, username_callee).then(() => {
+        // connect(username_caller, username_callee).then(() => {
+        connect(user_name, room_name).then(() => {
             button_call_leave.innerHTML = 'End Call';
             button_call_leave.disabled = false;
         }).catch(() => {
             alert('Connection failed. Is the backend running?');
-            button_call_leave.innerHTML = 'Make Call';
+            button_call_leave.innerHTML = 'Join Call';
             button_call_leave.disabled = false;    
         });
     }
     else {
         disconnect();
-        button_call_leave.innerHTML = 'Make Call';
+        button_call_leave.innerHTML = 'Join Call';
         connected = false;
     }
 };
 
-function disconnect() {   	
-	// trying to get camera to go off
-	const tracks = Array.from(room.localParticipant.videoTracks.values()).map(publication => publication.track);
-	let videoTrack = tracks.find(track => track.kind === 'video');
-	videoTrack.stop();
-    room.localParticipant.unpublishTrack(videoTrack);
-    
-    tracks.forEach(track => track.stop());
-    room.localParticipant.unpublishTracks(tracks);
-	
-//	room.localParticipant.videoTracks.forEach(function(track) { 
-//	// track.stop();
-//	// room.localParticipant.unpublishTrack(track);
-//		track.unpublish();
-//	});
-//	room.localParticipant.unpublishTracks(tracks);	
-console.log('got past camera off trial');
-    
-    room.disconnect();    
+function disconnect() {  
+    room.disconnect();  
     while (container.lastChild.id != 'local') { // remove all children of container div except for the video div
         container.removeChild(container.lastChild);   
     }
     while (div_video.hasChildNodes()) { // remove all children of the video div
     	div_video.removeChild(div_video.lastChild);
     }
-    button_call_leave.innerHTML = 'Make Call';
+
+    button_call_leave.innerHTML = 'Join Call';
     connected = false;
     updateParticipantCount();
 };
 
-function connect(username_caller, username_callee) {
+
+
+function connect(user_name, room_name) {
     var promise = new Promise((resolve, reject) => {
         // get a token from the back end
         fetch('api/myuser/start_call/', {
@@ -106,12 +89,22 @@ function connect(username_caller, username_callee) {
             mode: 'same-origin',
             cache: 'default',
             credentials: 'include',
-            body: JSON.stringify({'username_caller': username_caller, 'username_callee': username_callee})
+            body: JSON.stringify({'user_name': user_name, 'room_name': room_name})
+            // body: JSON.stringify({'username_caller': username_caller, 'username_callee': username_callee})
         }).then(res => res.json()).then(data => {
             // join video call
-            return Twilio.Video.connect(data.token);
+            return Twilio.Video.connect(data.token, {
+		  audio: true,
+		  name: room_name,
+		  video: { /* video capture constraints */ },
+		});
         }).then(_room => {
             room = _room;
+
+	    // Get the camera track for your preview.
+	    const cameraTrack = [...room.localParticipant.videoTracks.values()][0].track;
+	    div_video.appendChild(cameraTrack.attach());
+
             room.participants.forEach(participantConnected);
             room.on('participantConnected', participantConnected);
             room.on('participantDisconnected', participantDisconnected);

@@ -17,11 +17,13 @@ from django.contrib.auth.forms import AuthenticationForm # new
 from rest_framework import generics, permissions, status, views # new
 from rest_framework.response import Response
 
+from twilio.jwt.access_token import AccessToken
+from twilio.jwt.access_token.grants import VideoGrant
+from twilio.jwt.client import ClientCapabilityToken
+
 from .models import MyUser, Role, CustomerDetails
 # from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
-from twilio.jwt.access_token import AccessToken
-from twilio.jwt.access_token.grants import VideoGrant
 from .serializers import MyUserSerializer
 
 
@@ -69,15 +71,14 @@ def get_physician_list(request):
         data['html_user_physician_list'] = render_to_string('myuser/user_physician_list.html', {'user_physician_list': user_physician_list }) 
         return JsonResponse(data)
     return JsonResponse({"success":False}, status=400)
-
         
 def start_call(request):
-    username_caller = json.loads(request.body.decode("utf-8")).get('username_caller')
-    username_callee = json.loads(request.body.decode("utf-8")).get('username_callee')
+    user_name = json.loads(request.body.decode("utf-8")).get('user_name')
+    room_name = json.loads(request.body.decode("utf-8")).get('room_name')
 
     token = AccessToken(twilio_account_sid, twilio_api_key_sid,
-                        twilio_api_key_secret, identity=username_caller)
-    token.add_grant(VideoGrant(room='My Room'))
+                        twilio_api_key_secret, identity=user_name)
+    token.add_grant(VideoGrant(room=room_name))
     # token.add_grant(VideoGrant(room=username_caller + '_' + username_callee))
 
     return JsonResponse({'token': token.to_jwt().decode()})

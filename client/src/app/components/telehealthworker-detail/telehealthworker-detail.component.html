@@ -29,6 +29,18 @@
           </li>
         </ul>
       </div>
+	
+      <div class="card-footer content-center" [ngSwitch]="medsession.status_to_physician">
+	<button
+          class="text-white bg-green-500 border-0 py-2 px-6 w-full
+		focus:outline-none hover:bg-green-600 rounded text-lg"
+          *ngSwitchCase="medsession.status_to_physician === 'STARTED' || medsession.status_to_physician === 'IN_PROGRESS' ? medsession.status_to_physician : '' "
+          (click)="openCallDialog()"
+        >
+          Receive Call
+        </button>
+      </div>
+
       <div class="card-footer content-center" [ngSwitch]="medsession.status">
         <button
           class="text-white bg-green-500 border-0 py-2 px-6 w-full
@@ -64,6 +76,9 @@
         </button>
         <span class="text-center" *ngSwitchDefault>Completed</span>
       </div>
+
+
+
     </div>
   </div>
 </div>

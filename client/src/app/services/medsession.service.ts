@@ -58,8 +58,16 @@ export class MedsessionService {
   // calling connect initializes the websocket
   connect(): void {
     if (!this.webSocket || this.webSocket.closed) {
-      this.webSocket = webSocket('ws://localhost:8080/marpay/');
+      // this.webSocket = webSocket('ws://localhost:8080/marpay/');
       // this.webSocket = webSocket('wss://localhost:8080/marpay/');
+
+    try {
+     this.webSocket = webSocket('ws://localhost:8080/marpay/')
+    }
+    catch (error) {
+     this.webSocket = webSocket('wss://localhost:8080/marpay/')
+    }
+
       this.messages = this.webSocket.pipe(share());
       this.messages.subscribe(message => console.log(message));
     }

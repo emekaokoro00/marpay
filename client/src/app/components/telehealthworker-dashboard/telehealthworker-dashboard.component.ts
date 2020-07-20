@@ -44,10 +44,10 @@ export class TelehealthworkerDashboardComponent implements OnInit, OnDestroy {
       this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
       this.medsessionService.connect();
       this.messages = this.medsessionService.messages.subscribe((message: any) => {
-      const medsession: Medsession = Medsession.create(message.data);
-      this.updateMedsessions(medsession);
-      this.updateToast(medsession);
-    });
+        const medsession: Medsession = Medsession.create(message.data);
+        this.updateMedsessions(medsession);
+        this.updateToast(medsession);
+      });
   }
 
   updateMedsessions(medsession: Medsession): void {
@@ -57,7 +57,7 @@ export class TelehealthworkerDashboardComponent implements OnInit, OnDestroy {
 
   updateToast(medsession: Medsession): void {
     if (medsession.session_telehealthworker === null) {
-      this.toastr.infoToastr(`Customer ${medsession.session_customer.username} has requested a medsession.`);
+      this.toastr.successToastr(`Customer ${medsession.session_customer.username} has requested a medsession.`);
     }
   }
 

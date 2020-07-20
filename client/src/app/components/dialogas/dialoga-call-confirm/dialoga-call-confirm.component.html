@@ -6,7 +6,7 @@
 	  <button mat-button (click)="onCancelClick()"
 		class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Go back</button>&nbsp;&nbsp;
 	  <button id="call_leave" mat-button cdkFocusInitial onclick="connectButtonHandler(event)"
-		class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Make call</button>
+		class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Join Call</button>
         </div>
       <!-- <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify.</p> -->
     </div>
@@ -17,8 +17,10 @@
 		<div id="container_vid" class="container_vid lg:w-1/2 px-6 mt-4 lg:mt-0">        
 		    <div id="local" class="participant"><div></div><div>Me</div></div> 
 			<hr>
+		    <div hidden id="username_host" class="inline-flex">{{data.user_host.username}}</div>
+		    <div hidden id="username_caller" class="inline-flex">{{data.user_caller.username}}</div>
+		    <div hidden id="username_callee" class="inline-flex">{{data.user_callee.username}}</div>
 		</div>
-		Hi, <div id="call_name" class="inline-flex">chk</div>
         </div>
       </div>
     </div>
