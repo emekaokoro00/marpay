@@ -18,14 +18,17 @@ from pathlib import Path  # python3 only
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+load_dotenv() # calls the .env file in the same folder as this settings.py
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'cb2@grv9u3lw(s)z1454egkf88jcbug-x*)^(ewlr95djh_ici'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['*']
@@ -36,8 +39,6 @@ ALLOWED_HOSTS = ['*']
 # 192.168.1.5' is the host computer ip address on a WLAN... this is for an actual phone to browse
 # .....ngrok.io is the ngrok address.. will always change per session use [./ngrok http 192.168.56.56:8000] in /home/emekaokoro]
 
-
-load_dotenv() # calls the .env file in the same folder as this settings.py
 
 # Application definition
 

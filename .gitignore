@@ -1,7 +1,7 @@
-# twilio specific
-#=================
-#stores twilio keys
+# stores django and twilio keys on server-side
+# stored in /home/emekaokoro/workspace/marpay/marpay/marpay/
 *.env
 
-#stores google keys
+# stores google keys
+# stored in /home/emekaokoro/workspace/marpay/client/src/environments/
 environment.ts
