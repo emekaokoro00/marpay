@@ -1,8 +1,9 @@
 # Reference the Dockerfiles to build into Docker image
 build:
   docker:
-    server: marpay/Dockerfile
-    web: client/Dockerfile
+    web: nginx/Dockerfile
+    marpay-server: marpay/Dockerfile
+    marpay-client: client/Dockerfile
 run:
-  server: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
-  web: ng serve --host 0.0.0.0
+  marpay-server: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
+  marpay-client: ng serve --host 0.0.0.0
