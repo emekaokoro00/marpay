@@ -1,9 +1,17 @@
 # Reference the Dockerfiles to build into Docker image
+setup:
+  addons:
+    - plan: heroku-postgresql
 build:
   docker:
     web: nginx/Dockerfile
     marpay-server: marpay/Dockerfile
     marpay-client: client/Dockerfile
+  config:
+   REQUIREMENTS_FILENAME: heroku.yml
+release:
+  image: web
 run:
+  web: nginx -g 'daemon off'
   marpay-server: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
   marpay-client: ng serve --host 0.0.0.0
