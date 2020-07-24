@@ -8,9 +8,11 @@ build:
     marpay-server: marpay/Dockerfile
     marpay-client: client/Dockerfile
   config:
-   REQUIREMENTS_FILENAME: heroku.yml
+    REQUIREMENTS_FILENAME: heroku.yml
 release:
   image: web
+  command:
+    - python manage.py collectstatic --noinput
 run:
   web: nginx -g 'daemon off'
   marpay-server: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
