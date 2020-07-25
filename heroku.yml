@@ -11,7 +11,7 @@ build:
 release:
   image: web
   command:
-    - sh release-tasks.sh
+    - sh ../release-tasks.sh
 run:
   marpay-server: daphne --bind 0.0.0.0 --port $PORT marpay.asgi:application
   web: nginx -g 'daemon off'
