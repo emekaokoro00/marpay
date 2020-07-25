@@ -10,6 +10,6 @@ build:
 release:
   image: web
   command:
-    - bash ./release-tasks.sh
+    - sh ./release-tasks.sh
 run:
   web: daphne --bind 0.0.0.0 --port $PORT marpay.asgi:application
