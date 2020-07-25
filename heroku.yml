@@ -12,4 +12,4 @@ release:
   command:
     - python manage.py collectstatic --noinput
 run:
-  web: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
+  web: daphne --bind 0.0.0.0 --port $PORT marpay.asgi:application
