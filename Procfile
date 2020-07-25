@@ -1,2 +1,2 @@
 
-web: daphne marpay.wsgi --log-file -
+web: daphne marpay.wsgi
