@@ -14,6 +14,6 @@ release:
   command:
     - python manage.py collectstatic --noinput
 run:
-  marpay: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
+  marpay-server: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
   marpay-client: ng serve --host 0.0.0.0
   web: nginx -g 'daemon off'
