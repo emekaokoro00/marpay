@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 // Serve only the static files form the src directory
-app.use(express.static(__dirname + '/src')); // or /src/website instead of /src
+app.use(express.static(__dirname + '/src/static')); // or /src/website instead of /src
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname + '/src/index.html'));
 });
