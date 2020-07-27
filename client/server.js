@@ -9,7 +9,7 @@ app.get('/*', function(req, res) {
 });
 
 console.log('listening ' + path.join(__dirname + '/src/index.html'));
-console.log('PORT ' + process.env.PORT));
+console.log('PORT ' + process.env.PORT);
 
 // Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8000);
