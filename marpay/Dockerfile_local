@@ -24,11 +24,3 @@ COPY . /usr/src/app
 # WORKDIR /usr/src/app
 
 RUN python manage.py collectstatic --noinput
-
-# add and run as non-root user
-RUN adduser -D myuser
-USER myuser
-
-# run daphne
-CMD daphne --bind 0.0.0.0:$PORT marpay.asgi:application
-# CMD gunicorn  --bind 0.0.0.0:$PORT marpay.wsgi:application
