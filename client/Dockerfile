@@ -35,3 +35,4 @@ COPY . /usr/src/app
 # CMD npm run start
 
 # CMD ng serve --host 0.0.0.0 --port $PORT
+CMD node server.js
