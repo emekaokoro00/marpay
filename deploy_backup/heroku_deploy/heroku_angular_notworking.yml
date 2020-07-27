@@ -4,7 +4,7 @@ setup:
     - plan: heroku-postgresql
 build:
   docker:
-    web: marpay/Dockerfile
+    web: client/Dockerfile
   config:
     REQUIREMENTS_FILENAME: heroku.yml
 release:
@@ -12,4 +12,4 @@ release:
   command:
     - sh ./release-tasks.sh
 run:
-  web: daphne --bind 0.0.0.0 --port $PORT marpay.asgi:application
+  web: ng serve --host 0.0.0.0
