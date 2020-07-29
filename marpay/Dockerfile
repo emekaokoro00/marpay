@@ -30,6 +30,6 @@ RUN adduser -D myuser
 USER myuser
 
 # run daphne
-CMD daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
-# CMD daphne --bind 0.0.0.0 --port $PORT marpay.asgi:application
+# CMD daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
+CMD daphne --bind 0.0.0.0 --port $PORT marpay.asgi:application
 # CMD gunicorn  --bind 0.0.0.0:$PORT marpay.wsgi:application
