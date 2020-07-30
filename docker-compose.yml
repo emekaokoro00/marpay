@@ -8,8 +8,10 @@ services:
   marpay-server:
     build:
       context: ./marpay
+      dockerfile: Dockerfile_dev
     volumes:
-      - ./marpay:/usr/src/app
+      - media:/usr/src/app/media
+      - static:/usr/src/app/static
     command: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
     container_name: marpay-server
     depends_on:
@@ -22,6 +24,7 @@ services:
   marpay-client:
     build:
       context: ./client
+      dockerfile: Dockerfile_dev
     volumes:
       - ./client:/usr/src/app
     command: ng serve --host 0.0.0.0
@@ -36,6 +39,7 @@ services:
   nginx:
     build:
       context: ./nginx
+      dockerfile: Dockerfile_dev
     container_name: marpay-nginx
     depends_on:
       - marpay-server
