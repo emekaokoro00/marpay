@@ -184,8 +184,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '../static') # change back when using nginx to manage Django, Angular, Redis locally or in production
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static') # use when using only Django
+# STATIC_ROOT = os.path.join(BASE_DIR, '../static') # change back when using nginx to manage Django, Angular, Redis locally or in production
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # use when using only Django
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates/static"), # for django serving

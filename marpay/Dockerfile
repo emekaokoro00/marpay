@@ -24,6 +24,8 @@ COPY . /usr/src/app
 # WORKDIR /usr/src/app
 
 RUN python manage.py collectstatic --noinput
+# after copying to static file (from django settings), also copy from root static to marpay static... this is for serving django
+# COPY /usr/src/static
 
 # add and run as non-root user
 RUN adduser -D myuser
