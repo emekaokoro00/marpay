@@ -115,7 +115,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       width: '300px',
       height: '250px',
       // data: { address: this.address }
-      data: { address: '100 Independence Avenue, Quincy MA 02169' }
+      data: { address: '101 Independence Avenue, Quincy MA 02169' }
     });
 
     dialogRef.afterClosed().subscribe(result => {

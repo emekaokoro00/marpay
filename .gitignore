@@ -5,3 +5,4 @@
 # stores google keys
 # stored in /home/emekaokoro/workspace/marpay/client/src/environments/
 environment.ts
+environment.prod.ts

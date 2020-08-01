@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 import { map, share } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 import { User } from './auth.service';
 
@@ -59,14 +60,9 @@ export class MedsessionService {
   connect(): void {
     if (!this.webSocket || this.webSocket.closed) {
       // this.webSocket = webSocket('ws://localhost:8080/marpay/');
-      // this.webSocket = webSocket('wss://localhost:8080/marpay/');
-
-    try {
-     this.webSocket = webSocket('ws://localhost:8080/marpay/')
-    }
-    catch (error) {
-     this.webSocket = webSocket('wss://localhost:8080/marpay/')
-    }
+      // this.webSocket = webSocket('ws://marpay.herokuapp.com/marpay/');
+      
+      this.webSocket = webSocket(environment.WEBSOCKET_ADDRESS); //from environment config file
 
       this.messages = this.webSocket.pipe(share());
       this.messages.subscribe(message => console.log(message));
