@@ -90,18 +90,26 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         medsession_id = f'{medsession.id}' # get medsession.id and quickly convert to string literal
         medsession_data =  await self._get_medsession_data(medsession)
         
-        # Send updates to customers that subscribe to this trip.
+        # Send updates to customer that subscribe to this session.
         await self.channel_layer.group_send(group=medsession_id, message={
             'type': 'echo.message',
             'data': medsession_data
         })
-           
+                      
+        # if first time calling update_medsession
         if medsession_id not in self.medsessions:
             self.medsessions.add(medsession_id)
             await self.channel_layer.group_add(
                 group=medsession_id,
                 channel=self.channel_name
-            )
+            )   
+                             
+            # Send update to all telehealthworkers
+            # this helps remove in real time requestd session from dashboard of all other THWs apart from the main one
+            await self.channel_layer.group_send(group='telehealthworker_channel_group', message={
+                'type': 'echo.message',
+                'data': medsession_data
+            })
         
 #         if True: # check if the thw should be updated
 #             await self.update_channel_telehealthworker(medsession_id, medsession_data)

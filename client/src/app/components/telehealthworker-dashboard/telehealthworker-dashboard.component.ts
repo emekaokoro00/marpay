@@ -27,9 +27,16 @@ export class TelehealthworkerDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  get requestedMedsessions(): Medsession[] {
+  get requestedMedsessions_temp(): Medsession[] {
     return this.medsessions.filter(medsession => {
       return medsession.status === 'REQUESTED';
+    });
+  }
+
+  get requestedMedsessions(): Medsession[] {
+    return this.medsessions.filter(medsession => {
+      // to let all THWs see intil request, but then remove it once a THW responds
+      return medsession.status === 'REQUESTED' && medsession.session_telehealthworker === null;
     });
   }
 
