@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Subscription } from 'rxjs';
 
-import { DialogaAddressConfirmComponent } from '../dialoga-address-confirm/dialoga-address-confirm.component';
+import { DialogaAddressConfirmComponent } from '../dialogas/dialoga-address-confirm/dialoga-address-confirm.component';
 
 import { Medsession, MedsessionService } from '../../services/medsession.service';
 
@@ -67,13 +67,6 @@ export class LandingComponent implements OnInit, OnDestroy {
     });
   }
 
-  get requestedMedsessions(): Medsession[] {
-    return this.medsessions.filter(medsession => {
-      return medsession.status === 'REQUESTED';
-    });
-  }
-
-
   ngOnInit(): void {
     this.current_user = User.getUser();
     if (!this.current_user) { return; }
@@ -103,6 +96,13 @@ export class LandingComponent implements OnInit, OnDestroy {
       });
     }
 
+  }
+
+  ngOnDestroy(): void {
+   if (!this.current_user) { return; }
+   if (this.current_user.current_group === 'telehealthworker') {
+     this.messages.unsubscribe();
+   }
   }
 
 // customer_section///////////////////////////////////////////////////////////
@@ -138,6 +138,12 @@ export class LandingComponent implements OnInit, OnDestroy {
 
 // telehealthworker_section///////////////////////////////////////////////////////////
 
+  get requestedMedsessions(): Medsession[] {
+    return this.medsessions.filter(medsession => {
+      return medsession.status === 'REQUESTED';
+    });
+  }
+
   updateMedsessions(medsession: Medsession): void {
     this.medsessions = this.medsessions.filter(thisMedsession => thisMedsession.id !== medsession.id);
     this.medsessions.push(medsession);
@@ -147,13 +153,6 @@ export class LandingComponent implements OnInit, OnDestroy {
     if (medsession.session_telehealthworker === null) {
       this.toastr.successToastr(`Customer ${medsession.session_customer.username} has requested a medsession.`);
     }
-  }
-
-  ngOnDestroy(): void {
-   if (!this.current_user) { return; }
-   if (this.current_user.current_group === 'telehealthworker') {
-     this.messages.unsubscribe();
-   }
   }
 
 }

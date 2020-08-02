@@ -1,6 +1,4 @@
 <div *ngIf="getUser(); then thenBlock; else elseBlock;"></div>
-<!-- <div class="middle-center">
-</div> USE THIS FOR THE VIDEO CALL DIV -->
   <ng-template #thenBlock>
     <app-topmenu-card class="card mb-3"></app-topmenu-card>
     <!-- <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span> -->
@@ -11,7 +9,7 @@
 			<form #requestForm="ngForm" novalidate (ngSubmit)="openDialog()"><!-- changed from onSubmit() -->
 			<div class="flex justify-center">
 			<button type="submit"
-						[disabled]="!requestForm.form.valid"
+				[disabled]="!requestForm.form.valid"
 				class="inline-flex text-white bg-green-500 border-0 py-2 px-12 
 				focus:outline-none hover:bg-green-600 rounded text-lg">Request Session</button>
 			<!-- <button [routerLink]="['customer/request']" class="ml-4 inline-flex text-white bg-green-300 border-0 py-2 px-6 

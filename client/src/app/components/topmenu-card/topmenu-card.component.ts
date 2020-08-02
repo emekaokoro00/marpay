@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../../services/auth.service';
-// import {Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-topmenu-card',
@@ -9,7 +9,7 @@ import { AuthService, User } from '../../services/auth.service';
 })
 export class TopmenuCardComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router : Router) { }
 
   getUser(): User {
     return User.getUser();
@@ -24,6 +24,12 @@ export class TopmenuCardComponent implements OnInit {
     return User.isPhysician();
   }
   logOut(): void {
+    // this.router.navigate(['/']);
+    this.authService.logOut().subscribe(() => {}, (error) => {
+      console.error(error);
+    });
+  }
+  logOutCustom(): void { //used this approach so as to perform logic before redirecting
     // this.router.navigate(['/']);
     this.authService.logOut().subscribe(() => {}, (error) => {
       console.error(error);

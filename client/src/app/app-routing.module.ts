@@ -38,7 +38,7 @@ export const appRoutes: Routes = [
       { path: 'log-in', component: LogInComponent },
       {     path: 'customer', 
 	    component: CustomerComponent , 
-	    canActivate: [ IsCustomer ],
+	    canActivate: [ AuthguardService, IsCustomer ],
 	    children: [
 	      { path: 'request', 
 		component: CustomerRequestComponent
@@ -55,7 +55,7 @@ export const appRoutes: Routes = [
       },
       {     path: 'telehealthworker', 
 	    component: TelehealthworkerComponent,
-            canActivate: [ IsTelehealthworker ],
+            canActivate: [ AuthguardService, IsTelehealthworker ],
 	    children: [
 	      {
 	        path: ':id',
@@ -71,7 +71,7 @@ export const appRoutes: Routes = [
       },
       {     path: 'physician', 
 	    component: PhysicianComponent,
-            canActivate: [ IsPhysician ],
+            canActivate: [ AuthguardService, IsPhysician ],
 	    children: [
 	      {
 	        path: ':id',

@@ -32,6 +32,15 @@ export class User {
 	  return null;
 	}
 
+	static isAnyUser(): boolean {
+	  const user = User.getUser();
+	  if (user === null) {
+	    return false;
+	  }
+	  return true;
+	}
+
+
 	static isCustomer(): boolean {
 	  const user = User.getUser();
 	  if (user === null) {
