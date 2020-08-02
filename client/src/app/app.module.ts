@@ -34,6 +34,7 @@ import { MedsessionListResolver } from './services/medsession-list.resolver';
 import { AppComponent } from './app.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { LogInComponent } from './components/log-in/log-in.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
@@ -71,7 +72,8 @@ import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-
     TopmenuCardComponent,
     DialogaAddressConfirmComponent,
     DialogaSessionDetailsComponent,
-    DialogaCallConfirmComponent
+    DialogaCallConfirmComponent,
+    UserProfileComponent
   ],
   entryComponents: [
      DialogaAddressConfirmComponent

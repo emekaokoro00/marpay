@@ -12,6 +12,7 @@ import { MedsessionListResolver } from './services/medsession-list.resolver';
  
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { LogInComponent } from './components/log-in/log-in.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
@@ -32,10 +33,14 @@ export const appRoutes: Routes = [
       {     path: '', 
 	    component: LandingComponent,
 	    canActivate: [ AuthguardService ],
-	    // resolve: { medsessions: MedsessionListResolver }  //<thw_landing>
+	    // resolve: { medsessions: MedsessionListResolver }  //<thw_medesession_in_landing>
       },
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },
+      {     path: 'user-profile', 
+	    component: UserProfileComponent , 
+	    canActivate: [ AuthguardService ]
+      },
       {     path: 'customer', 
 	    component: CustomerComponent , 
 	    canActivate: [ AuthguardService, IsCustomer ],

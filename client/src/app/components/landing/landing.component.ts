@@ -86,7 +86,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       // get address here
     }
     else if (this.current_user.current_group === 'telehealthworker'){
-/*    //<thw_landing>
+/*    //<thw_medesession_in_landing>
       this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
 
       // connect to service
@@ -103,7 +103,7 @@ export class LandingComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
    if (!this.current_user) { return; }
    if (this.current_user.current_group === 'telehealthworker') {
-     // this.messages.unsubscribe(); //<thw_landing>
+     // this.messages.unsubscribe(); //<thw_medesession_in_landing>
    }
   }
 
