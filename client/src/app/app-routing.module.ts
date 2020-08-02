@@ -32,7 +32,7 @@ export const appRoutes: Routes = [
       {     path: '', 
 	    component: LandingComponent,
 	    canActivate: [ AuthguardService ],
-	    resolve: { medsessions: MedsessionListResolver }
+	    // resolve: { medsessions: MedsessionListResolver }  //<thw_landing>
       },
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },

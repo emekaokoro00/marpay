@@ -29,7 +29,7 @@ export class PhysicianDashboardComponent implements OnInit, OnDestroy {
 
   get requestedMedsessions(): Medsession[] {
     return this.medsessions.filter(medsession => {
-      return medsession.session_telehealthworker !== null && medsession.status_to_physician === 'REQUESTED';
+      return medsession.session_telehealthworker !== null && medsession.status_to_physician === 'REQUESTED' && medsession.status !== 'COMPLETED';
       // return medsession.status_to_physician === 'REQUESTED';
     });
   }

@@ -86,14 +86,16 @@ export class LandingComponent implements OnInit, OnDestroy {
       // get address here
     }
     else if (this.current_user.current_group === 'telehealthworker'){
-    // else {
+/*    //<thw_landing>
       this.route.data.subscribe((data: {medsessions: Medsession[]}) => this.medsessions = data.medsessions);
+
+      // connect to service
       this.medsessionService.connect();
       this.messages = this.medsessionService.messages.subscribe((message: any) => {
         const medsession: Medsession = Medsession.create(message.data);
         this.updateMedsessions(medsession);
         this.updateToast(medsession);
-      });
+      });*/
     }
 
   }
@@ -101,7 +103,7 @@ export class LandingComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
    if (!this.current_user) { return; }
    if (this.current_user.current_group === 'telehealthworker') {
-     this.messages.unsubscribe();
+     // this.messages.unsubscribe(); //<thw_landing>
    }
   }
 

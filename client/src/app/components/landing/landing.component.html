@@ -1,7 +1,7 @@
 <div *ngIf="getUser(); then thenBlock; else elseBlock;"></div>
   <ng-template #thenBlock>
     <app-topmenu-card class="card mb-3"></app-topmenu-card>
-    <!-- <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span> -->
+    <span> {{ getUser().current_group }}, {{ getUser().first_name }} </span>
 	<div *ngIf="isCustomer(); then customerBlock; else otherUserGroupBlock;"></div>
 	<ng-template #customerBlock>
 		<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
@@ -32,7 +32,8 @@
 	<ng-template #otherUserGroupBlock>		
 		<div *ngIf="isTelehealthworker(); then telehealthworkerBlock; else otherBlock;"></div>
 		<ng-template #telehealthworkerBlock>
-			<div class="justify-center" id="modal-book"> <!-- took out "flex" -->
+			<div class="justify-center">Go to Sessions to view THW requests </div>
+			<!--<div class="justify-center" id="modal-book">
 				<div class="row">
 					<div class="col-lg-12">
 						<nav>
@@ -48,10 +49,10 @@
 						></app-medsession-card>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</ng-template>
 		<ng-template #otherBlock>
-			<div class="justify-center"> GOT TO PHYSICIAN </div>
+			<div class="justify-center"> Go to Sessions to view Physician requests </div>
 		</ng-template>
 	</ng-template>
 

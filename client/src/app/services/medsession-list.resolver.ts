@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { Medsession, MedsessionService } from '../services/medsession.service';
 
-import { AuthService, User } from '../services/auth.service';
+// import { AuthService, User } from '../services/auth.service';
 
 
 @Injectable({
@@ -14,7 +14,7 @@ export class MedsessionListResolver implements Resolve<Medsession[]> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Medsession[]> {
     // use this to get the set of medsessions the thw should see (as opposed to all medsessions)
-    // return this.medsessionService.getMedsessions();
-    if (User.isAnyUser()) { return this.medsessionService.getMedsessions(); }
+    return this.medsessionService.getMedsessions();
+    // if (User.isAnyUser()) { return this.medsessionService.getMedsessions(); }
   }
 }
