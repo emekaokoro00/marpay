@@ -12,10 +12,13 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from _datetime import datetime
 
-from django.contrib.auth import get_user_model, login, logout # new
-from django.contrib.auth.forms import AuthenticationForm # new
-from rest_framework import generics, permissions, status, views # new
+from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from rest_framework import generics, permissions, status, views, viewsets
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import UpdateModelMixin
+from rest_framework.decorators import action
 
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant
@@ -24,7 +27,7 @@ from twilio.jwt.client import ClientCapabilityToken
 from .models import MyUser, Role, CustomerDetails
 # from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
-from .serializers import MyUserSerializer
+from .serializers import MyUserSerializer, MyUserUpdateSerializer
 
 
 # currently store in /home/emekaokoro/workspace/marpay/marpay/marpay/.env
@@ -71,7 +74,9 @@ def get_physician_list(request):
         data['html_user_physician_list'] = render_to_string('myuser/user_physician_list.html', {'user_physician_list': user_physician_list }) 
         return JsonResponse(data)
     return JsonResponse({"success":False}, status=400)
-        
+ 
+#========================================================================================
+       
 def start_call(request):
     user_name = json.loads(request.body.decode("utf-8")).get('user_name')
     room_name = json.loads(request.body.decode("utf-8")).get('room_name')
@@ -83,6 +88,7 @@ def start_call(request):
 
     return JsonResponse({'token': token.to_jwt().decode()})
 
+#========================================================================================
 
 class SignUpView(CreateView):
     form_class = SignUpForm
@@ -112,12 +118,48 @@ class LogOutAPIView(views.APIView):
     def post(self, *args, **kwargs):
         logout(self.request)
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
+# class MyUserProfileAPIView(viewsets.ModelViewSet):
+#     queryset =  get_user_model().objects.all()   
+#     serializer_class = MyUserSerializer
+    
+class MyUserProfileAPIView(GenericAPIView):
+    queryset =  get_user_model().objects.all()   
+    serializer_class = MyUserSerializer
+    
+    def get_object(self, pk):
+        return get_user_model().objects.get(pk=pk)
 
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = MyUserSerializer(user)
+        return Response(serializer.data)
+    
+class MyUserProfilePartialUpdateAPIView(GenericAPIView, UpdateModelMixin):
+    queryset =  get_user_model().objects.all()
+    serializer_class = MyUserUpdateSerializer
+
+    def get_object(self, pk):
+        return get_user_model().objects.get(pk=pk)
+
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = MyUserUpdateSerializer(user)
+        return Response(serializer.data)
         
-# class LoginPageView(TemplateView):
-#     template_name = "registration/login.html"
-#     def post(self, request, **kwargs):     
-#         print(request)
+    def put(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        save_user = self.get_object(pk=pk)
+        data =request.data
+        serializer = MyUserUpdateSerializer(instance=save_user,data=data,partial=True)
+        if serializer.is_valid(): 
+            allowance_saved = serializer.save()
+            return Response({"success":"User '{}' updated successfully".format(allowance_saved.id)})
+        else:
+            return Response({"fail":"'{}'".format(serializer.errors)}) 
+
+#========================================================================================
 
 class TestPageView(TemplateView): 
     template_name = 'testpage.html'
@@ -183,8 +225,7 @@ class MyUserDetailView(LoginRequiredMixin, DetailView):
         context['is_thw'] = thw_role in self.request.user.roles.all()
         context['is_physician'] = physician_role in self.request.user.roles.all()
         return context
- 
- 
+  
 class MyUserCustomerDetailsUpdateView(UpdateView):
     template_name = 'myuser/myuser_update.html'
     template_redirect = 'myuser/myuser_detail.html'

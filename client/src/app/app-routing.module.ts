@@ -13,6 +13,8 @@ import { MedsessionListResolver } from './services/medsession-list.resolver';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserProfileDetailComponent } from './components/user-profile-detail/user-profile-detail.component';
+import { UserProfileUpdateComponent } from './components/user-profile-update/user-profile-update.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
@@ -29,7 +31,6 @@ import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.com
  
  
 export const appRoutes: Routes = [
-      //{ path: '', component: LandingComponent },
       {     path: '', 
 	    component: LandingComponent,
 	    canActivate: [ AuthguardService ],
@@ -39,7 +40,15 @@ export const appRoutes: Routes = [
       { path: 'log-in', component: LogInComponent },
       {     path: 'user-profile', 
 	    component: UserProfileComponent , 
-	    canActivate: [ AuthguardService ]
+	    canActivate: [ AuthguardService ],
+	    children: [
+	      { path: 'update', 
+		component: UserProfileUpdateComponent
+	      },
+	      { path: '', 
+		component: UserProfileDetailComponent
+	      }
+	    ]
       },
       {     path: 'customer', 
 	    component: CustomerComponent , 

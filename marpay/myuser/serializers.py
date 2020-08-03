@@ -5,6 +5,15 @@ from .models import Role
 
 import sys
 
+
+class MyUserUpdateSerializer(serializers.ModelSerializer):    
+  
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id', 'first_name', 'last_name'
+        )
+        read_only_fields = ('id',)
   
 
 class MyUserSerializer(serializers.ModelSerializer):
@@ -20,10 +29,11 @@ class MyUserSerializer(serializers.ModelSerializer):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError('Passwords must match.')
         return data
-
+    
 #     def update(self, instance, validated_data):
-#         mode_of_payment = validated_data.pop('mode_of_payment')
-#         instance.mode_of_payment_id = mode_of_payment.id
+#         instance.first_name = validated_data.get('first_name', instance.first_name)
+#         instance.last_name = validated_data.get('last_name', instance.last_name)
+#         instance.save()
 #         return instance
 
     def create(self, validated_data):

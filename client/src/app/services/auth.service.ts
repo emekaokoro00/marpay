@@ -71,7 +71,9 @@ export class User {
   providedIn: 'root'
 })
 export class AuthService {
-	constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
 	signUp(
 	    username: string,

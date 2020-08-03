@@ -35,6 +35,8 @@ import { AppComponent } from './app.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserProfileDetailComponent } from './components/user-profile-detail/user-profile-detail.component';
+import { UserProfileUpdateComponent } from './components/user-profile-update/user-profile-update.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
@@ -58,6 +60,9 @@ import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-
     SignUpComponent,
     LogInComponent,
     LandingComponent,
+    UserProfileComponent,
+    UserProfileDetailComponent,
+    UserProfileUpdateComponent,
     CustomerComponent,
     CustomerDashboardComponent,
     CustomerRequestComponent,
@@ -72,8 +77,7 @@ import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-
     TopmenuCardComponent,
     DialogaAddressConfirmComponent,
     DialogaSessionDetailsComponent,
-    DialogaCallConfirmComponent,
-    UserProfileComponent
+    DialogaCallConfirmComponent
   ],
   entryComponents: [
      DialogaAddressConfirmComponent

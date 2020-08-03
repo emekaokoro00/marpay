@@ -1,0 +1,43 @@
+
+<section class="text-gray-700 body-font overflow-hidden">
+  <div class="container px-5 py-8 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">PROFILE</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ current_user.username }}</h1>
+	<div class="flex border-t border-gray-300 py-2">
+          <span class="text-gray-500">Name</span>
+          <span class="ml-auto text-gray-900">{{ current_user.first_name }} {{ current_user.last_name }}</span>
+        </div>
+        <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Current Group</span>
+          <span class="ml-auto text-gray-900">{{ current_user.current_group }}</span>
+        </div>
+        <div class="flex flex-row-reverse justify-center">
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex cursor-pointer" (click)=toggleDisplayDiv()>More...</a>
+          <a class="text-lg text-center lex">&nbsp;&nbsp;|&nbsp;&nbsp;</a>
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" [routerLink]="['./update']">Edit Profile</a>
+          <a class="text-lg text-center lex">&nbsp;&nbsp;|&nbsp;&nbsp;</a>
+          <a class="text-lg text-green-500 hover:text-green-700 text-center lex" href="#">Medical History</a>  
+        </div>
+        <div class="flex flex-row-reverse">
+			<div [hidden]="isDivHidden">This is It Div.</div>
+			<!--<div id="div_more_buttons" class='hidden'>
+			
+		      <form method="POST">
+			  {% csrf_token %}			
+			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser:myuser_register_thw_confirm' %}">			  
+				{% if is_thw %} De-register as THW {% else %} Register as THW {% endif %}
+			  </a>			  			
+			  <a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser:myuser_register_physician_confirm' %}">			  
+				{% if is_physician %} De-register as Physician {% else %} Register as Physician {% endif %}
+			  </a>
+			  </form>
+			  
+			</div> -->       
+        </div>
+      </div>
+      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">
+    </div>
+  </div>
+</section> 

@@ -5,7 +5,6 @@ import { Medsession, MedsessionService } from '../services/medsession.service';
 
 // import { AuthService, User } from '../services/auth.service';
 
-
 @Injectable({
   providedIn: 'root'
 })

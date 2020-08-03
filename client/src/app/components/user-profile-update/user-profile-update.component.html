@@ -1,0 +1,35 @@
+<section class="text-gray-700 body-font">
+
+  <div class="container px-5 py-8 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">UPDATE PROFILE</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ current_user.username }}</h1>
+
+	  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+	    <!-- <div class="hidden">
+	      <input type="text" formControlName="id" placeholder="id" name="id" class="form-control" id="id">
+	    </div>-->
+		<div class="form-group mb-6 border-gray-300 py-2">
+		  <label for="firstName" class="text-gray-500">First Name:</label>
+		  <input type="text" formControlName="firstName" placeholder="firstName" name="firstName" class="form-control ml-auto text-gray-900" id="firstName" [(ngModel)]="userData.firstName">
+		</div>
+		<div class="form-group mb-6 border-gray-300 py-2">
+		  <label for="lastName" class="text-gray-500">Last Name:</label>
+		  <input type="text" formControlName="lastName" placeholder="lastName" name="lastName" class="form-control ml-auto text-gray-900" id="lastName" [(ngModel)]="userData.lastName">
+		</div>
+		<!--<div class="form-group mb-6 border-gray-300 py-2">
+		  <label for="current_group" class="text-gray-500">Current Group:</label>
+		  <input type="text" formControlName="current_group" placeholder="current_group" name="current_group" class="form-control ml-auto text-gray-900" id="current_group">
+		</div>-->
+		<div class="flex justify-center">
+		    <button class="inline-flex text-white bg-green-500 border-0 py-2 px-12 
+				focus:outline-none hover:bg-green-600 rounded text-lg" type="submit" [disabled]="false">Update</button>
+		</div>
+	  </form>
+
+      </div>
+    </div>
+  </div>
+
+</section>
