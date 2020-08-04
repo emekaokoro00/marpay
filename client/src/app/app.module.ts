@@ -50,6 +50,7 @@ import { PhysicianDashboardComponent } from './components/physician-dashboard/ph
 import { PhysicianDetailComponent } from './components/physician-detail/physician-detail.component';
 import { MedsessionCardComponent } from './components/medsession-card/medsession-card.component';
 import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.component';
+import { DialogaConfirmComponent } from './components/dialogas/dialoga-confirm/dialoga-confirm.component';
 import { DialogaAddressConfirmComponent } from './components/dialogas/dialoga-address-confirm/dialoga-address-confirm.component';
 import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-session-details/dialoga-session-details.component';
 import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-confirm/dialoga-call-confirm.component';
@@ -75,6 +76,7 @@ import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-
     PhysicianDetailComponent,
     MedsessionCardComponent,
     TopmenuCardComponent,
+    DialogaConfirmComponent,
     DialogaAddressConfirmComponent,
     DialogaSessionDetailsComponent,
     DialogaCallConfirmComponent

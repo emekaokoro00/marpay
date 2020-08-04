@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService, User } from '../../services/auth.service';
 import {UserProfileService} from "../../services/user-profile.service";
+
+import { DialogaConfirmComponent } from '../dialogas/dialoga-confirm/dialoga-confirm.component';
 
 @Component({
   selector: 'app-user-profile-detail',
@@ -13,7 +16,8 @@ export class UserProfileDetailComponent implements OnInit {
   otherGroup: string = 'Customer';
 
   constructor(
-     private userProfileService: UserProfileService
+    public matdialog: MatDialog,
+    private userProfileService: UserProfileService
   ) { }
 
   isTelehealthworker(): boolean {
@@ -37,11 +41,23 @@ export class UserProfileDetailComponent implements OnInit {
     this.user.current_group !== 'telehealthworker' ? this.user.current_group = 'telehealthworker' : this.user.current_group = 'customer';
     this.userProfileService.updateUser(this.user)
      .subscribe(() => {
-       alert('successful');
+       // alert('successful');
      }, error => {
        console.error(error);
     });
-    
+  }    
+
+  toggleTHWDialog(): void {
+    const dialogRef = this.matdialog.open(DialogaConfirmComponent, {
+      width: '300px',
+      height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Ok') {
+         this.toggleTHW();
+	};
+    });
   }
 
 }

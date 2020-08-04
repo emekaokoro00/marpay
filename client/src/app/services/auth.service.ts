@@ -65,7 +65,7 @@ export class User {
 	  if (user === null) {
 	    return false;
 	  }
-	  return user.groups.includes(2);
+	  return user.groups.includes(2); // 2 is group number for THW
 	}
 
 	static isPhysician(): boolean {

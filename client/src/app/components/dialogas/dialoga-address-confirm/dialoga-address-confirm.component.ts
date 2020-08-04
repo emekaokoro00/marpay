@@ -13,8 +13,6 @@ export interface DialogData {
 })
 export class DialogaAddressConfirmComponent implements OnInit {
 
-    // constructor() {}
-
   constructor(
     public dialogRef: MatDialogRef<DialogaAddressConfirmComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
