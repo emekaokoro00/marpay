@@ -10,6 +10,7 @@ export class User {
 	    public first_name?: string,
 	    public last_name?: string,
     	    public current_group?: string,
+    	    public groups?: string[],
 	    public current_role?: string
 	) {}
 
@@ -20,6 +21,7 @@ export class User {
 	      data.first_name,
 	      data.last_name,
       	      data.current_group,
+      	      data.groups,
       	      data.current_role
 	    );
 	}
@@ -56,6 +58,14 @@ export class User {
 	    return false;
 	  }
 	  return user.current_group === 'telehealthworker';
+	}
+
+	static canBeTelehealthworker(): boolean {
+	  const user = User.getUser();
+	  if (user === null) {
+	    return false;
+	  }
+	  return user.groups.includes(2);
 	}
 
 	static isPhysician(): boolean {

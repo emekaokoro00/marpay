@@ -6,19 +6,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { User } from './auth.service';
 
 
-
-class UserToSave {
-  constructor(
-    public first_name?: string,
-    public last_name?: string,
-  ) {}
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
-  userToSave: UserToSave = new UserToSave();
 
   private httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' })}
 
@@ -33,16 +24,11 @@ export class UserProfileService {
     );
   }
 
-  updateUser(id: number, firstName: string, lastName: string): Observable<User> {
-    const url = `/api/myuser/${id}/update/`;
-
-    this.userToSave.first_name = firstName;
-    this.userToSave.last_name = lastName;
-    console.log(JSON.stringify(this.userToSave));
-
-    return this.http.put<User>(url, JSON.stringify(this.userToSave), this.httpOptions).pipe(
-      tap(_ => 
-         console.log(`updated hero id=${id}`)
+  updateUser(user: User): Observable<User> {
+    const url = `/api/myuser/${user.id}/`;
+    // console.log(JSON.stringify(user));
+    return this.http.put<User>(url, JSON.stringify(user), this.httpOptions).pipe(
+      tap(updated_user => localStorage.setItem('marpay.user', JSON.stringify(updated_user))
          )
     );
   }

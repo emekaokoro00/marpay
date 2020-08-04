@@ -120,9 +120,9 @@ class LogOutAPIView(views.APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     
-# class MyUserProfileAPIView(viewsets.ModelViewSet):
-#     queryset =  get_user_model().objects.all()   
-#     serializer_class = MyUserSerializer
+class MyUserProfileCRUDAPIView(viewsets.ModelViewSet):
+    queryset =  get_user_model().objects.all()   
+    serializer_class = MyUserSerializer
     
 class MyUserProfileAPIView(GenericAPIView):
     queryset =  get_user_model().objects.all()   
@@ -135,27 +135,15 @@ class MyUserProfileAPIView(GenericAPIView):
         user = self.get_object(pk)
         serializer = MyUserSerializer(user)
         return Response(serializer.data)
-    
-class MyUserProfilePartialUpdateAPIView(GenericAPIView, UpdateModelMixin):
-    queryset =  get_user_model().objects.all()
-    serializer_class = MyUserUpdateSerializer
-
-    def get_object(self, pk):
-        return get_user_model().objects.get(pk=pk)
-
-    def get(self, request, pk, format=None):
-        user = self.get_object(pk)
-        serializer = MyUserUpdateSerializer(user)
-        return Response(serializer.data)
         
     def put(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk')
-        save_user = self.get_object(pk=pk)
-        data =request.data
-        serializer = MyUserUpdateSerializer(instance=save_user,data=data,partial=True)
+        user = self.get_object(pk=pk)
+        serializer = MyUserUpdateSerializer(instance=user,data=request.data,partial=True) # this is to do a PATCH rather than a PUT
         if serializer.is_valid(): 
-            allowance_saved = serializer.save()
-            return Response({"success":"User '{}' updated successfully".format(allowance_saved.id)})
+            serializer.save()
+            # return Response({"success":"User '{}' updated successfully".format(allowance_saved.id)})
+            return Response(serializer.data)
         else:
             return Response({"fail":"'{}'".format(serializer.errors)}) 
 

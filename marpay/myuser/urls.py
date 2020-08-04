@@ -9,7 +9,7 @@ from rest_framework import routers
 app_name = 'myuser' # if not included, it gives error 'Specifying a namespace in include() without providing an app_name '
 
 router = routers.DefaultRouter()
-router.register(r'', views.MyUserProfileAPIView, 'myuser')
+router.register(r'', views.MyUserProfileCRUDAPIView, 'myuser')
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
@@ -28,9 +28,13 @@ urlpatterns = [
     path('start_call/', views.start_call, name='start_call'),
     
     #-----------API CALLS------------------------
+    
+    # client - > URL -> VIEW (serializer, etc)
            
     # path('', include(router.urls)), # TO USE ALL CRUD AT ONCE
+    # # or indiviually 
+    # path('', views.MyUserProfileAPIView.as_view(), name='api_list'),
     path('<int:pk>/', views.MyUserProfileAPIView.as_view(), name='api_details'),
-    path('<int:pk>/update/', views.MyUserProfilePartialUpdateAPIView.as_view(), name='api_update'),
+    # path('<int:pk>/update/', views.MyUserProfilePartialUpdateAPIView.as_view(), name='api_update'),
     
 ]

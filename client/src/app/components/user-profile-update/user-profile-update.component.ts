@@ -22,7 +22,7 @@ class UserData {
 })
 export class UserProfileUpdateComponent implements OnInit {
 
-  current_user: User;
+  user: User;
   userData: UserData = new UserData();
   updateForm: FormGroup;
   constructor(
@@ -32,13 +32,11 @@ export class UserProfileUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.current_user = User.getUser();
-    localStorage.setItem('marpay.user', JSON.stringify(this.current_user))
-    console.log(JSON.stringify(this.current_user))
+    this.user = User.getUser();
 
-    // this.userData.id = this.current_user.id;
-    this.userData.firstName = this.current_user.first_name;
-    this.userData.lastName = this.current_user.last_name;
+    // initial value of userData
+    this.userData.firstName = this.user.first_name;
+    this.userData.lastName = this.user.last_name;
 
     this.updateForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -46,19 +44,17 @@ export class UserProfileUpdateComponent implements OnInit {
     });
 
     this.updateForm.setValue(this.userData);
-    //this.userProfileService.getUser(this.current_user.id).subscribe( data => {
-    //    this.updateForm.setValue(data);
-    //  });
   }
 
   
   onSubmit(){
-    this.current_user.first_name = this.userData.firstName;
-    this.current_user.last_name = this.userData.lastName;
-    this.userProfileService.updateUser(this.current_user.id, this.userData.firstName, this.userData.lastName)
+    // final value of userData
+    this.user.first_name = this.userData.firstName;
+    this.user.last_name = this.userData.lastName;
+
+    this.userProfileService.updateUser(this.user)
      //.pipe(first())
      .subscribe(() => {
-       this.current_user = User.getUser();
        this.router.navigate(['/user-profile']);
      }, error => {
        console.error(error);

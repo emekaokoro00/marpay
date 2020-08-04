@@ -8,12 +8,21 @@ import { AuthService, User } from '../../services/auth.service';
 })
 export class UserProfileDetailComponent implements OnInit {
 
-  current_user: User = new User();
+  user: User = new User();
+  cannotBeTHW: boolean = true;
 
   constructor() { }
 
+  isTelehealthworker(): boolean {
+    return User.isTelehealthworker();
+  }
+  canBeTelehealthworker(): boolean {
+    return User.canBeTelehealthworker();
+  }
+
   ngOnInit(): void {
-    this.current_user = User.getUser();
+    this.user = User.getUser();
+    console.log(JSON.stringify(this.user));
   }
   
   isDivHidden= true;   

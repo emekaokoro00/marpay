@@ -42,12 +42,10 @@ export class TelehealthworkerDetailComponent implements OnInit {
     }
     this.medsessionService.updateMedsession(this.medsession);
 
-    console.log('Got before physician exists');
     // update if physician exists
     if (this.medsession.session_physician) { 
 	this.medsessionService.updateMedsessionForPhysician(this.medsession); // change to avoid updating medsession twice
     }
-    console.log('Got after physician exists');
   }
 
 
