@@ -17,7 +17,8 @@ class MyUserPasswordChangeSerializer(MyUserBaseSerializer):
 class MyUserUpdateSerializer(MyUserBaseSerializer):   
     
     def update(self, instance, validated_data):
-        # pop out group first
+        # pop out current_group first to remove from validated_data
+        dummy_groups_data = validated_data.pop('groups') # may be unnecessary
         current_group_data = validated_data.pop('current_group')
         current_group, _ = Group.objects.get_or_create(name=current_group_data)
         
@@ -25,14 +26,15 @@ class MyUserUpdateSerializer(MyUserBaseSerializer):
         instance.last_name = validated_data.get('last_name', instance.last_name)
         
         instance.current_group = current_group
-        instance.groups.add(current_group)   
+        # instance.groups.add(current_group)   
         instance.save()
         return instance 
   
     class Meta:
         model = get_user_model()
         fields = (
-            'id', 'username', 'first_name', 'last_name', 'current_group',
+            'id', 'username', 
+            'first_name', 'last_name', 'current_group', 'groups',
         )
         read_only_fields = ('id',)
   
@@ -49,7 +51,8 @@ class MyUserSerializer(MyUserBaseSerializer):
         return data
 
     def create(self, validated_data):
-        # pop out group first
+        # pop out group and current_group first to remove from validated_data
+        dummy_groups_data = validated_data.pop('groups')
         current_group_data = validated_data.pop('current_group')
         current_group, _ = Group.objects.get_or_create(name=current_group_data)
         

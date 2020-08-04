@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../../services/auth.service';
+import {UserProfileService} from "../../services/user-profile.service";
 
 @Component({
   selector: 'app-user-profile-detail',
@@ -9,9 +10,11 @@ import { AuthService, User } from '../../services/auth.service';
 export class UserProfileDetailComponent implements OnInit {
 
   user: User = new User();
-  cannotBeTHW: boolean = true;
+  otherGroup: string = 'Customer';
 
-  constructor() { }
+  constructor(
+     private userProfileService: UserProfileService
+  ) { }
 
   isTelehealthworker(): boolean {
     return User.isTelehealthworker();
@@ -28,6 +31,17 @@ export class UserProfileDetailComponent implements OnInit {
   isDivHidden= true;   
   toggleDisplayDiv() {
     this.isDivHidden = !this.isDivHidden;
+  }
+
+  toggleTHW() {
+    this.user.current_group !== 'telehealthworker' ? this.user.current_group = 'telehealthworker' : this.user.current_group = 'customer';
+    this.userProfileService.updateUser(this.user)
+     .subscribe(() => {
+       alert('successful');
+     }, error => {
+       console.error(error);
+    });
+    
   }
 
 }

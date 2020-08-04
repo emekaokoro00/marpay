@@ -23,13 +23,7 @@
         <div class="flex flex-row-reverse">
 			<div [hidden]="isDivHidden">			
 				<div [hidden]="!canBeTelehealthworker()">
-					<div *ngIf="isTelehealthworker(); then THWBlock; else elseBlock;"></div>
-					  <ng-template #THWBlock>
-					<a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser:myuser_register_thw_confirm' %}"> Switch to Customer</a>
-					  </ng-template>
-					  <ng-template #elseBlock>
-					<a class="text-sm text-green-500 hover:text-green-700 lex m-2" href="{% url 'myuser:myuser_register_thw_confirm' %}"> Switch to THW</a>
-					  </ng-template>
+					<a class="text-sm text-green-500 hover:text-green-700 lex m-2" (click)=toggleTHW()> Switch to {{ isTelehealthworker() ? 'Customer' : 'THW'}} </a>
 				</div>
 
 			</div>    

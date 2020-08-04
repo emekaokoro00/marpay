@@ -10,7 +10,7 @@ export class User {
 	    public first_name?: string,
 	    public last_name?: string,
     	    public current_group?: string,
-    	    public groups?: string[],
+    	    public groups?: number[],
 	    public current_role?: string
 	) {}
 
