@@ -72,18 +72,16 @@ export class LandingComponent implements OnInit, OnDestroy {
     if (!this.current_user) { return; }
 
     if (this.current_user.current_group === 'customer'){
-    // if (true){
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position: Position) => {
-          this.lat = position.coords.latitude;
-          this.lng = position.coords.longitude;
-          this.markers = [
-            new Marker(this.lat, this.lng)
-          ];
-        });
-      }
-
-      // get address here
+       // get position marker to show
+       if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition((position: Position) => {
+           this.lat = position.coords.latitude;
+           this.lng = position.coords.longitude;
+           this.markers = [
+             new Marker(this.lat, this.lng)
+           ];
+         });
+       }
     }
     else if (this.current_user.current_group === 'telehealthworker'){
 /*    //<thw_medesession_in_landing>
@@ -110,14 +108,11 @@ export class LandingComponent implements OnInit, OnDestroy {
 // customer_section///////////////////////////////////////////////////////////
 
   openDialog(): void {
-
-    // or get address here
-
     const dialogRef = this.matdialog.open(DialogaAddressConfirmComponent, {
       width: '300px',
       height: '250px',
-      // data: { address: this.address }
-      data: { address: '101 Independence Avenue, Quincy MA 02169' }
+      // data: { address: { lat: parseFloat(this.lat), lng: parseFloat(this.lng) } }
+      data: { address: this.address, lat: this.lat, lng: this.lng } // reverse-geocode in dialog ngOnInit
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -127,6 +122,9 @@ export class LandingComponent implements OnInit, OnDestroy {
          this.onSubmit(result);
       }
     });
+
+
+
   }
 
   onSubmit(dialog_address): void {

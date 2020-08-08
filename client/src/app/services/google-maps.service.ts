@@ -30,4 +30,30 @@ export class GoogleMapsService {
       });
     });
   }
+
+
+  reverseGeocode(lat: number, lng: number): Observable<any> {
+       // reverse geocode address
+       let geocoder = new google.maps.Geocoder();
+       // let latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+       let latlng = { lat: lat, lng: lng};
+       let request = { 'location': latlng }; 
+
+       return Observable.create(observer => {
+	       geocoder.geocode(request, (results, status) => {
+		  if (status == google.maps.GeocoderStatus.OK) {
+		    if (results[0] != null) {
+		      //this.address = results[0].formatted_address;
+		      observer.next(results);
+		    } else { 
+		      //this.address = "";
+                      observer.error('');
+		    }
+                    observer.complete();
+		  }
+	       });
+       })
+  }
+
+
 }
