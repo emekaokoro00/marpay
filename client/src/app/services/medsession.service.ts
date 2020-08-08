@@ -60,8 +60,7 @@ export class MedsessionService {
   connect(): void {
     if (!this.webSocket || this.webSocket.closed) {
       // this.webSocket = webSocket('ws://localhost:8080/marpay/');
-      // this.webSocket = webSocket('ws://marpay.herokuapp.com/marpay/');
-      
+      // this.webSocket = webSocket('ws://marpay.herokuapp.com/marpay/');      
       this.webSocket = webSocket(environment.WEBSOCKET_ADDRESS); //from environment config file
 
       this.messages = this.webSocket.pipe(share());
@@ -109,6 +108,17 @@ export class MedsessionService {
       type: 'update.medsessionforphysician',
       data: {
         ...medsession, session_physician: medsession.session_physician.id, session_telehealthworker: medsession.session_telehealthworker.id, session_customer: medsession.session_customer.id
+      }
+    };
+    this.webSocket.next(message);
+  }
+
+  cancelMedsession(medsession: Medsession): void {
+    this.connect();
+    const message: any = {
+      type: 'cancel.medsession',
+      data: {
+        ...medsession, session_customer: medsession.session_customer.id
       }
     };
     this.webSocket.next(message);

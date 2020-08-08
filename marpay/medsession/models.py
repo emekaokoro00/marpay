@@ -10,11 +10,13 @@ class MedSession(models.Model):
     STARTED = 'STARTED' # this means accepted
     IN_PROGRESS = 'IN_PROGRESS'
     COMPLETED = 'COMPLETED'
+    CANCELLED = 'CANCELLED'
     STATUSES = (
         (REQUESTED, REQUESTED),
         (STARTED, STARTED),
         (IN_PROGRESS, IN_PROGRESS),
         (COMPLETED, COMPLETED),
+        (CANCELLED, CANCELLED),
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

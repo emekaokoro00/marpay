@@ -55,6 +55,8 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
             await self.create_medsession(content)
         elif message_type == 'update.medsession':
             await self.update_medsession(content) 
+        elif message_type == 'cancel.medsession':
+            await self.cancel_medsession(content) 
         elif message_type == 'update.medsessionforphysician':
             await self.update_medsessionforphysician(content)      
       
@@ -97,6 +99,8 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
         })
                       
         # if first time calling update_medsession
+        # creates a new group containing only the customer and the THW... 
+        # Consider also adding the physician later
         if medsession_id not in self.medsessions:
             self.medsessions.add(medsession_id)
             await self.channel_layer.group_add(
@@ -144,7 +148,7 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
                     group=medsession_id,
                     channel=self.channel_name
                 )  
-        # subsequent update of phhysician          
+        # subsequent update of physician          
         else:
             # Send updates to customers that subscribe to this trip.
             await self.channel_layer.group_send(group=medsession_id, message={
@@ -164,7 +168,25 @@ class MedSessionConsumer(AsyncJsonWebsocketConsumer):
             'type': 'update.medsessionforphysician',
             'data': medsession_data
         })  
+          
+    async def cancel_medsession(self, event):
+        medsession = await self._update_medsession(event.get('data'))
+        medsession_data =  await self._get_medsession_data(medsession) 
+                             
+        # Send update to all telehealthworkers
+        # this helps remove in real time requestd session from dashboard of all other THWs apart from the main one
+        await self.channel_layer.group_send(group='telehealthworker_channel_group', message={
+            'type': 'echo.message',
+            'data': medsession_data
+        })   
         
+        # send back data
+        await self.send_json({
+            'type': 'cancel.medsession',
+            'data': medsession_data
+        })
+    
+    # CURRENTLY NOT BEING USED    
     async def update_channel_telehealthworker(self, medsession_id, medsession_data):  
         # Send updates to customers that subscribe to this trip.
         await self.channel_layer.group_send(group=medsession_id, message={

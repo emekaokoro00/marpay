@@ -152,8 +152,11 @@ export class LandingComponent implements OnInit, OnDestroy {
   }
 
   updateToast(medsession: Medsession): void {
-    if (medsession.session_telehealthworker === null) {
+    if (medsession.session_telehealthworker === null && medsession.status !== 'CANCELLED') {
       this.toastr.successToastr(`Customer ${medsession.session_customer.username} has requested a medsession.`);
+    }
+    else if (medsession.status === 'CANCELLED') {
+      this.toastr.errorToastr(`Customer ${medsession.session_customer.username} has requested a medsession.`);
     }
   }
 
