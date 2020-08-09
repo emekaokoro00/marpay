@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import psycopg2 # for postgresql integration
+
 from dotenv import load_dotenv
 from pathlib import Path  # python3 only
 
@@ -23,22 +25,25 @@ load_dotenv() # calls the .env file in the same folder as this settings.py
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = 'cb2@grv9u3lw(s)z1454egkf88jcbug-x*)^(ewlr95djh_ici' # change later
+# THIS os.environ APPROACH RAISES EXCEPTION IF IT DOESN'T EXIST
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY'] 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+# DEBUG = True
+# THIS os.environ APPROACH DOES NOT RAISE EXCEPTION IF IT DOESN'T EXIST
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'127.0.0.1', u'0.0.0.0', u'10.0.2.2', u'192.168.1.5', u'f3412a90f58b.ngrok.io']
 # 192.168.56.56 is the local address, also browseable from host if listening setup
 # 0.0.0.0 was when trying to browse from docker
 # 10.0.2.2 is the host computer emulator address
 # 192.168.1.5' is the host computer ip address on a WLAN... this is for an actual phone to browse
 # .....ngrok.io is the ngrok address.. will always change per session use [./ngrok http 192.168.56.56:8000] in /home/emekaokoro]
+ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS']
 
 
 # Application definition
@@ -122,15 +127,22 @@ ASGI_APPLICATION = 'marpay.routing.application'
 # }
 #===============================================================================           
 
+
+DATABASE_NAME = os.environ['DATABASE_NAME']
+DATABASE_USER = os.environ['DATABASE_USER']
+DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
+DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE_PORT = os.environ['DATABASE_PORT']
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 DB_URL = os.getenv('DB_URL', 'postgres://marpay-db:5432')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'marpay_db',
-        'USER': 'root',
-        'PASSWORD': 'spartan123',
-        'HOST':  'marpay-db',
-        'PORT': '5432',
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST':  DATABASE_URL,
+        'PORT': DATABASE_PORT,
     }
 }
 #===============================================================================           
