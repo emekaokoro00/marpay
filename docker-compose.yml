@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=spartan123
     ports:
-      - 5431:5432
+      - 5431:5432 # browse the 5431 in any GUI (e.g. OmniDB)
 
   marpay-server:
     build:
@@ -33,7 +33,7 @@ services:
       - marpay-db
     environment:
       - REDIS_URL=redis://marpay-redis:6379/0
-      - DB_URL=postgres://marpay-db:5432/0 # 5431 or 5432??
+      - DATABASE_URL=postgres://root:spartan123@marpay-db:5432/marpay_db # postgres://marpay-db:5432/0
     ports:
       - 8001:8000
 

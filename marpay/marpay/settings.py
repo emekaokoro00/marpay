@@ -25,16 +25,18 @@ load_dotenv() # calls the .env file in the same folder as this settings.py
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-
+# IS_PRODUCTION = False only if IS_PRODUCTION key exists and is false
+IS_PRODUCTION = os.environ.get('IS_PRODUCTION', '') != 'True'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # THIS os.environ APPROACH RAISES EXCEPTION IF IT DOESN'T EXIST
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY'] 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 # THIS os.environ APPROACH DOES NOT RAISE EXCEPTION IF IT DOESN'T EXIST
+# DEBUG = True only if DEBUG key exists and is true
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+# DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = [u'192.168.56.56', u'localhost', u'127.0.0.1', u'0.0.0.0', u'10.0.2.2', u'192.168.1.5', u'f3412a90f58b.ngrok.io']
@@ -127,11 +129,10 @@ ASGI_APPLICATION = 'marpay.routing.application'
 # }
 #===============================================================================           
 
-
 DATABASE_NAME = os.environ['DATABASE_NAME']
 DATABASE_USER = os.environ['DATABASE_USER']
 DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE_URL_DEV = os.environ['DATABASE_URL_DEV']
 DATABASE_PORT = os.environ['DATABASE_PORT']
 # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 DB_URL = os.getenv('DB_URL', 'postgres://marpay-db:5432')
@@ -141,10 +142,20 @@ DATABASES = {
         'NAME': DATABASE_NAME,
         'USER': DATABASE_USER,
         'PASSWORD': DATABASE_PASSWORD,
-        'HOST':  DATABASE_URL,
+        'HOST':  DATABASE_URL_DEV,
         'PORT': DATABASE_PORT,
     }
 }
+# # if (IS_PRODUCTION == 'True'):
+if (True):
+    import dj_database_url # for heroku-to-django translation
+    # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+    
+# print(SECRET_KEY)
+print(DATABASES['default'])
+
+
 #===============================================================================           
 # DATABASES = {
 #     'default': {
