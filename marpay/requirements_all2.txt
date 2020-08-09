@@ -11,7 +11,9 @@ idna==2.9
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
+mysql-connector-python==8.0.21
 Pillow==6.2.1
+psycopg2==2.8.5
 PyJWT==1.7.1
 PyMySQL==0.9.3
 pytest-asyncio==0.10.0
@@ -24,3 +26,5 @@ sqlparse==0.3.1
 twilio==6.42.0
 urllib3==1.25.9
 Werkzeug==1.0.1
+gunicorn==19.9.0
+whitenoise==4.1.2

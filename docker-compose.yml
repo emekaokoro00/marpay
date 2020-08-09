@@ -5,6 +5,18 @@ services:
     container_name: marpay-redis
     image: redis:5.0.6-alpine
 
+  marpay-db:
+    image: postgres:12.0-alpine
+    container_name: marpay-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=marpay_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=spartan123
+    ports:
+      - 5431:5432
+
   marpay-server:
     build:
       context: ./marpay
@@ -12,12 +24,16 @@ services:
     volumes:
       - media:/usr/src/app/media
       - static:/usr/src/app/static
+      - ./marpay/:/usr/src/app/
     command: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
+    # command: python manage.py runserver 0.0.0.0:8000
     container_name: marpay-server
     depends_on:
       - marpay-redis
+      - marpay-db
     environment:
       - REDIS_URL=redis://marpay-redis:6379/0
+      - DB_URL=postgres://marpay-db:5432/0 # 5431 or 5432??
     ports:
       - 8001:8000
 
@@ -54,3 +70,4 @@ services:
 volumes:
   media:
   static:
+  postgres_data:

@@ -114,10 +114,23 @@ ASGI_APPLICATION = 'marpay.routing.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 #===============================================================================
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+#===============================================================================           
+
+DB_URL = os.getenv('DB_URL', 'postgres://marpay-db:5432')
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'marpay_db',
+        'USER': 'root',
+        'PASSWORD': 'spartan123',
+        'HOST':  'marpay-db',
+        'PORT': '5432',
     }
 }
 #===============================================================================           
@@ -131,8 +144,10 @@ DATABASES = {
 #         'PORT': '',
 #         'ATOMIC_REQUESTS': True   # enables transaction saving... all or none
 #     }
-#               
+#                
 # }
+#===============================================================================           
+
 
 # Redis -- in-memory data store
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
