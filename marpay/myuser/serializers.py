@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from .models import Role
 
 import sys
@@ -40,7 +41,9 @@ class MyUserUpdateSerializer(MyUserBaseSerializer):
   
 class MyUserSerializer(MyUserBaseSerializer):
     password1 = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True)   
+    password2 = serializers.CharField(write_only=True)
+       
+    # username = serializers.CharField(max_length=50, validators=[UniqueValidator(queryset=get_user_model().objects.all())]) #uniqueness validation
     # current_group = serializers.CharField() # set so that the group is made string on client side  
     
     #HANDLE password1 and password2 in sigun-up.cmponents.html file
@@ -61,7 +64,8 @@ class MyUserSerializer(MyUserBaseSerializer):
             if key not in ('password1', 'password2')
         }
         data['password'] = validated_data['password1']
-        # data['current_role'] = validated_data['current_role']
+        # data['current_role'] = validated_data['current_role'] 
+        data['email'] = data['username'] # make email = username
         
         user = self.Meta.model.objects.create_user(**data)
         

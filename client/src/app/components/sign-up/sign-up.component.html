@@ -1,5 +1,5 @@
 
-<form novalidate (ngSubmit)="onSubmit()" #signUpForm="ngForm">
+<form (ngSubmit)="onSubmit()" #signUpForm="ngForm"><!-- novalidate -->
 <section class="text-gray-700 body-font">
     <div class="lg:w-2/6 md:w-1/2 bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
       <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Sign In</h2>
@@ -8,16 +8,17 @@
 	      id="username"
 	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
 	      placeholder="username"
-	      type="text"
+	      type="email"
 	      [(ngModel)]="user.username"
 	      name="username"
 	      autocomplete="on"
+	      email
 	      required
 	    >
 	  </div>
 	  <div class="form-group">
 	    <input
-	      id="username"
+	      id="firstName"
 	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
 	      placeholder="first name"
 	      type="text"
@@ -29,7 +30,7 @@
 	  </div>
 	  <div class="form-group">
 	    <input
-	      id="username"
+	      id="lastName"
 	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
 	      placeholder="last name"
 	      type="text"
