@@ -31,10 +31,10 @@ urlpatterns = [
     
     # client - > URL -> VIEW (serializer, etc)
            
-    # path('', include(router.urls)), # TO USE ALL CRUD AT ONCE
+    path('', include(router.urls)), # TO USE ALL CRUD AT ONCE
     # # or indiviually 
     # path('', views.MyUserProfileAPIView.as_view(), name='api_list'),
-    path('<int:pk>/', views.MyUserProfileAPIView.as_view(), name='api_details'),
+    # path('<int:pk>/', views.MyUserProfileAPIView.as_view(), name='api_details'),
     # path('<int:pk>/update/', views.MyUserProfilePartialUpdateAPIView.as_view(), name='api_update'),
     
 ]

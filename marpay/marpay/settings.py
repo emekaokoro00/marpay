@@ -92,20 +92,24 @@ TEMPLATES = [
     },
 ]
 
-# To disable the browseable API in production with this configuration:
-#===============================================================================
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-# }
+
+# allow browsable api only if DEBUG is true
+DEFAULT_RENDERER_CLASSES = [
+    'rest_framework.renderers.JSONRenderer',
+]
+if DEBUG:
+    DEFAULT_RENDERER_CLASSES = DEFAULT_RENDERER_CLASSES + [
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-            # 'rest_framework.authentication.BasicAuthentication',  # enables simple command line authentication
-            'rest_framework.authentication.SessionAuthentication',
-            # 'rest_framework.authentication.TokenAuthentication',
-    ]
+        # 'rest_framework.authentication.BasicAuthentication',  # enables simple command line authentication
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
     # ,
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE': 5
@@ -146,8 +150,8 @@ DATABASES = {
         'PORT': DATABASE_PORT,
     }
 }
-# # if (IS_PRODUCTION == 'True'):
-if (True):
+if (IS_PRODUCTION == 'True'):
+# if (True):
     import dj_database_url # for heroku-to-django translation
     # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)

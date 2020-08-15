@@ -76,6 +76,8 @@ def get_physician_list(request):
     return JsonResponse({"success":False}, status=400)
  
 #========================================================================================
+# TWILIO
+#========================================================================================
        
 def start_call(request):
     user_name = json.loads(request.body.decode("utf-8")).get('user_name')
@@ -87,20 +89,16 @@ def start_call(request):
     # token.add_grant(VideoGrant(room=username_caller + '_' + username_callee))
 
     return JsonResponse({'token': token.to_jwt().decode()})
-
+   
+   
+#========================================================================================
+# API CALLS
 #========================================================================================
 
-class SignUpView(CreateView):
-    form_class = SignUpForm
-    success_url = reverse_lazy('home')
-    template_name = 'signup.html'    
-   
-# api call
 class SignUpAPIView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = MyUserSerializer
 
-# api call
 class LogInAPIView(views.APIView):
     def post(self, request):
         form = AuthenticationForm(data=request.data)
@@ -111,20 +109,39 @@ class LogInAPIView(views.APIView):
         else:
             return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# api call
 class LogOutAPIView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, *args, **kwargs):
         logout(self.request)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    
+        
 class MyUserProfileCRUDAPIView(viewsets.ModelViewSet):
     queryset =  get_user_model().objects.all()   
-    serializer_class = MyUserSerializer
+    serializer_class = MyUserSerializer     
+    
+#     def partial_update(self, request, pk=None): # this is to do a PATCH rather than a PUT
+#         serializer = MyUserUpdateSerializer
+#         super(self.__class__, self).partial_update(request, pk)
+    def partial_update(self, request, pk=None):
+        user = self.get_object()
+        serializer = MyUserUpdateSerializer(instance=user,data=request.data,partial=True) # this is to do a PATCH rather than a PUT    
+        if serializer.is_valid(): 
+            serializer.save()
+            # return Response({"success":"User '{}' updated successfully".format(allowance_saved.id)})
+            return Response(serializer.data) # return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"fail":"'{}'".format(serializer.errors)})  
+
+    def get_permissions(self):
+        if self.action == 'list':
+            self.permission_classes = [IsSuperUser, ]
+        elif self.action == 'retrieve':
+            self.permission_classes = [IsOwner]
+        return super(self.__class__, self).get_permissions()
     
 class MyUserProfileAPIView(GenericAPIView):
+# class MyUserProfileAPIView(viewsets.ModelViewSet):
     queryset =  get_user_model().objects.all()   
     serializer_class = MyUserSerializer
     
@@ -145,10 +162,17 @@ class MyUserProfileAPIView(GenericAPIView):
             # return Response({"success":"User '{}' updated successfully".format(allowance_saved.id)})
             return Response(serializer.data)
         else:
-            return Response({"fail":"'{}'".format(serializer.errors)}) 
+            return Response({"fail":"'{}'".format(serializer.errors)})  
 
 #========================================================================================
+# WEB APP  CALLS
+#========================================================================================
 
+class SignUpView(CreateView):
+    form_class = SignUpForm
+    success_url = reverse_lazy('home')
+    template_name = 'signup.html' 
+    
 class TestPageView(TemplateView): 
     template_name = 'testpage.html'
     
@@ -300,3 +324,21 @@ def return_user_with_instance_or_new_customer_details(the_user):
         the_user.customer_details = the_customer_details
     return the_user
 
+
+#========================================================================================
+# HELPER CLASSES
+#========================================================================================
+
+class IsSuperUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_superuser
+
+class IsOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return obj == request.user # or, if isinstance(obj, Model): return obj.owner == request.user
+        else:
+            return False

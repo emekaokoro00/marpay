@@ -27,7 +27,8 @@ export class UserProfileService {
   updateUser(user: User): Observable<User> {
     const url = `/api/myuser/${user.id}/`;
     // console.log(JSON.stringify(user));
-    return this.http.put<User>(url, JSON.stringify(user), this.httpOptions).pipe(
+    // return this.http.put<User>(url, JSON.stringify(user), this.httpOptions).pipe( // for django_GenericAPIView
+    return this.http.patch<User>(url, JSON.stringify(user), this.httpOptions).pipe( // for django_ModelViewSet
       tap(updated_user => localStorage.setItem('marpay.user', JSON.stringify(updated_user))
          )
     );
