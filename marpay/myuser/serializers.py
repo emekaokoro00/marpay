@@ -72,6 +72,9 @@ class MyUserSerializer(MyUserBaseSerializer):
         user.current_group = current_group
         user.groups.add(current_group)                                  
         user.save() 
+        
+        # SEND EMAIL USING ASYNC METHOD
+        
         return user
 
     class Meta:

@@ -7,7 +7,8 @@ import { AuthService } from '../../services/auth.service';
 class UserData {
   constructor(
     public username?: string,
-    public password?: string
+    public password?: string,
+    public success?: boolean
   ) {}
 }
 
@@ -18,16 +19,21 @@ class UserData {
 })
 export class LogInComponent {
   user: UserData = new UserData();
+
   constructor(
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) {
+	this.user.success = true;
+    }
+
   onSubmit(): void {
     this.authService.logIn(
       this.user.username, this.user.password
     ).subscribe(user => {
       this.router.navigateByUrl('');
     }, (error) => {
+      this.user.success = false;
       console.error(error);
     });
   }

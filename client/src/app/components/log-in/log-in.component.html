@@ -9,10 +9,11 @@
     <div class="lg:w-2/6 md:w-1/2 bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
       <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Sign In</h2>
 	  <div class="form-group">
+	    <div *ngIf="!user.success" class="text-danger">Incorrect email and/or password</div>
 	    <input
 	      id="username"
 	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
-	      placeholder="username"
+	      placeholder="email"
 	      type="text"
 	      [(ngModel)]="user.username"
 	      name="username"
