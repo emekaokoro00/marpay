@@ -1,5 +1,7 @@
-
-<form (ngSubmit)="onSubmit()" #signUpForm="ngForm"><!-- novalidate -->
+<!-- Template Driven Form-->
+<form novalidate 
+[appMatchPassword]="['password1', 'password2']"
+(ngSubmit)="signUpForm.form.valid && onSubmit()" #signUpForm="ngForm"><!-- novalidate -->
 <section class="text-gray-700 body-font">
     <div class="lg:w-2/6 md:w-1/2 bg-gray-200 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
       <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Sign In</h2>
@@ -7,14 +9,20 @@
 	    <input
 	      id="username"
 	      class="form-control bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4"
-	      placeholder="username"
-	      type="email"
+	      placeholder="Enter email"
 	      [(ngModel)]="user.username"
+	      #username="ngModel"
 	      name="username"
 	      autocomplete="on"
-	      email
+	      appValidateUserName 
 	      required
-	    >
+	    > <!-- type="email" email-->
+		<div *ngIf="username.invalid && signUpForm.submitted" class="alert"> <!-- (username.dirty || username.touched)"-->
+		  <div *ngIf="username.errors.required" class="text-danger">Email is required.</div>
+		  <!--<div *ngIf="username.invalid" class="text-danger">Invalid email.</div>-->
+		  <div *ngIf="username.errors?.userNameNotAcceptedEmail" class="text-danger">Invalid email.</div>
+		  <div *ngIf="username.errors?.userNameNotAvailable && signUpForm.submitted" class="text-danger">Email already in use.</div>
+		</div>
 	  </div>
 	  <div class="form-group">
 	    <input
@@ -23,10 +31,14 @@
 	      placeholder="first name"
 	      type="text"
 	      [(ngModel)]="user.firstName"
+	      #firstName="ngModel"
 	      name="firstName"
 	      autocomplete="on"
 	      required
 	    >
+		<div *ngIf="firstName.invalid && signUpForm.submitted" class="alert">
+		  <div *ngIf="firstName.errors.required" class="text-danger">First Name is required.</div>
+		</div>
 	  </div>
 	  <div class="form-group">
 	    <input
@@ -35,10 +47,14 @@
 	      placeholder="last name"
 	      type="text"
 	      [(ngModel)]="user.lastName"
+	      #lastName="ngModel"
 	      name="lastName"
 	      autocomplete="on"
 	      required
 	    >
+		<div *ngIf="lastName.invalid && signUpForm.submitted" class="alert"> 
+		  <div *ngIf="lastName.errors.required" class="text-danger">Last Name is required.</div>
+		</div>
 	  </div>
 	  <div class="form-group">
 	    <input
@@ -47,11 +63,16 @@
 	      placeholder="password"
 	      type="password"
 	      [(ngModel)]="user.password1"
+	      #password1="ngModel"
 	      name="password1"
 	      autocomplete="on"
+	      appPasswordPattern
 	      required
 	    >
 	  </div>
+		<div *ngIf="password1.invalid && signUpForm.submitted" class="alert"> 
+		  <div *ngIf="password1.errors?.invalidPassword" class="text-danger">Password should have minimum 8 characters, at least 1 letter and 1 number.</div>
+		</div>
 	  <div class="form-group">
 	    <input
 	      id="password2"
@@ -59,10 +80,14 @@
 	      placeholder="re-enter password"
 	      type="password"
 	      [(ngModel)]="user.password2"
+	      #password2="ngModel"
 	      name="password2"
 	      autocomplete="on"
 	      required
 	    >
+		<div *ngIf="password2.invalid && signUpForm.submitted" class="alert">
+		  <div *ngIf="password2.errors.passwordMismatch" class="text-danger">Password mismatch.</div>
+		</div>
 	  </div>
           <!-- <div class="form-group">
             <label>Group:</label>

@@ -41,7 +41,7 @@ export class SignUpComponent {
       'customer', //this.user.currentGroup
       this.user.currentRole
     ).subscribe(() => {
-      this.router.navigateByUrl('/log-in');
+      this.router.navigateByUrl('/log-in'); // consider a success page
     }, (error) => {
       console.error(error);
     });

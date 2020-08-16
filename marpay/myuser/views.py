@@ -3,7 +3,7 @@ import json
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect,  Http404
 from django.template import RequestContext
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.views.generic.base import TemplateView, View
@@ -120,9 +120,27 @@ class MyUserProfileCRUDAPIView(viewsets.ModelViewSet):
     queryset =  get_user_model().objects.all()   
     serializer_class = MyUserSerializer     
     
-#     def partial_update(self, request, pk=None): # this is to do a PATCH rather than a PUT
-#         serializer = MyUserUpdateSerializer
-#         super(self.__class__, self).partial_update(request, pk)
+#     @action(detail=True, methods=['post'])
+#     def set_password(self, request, pk=None):
+#         user = self.get_object()
+#         serializer = PasswordSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user.set_password(serializer.data['password'])
+#             user.save()
+#             return Response({'status': 'password set'})
+#         else:
+#             return Response(serializer.errors,
+#                             status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'], url_path='get_by_username/(?P<username>(\w+)|(\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+))') # regex for text or email format
+    def get_by_username(self, request, username ):
+        try:
+            # user = get_object_or_404(MyUser, username=username)            
+            user = MyUser.objects.get(username=username)
+            return Response({"exists" : True})
+        except MyUser.DoesNotExist:
+            return Response({"exists" : False})
+
     def partial_update(self, request, pk=None):
         user = self.get_object()
         serializer = MyUserUpdateSerializer(instance=user,data=request.data,partial=True) # this is to do a PATCH rather than a PUT    

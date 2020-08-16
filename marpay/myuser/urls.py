@@ -31,7 +31,7 @@ urlpatterns = [
     
     # client - > URL -> VIEW (serializer, etc)
            
-    path('', include(router.urls)), # TO USE ALL CRUD AT ONCE
+    path('', include(router.urls)), # TO USE ALL CRUD AT ONCE... The API URLs are now determined automatically by the router.
     # # or indiviually 
     # path('', views.MyUserProfileAPIView.as_view(), name='api_list'),
     # path('<int:pk>/', views.MyUserProfileAPIView.as_view(), name='api_details'),

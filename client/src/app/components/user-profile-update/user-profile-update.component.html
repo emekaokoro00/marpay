@@ -6,6 +6,7 @@
         <h2 class="text-sm title-font text-gray-500 tracking-widest">UPDATE PROFILE</h2>
         <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ user.username }}</h1>
 
+	  <!-- Reactive Form-->
 	  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
 	    <!-- <div class="hidden">
 	      <input type="text" formControlName="id" placeholder="id" name="id" class="form-control" id="id">

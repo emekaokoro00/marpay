@@ -54,6 +54,9 @@ import { DialogaConfirmComponent } from './components/dialogas/dialoga-confirm/d
 import { DialogaAddressConfirmComponent } from './components/dialogas/dialoga-address-confirm/dialoga-address-confirm.component';
 import { DialogaSessionDetailsComponent } from './components/dialogas/dialoga-session-details/dialoga-session-details.component';
 import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-confirm/dialoga-call-confirm.component';
+import { PasswordPatternDirective } from './directives/password-pattern.directive';
+import { MatchPasswordDirective } from './directives/match-password.directive';
+import { ValidateUserNameDirective } from './directives/validate-user-name.directive';
 
 @NgModule({
   declarations: [
@@ -79,7 +82,10 @@ import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-
     DialogaConfirmComponent,
     DialogaAddressConfirmComponent,
     DialogaSessionDetailsComponent,
-    DialogaCallConfirmComponent
+    DialogaCallConfirmComponent,
+    PasswordPatternDirective,
+    MatchPasswordDirective,
+    ValidateUserNameDirective
   ],
   entryComponents: [
      DialogaAddressConfirmComponent
@@ -114,7 +120,7 @@ import { DialogaCallConfirmComponent } from './components/dialogas/dialoga-call-
 	MedsessionService,
 	MedsessionListResolver,
 	MedsessionDetailResolver,
-        // {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+        // as of Angular 6.0, I don't have to include services here, so long as I have "Injectable...root" in each service
 	],
   bootstrap: [AppComponent]
 })
