@@ -1,10 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import Role
 
-import sys
+# import marpay
+import mytask
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class MyUserBaseSerializer(serializers.ModelSerializer): 
@@ -42,11 +47,6 @@ class MyUserUpdateSerializer(MyUserBaseSerializer):
 class MyUserSerializer(MyUserBaseSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-       
-    # username = serializers.CharField(max_length=50, validators=[UniqueValidator(queryset=get_user_model().objects.all())]) #uniqueness validation
-    # current_group = serializers.CharField() # set so that the group is made string on client side  
-    
-    #HANDLE password1 and password2 in sigun-up.cmponents.html file
 
     def validate(self, data):
         if data['password1'] != data['password2']:
@@ -65,16 +65,22 @@ class MyUserSerializer(MyUserBaseSerializer):
         }
         data['password'] = validated_data['password1']
         # data['current_role'] = validated_data['current_role'] 
-        data['email'] = data['username'] # make email = username
+        data['email'] = data['username'] # make email = username  
         
-        user = self.Meta.model.objects.create_user(**data)
-        
+        user = self.Meta.model.objects.create_user(**data)        
         user.current_group = current_group
-        user.groups.add(current_group)                                  
-        user.save() 
-        
-        # SEND EMAIL USING ASYNC METHOD
-        
+        user.groups.add(current_group)                    
+        user.save()
+                
+        if (settings.SEND_EMAIL_ON_USER_CREATE):
+            user_email = data['email']            
+#             logger.debug('pre')
+#             logger.debug('mytask.views.send_email(user_email) is:' + mytask.views.send_email(user_email) )
+#             logger.debug('post')            
+            logger.debug('email start')
+            res = mytask.views.send_email(user_email) # should have instructions for making use become active
+            logger.debug('email result: ' + str(res) )
+            
         return user
 
     class Meta:

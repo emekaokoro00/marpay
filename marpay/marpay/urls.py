@@ -39,6 +39,8 @@ urlpatterns = [
 
     # path('medsession/', include('medsession.urls')),
     path('medsession/', include('medsession.urls', 'medsession',)),
-    path('api/medsession/', include('medsession.urls', 'api_medsession',)),
+    path('api/medsession/', include('medsession.urls', 'api_medsession',)),    
+    
+    path('api/mytask/', include('mytask.urls', 'api_mytask',)),
 ] 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # removed because nginx is now handling serving files

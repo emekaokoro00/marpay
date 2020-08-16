@@ -29,7 +29,9 @@ from .models import MyUser, Role, CustomerDetails
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
 from .serializers import MyUserSerializer, MyUserUpdateSerializer
 
-
+## YOU CAN
+# from django.conf import settings
+# settings.twilio_account_sid, settings.twilio_api_key_secret, etc
 # currently store in /home/emekaokoro/workspace/marpay/marpay/marpay/.env
 twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
 twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')

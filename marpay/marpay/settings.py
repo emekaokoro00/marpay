@@ -26,7 +26,8 @@ load_dotenv() # calls the .env file in the same folder as this settings.py
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # IS_PRODUCTION = False only if IS_PRODUCTION key exists and is false
-IS_PRODUCTION = os.environ.get('IS_PRODUCTION', '') != 'True'
+# IS_PRODUCTION = os.environ.get('IS_PRODUCTION', '') != 'True'
+IS_PRODUCTION = os.environ.get('IS_PRODUCTION', 'True') != 'False'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # THIS os.environ APPROACH RAISES EXCEPTION IF IT DOESN'T EXIST
@@ -34,8 +35,8 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # THIS os.environ APPROACH DOES NOT RAISE EXCEPTION IF IT DOESN'T EXIST
-# DEBUG = True only if DEBUG key exists and is true
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+# DEBUG = True only if DJANGO_DEBUG key exists and is true
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') != 'False'
 # DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
@@ -51,7 +52,7 @@ ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS']
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts.apps.AccountsConfig',
+    # 'accounts.apps.AccountsConfig',
     'myuser.apps.MyUserConfig',
     'medsession.apps.MedSessionConfig',
     'rest_framework',
@@ -116,13 +117,12 @@ REST_FRAMEWORK = {
 }
 #===============================================================================
 
-
 WSGI_APPLICATION = 'marpay.wsgi.application'
 
 ASGI_APPLICATION = 'marpay.routing.application'
 
 
-# Database
+# DATABASE
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 #===============================================================================
 # DATABASES = {
@@ -151,14 +151,12 @@ DATABASES = {
     }
 }
 if (IS_PRODUCTION == 'True'):
-# if (True):
     import dj_database_url # for heroku-to-django translation
     # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
     
 # print(SECRET_KEY)
-print(DATABASES['default'])
-
+# print(DATABASES['default'])
 
 #===============================================================================           
 # DATABASES = {
@@ -175,8 +173,7 @@ print(DATABASES['default'])
 # }
 #===============================================================================           
 
-
-# Redis -- in-memory data store
+# REDIS -- in-memory data store
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 CHANNEL_LAYERS = {
     'default': {
@@ -186,6 +183,25 @@ CHANNEL_LAYERS = {
         },
     },
 }
+#=============================================================================== 
+
+# CELERY
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_BACKEND", "redis://localhost:6379/0")
+
+#=============================================================================== 
+
+    
+# SEND_EMAIL_ON_USER_CREATE = True only if SEND_EMAIL_ON_USER_CREATE key exists and is true
+SEND_EMAIL_ON_USER_CREATE = os.environ.get('SEND_EMAIL_ON_USER_CREATE', 'False') != 'False'
+
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+SENDGRID_SANDBOX_MODE_IN_DEBUG = os.environ.get("SENDGRID_SANDBOX_MODE_IN_DEBUG")
+
+
+
+#=============================================================================== 
 
 AUTH_USER_MODEL = 'myuser.MyUser'
 
@@ -244,3 +260,28 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 LOGIN_URL = 'home' # login url when user not authenticated
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+#===============================================================================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+        'myuser.serializers': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

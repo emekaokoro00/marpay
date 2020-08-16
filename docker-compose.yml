@@ -24,7 +24,7 @@ services:
     volumes:
       - media:/usr/src/app/media
       - static:/usr/src/app/static
-      - ./marpay/:/usr/src/app/
+      - ./marpay:/usr/src/app/
     command: daphne --bind 0.0.0.0 --port 8000 marpay.asgi:application
     # command: python manage.py runserver 0.0.0.0:8000
     container_name: marpay-server
@@ -51,6 +51,22 @@ services:
       - CHROME_BIN=chromium-browser
     ports:
       - 4201:4200
+
+  marpay-celery:
+    build:
+      context: ./marpay
+      dockerfile: Dockerfile_dev
+    command: celery worker --app=marpay --loglevel=info
+    container_name: marpay-celery
+    volumes:
+      - ./marpay:/usr/src/app
+    environment:
+      - CELERY_BROKER=redis://marpay-redis:6379/0
+      - CELERY_BACKEND=redis://marpay-redis:6379/0
+    depends_on:
+      - marpay-server
+      - marpay-redis
+      - marpay-db
 
   nginx:
     build:
