@@ -37,6 +37,10 @@ twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
 twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')
 twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
 
+# import debugpy
+# debugpy.listen(8002)
+# debugpy.wait_for_client()
+
 
 # Create your views here.
 def register_thw(request):

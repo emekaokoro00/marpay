@@ -12,6 +12,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+
+
 class MyUserBaseSerializer(serializers.ModelSerializer): 
     current_group = serializers.CharField() # set so that the group is made string on client side     
     # groups = serializers.ListField(child=serializers.CharField()) # set so that the group is made string on client side  
@@ -71,15 +73,12 @@ class MyUserSerializer(MyUserBaseSerializer):
         user.current_group = current_group
         user.groups.add(current_group)                    
         user.save()
-                
+              
         if (settings.SEND_EMAIL_ON_USER_CREATE):
-            user_email = data['email']            
-#             logger.debug('pre')
-#             logger.debug('mytask.views.send_email(user_email) is:' + mytask.views.send_email(user_email) )
-#             logger.debug('post')            
-            logger.debug('email start')
-            res = mytask.views.send_email(user_email) # should have instructions for making use become active
-            logger.debug('email result: ' + str(res) )
+            user_email = data['email']        
+            # logger.debug('\r\n\r\n\r\ndirect email start')
+            # logger.debug('SENDGRID_API_KEY = ' + settings.SENDGRID_API_KEY) 
+            res = mytask.views.send_email(user_email) # should have instructions for making use become active   
             
         return user
 

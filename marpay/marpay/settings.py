@@ -197,8 +197,9 @@ SEND_EMAIL_ON_USER_CREATE = os.environ.get('SEND_EMAIL_ON_USER_CREATE', 'False')
 
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
-SENDGRID_SANDBOX_MODE_IN_DEBUG = os.environ.get("SENDGRID_SANDBOX_MODE_IN_DEBUG")
 
+# SENDGRID_SANDBOX_MODE_IN_DEBUG = False only if SENDGRID_SANDBOX_MODE_IN_DEBUG key exists and is false
+SENDGRID_SANDBOX_MODE_IN_DEBUG = os.environ.get('SENDGRID_SANDBOX_MODE_IN_DEBUG', 'True') != 'False'
 
 
 #=============================================================================== 
@@ -273,11 +274,11 @@ LOGGING = {
         },
     },
     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'myuser.serializers': {
             'handlers': ['file'],
             'level': 'DEBUG',

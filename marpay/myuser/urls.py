@@ -26,7 +26,7 @@ urlpatterns = [
     
     #-----------API CALLS-----------------------------------------------------------------------------------------------------------------------------------------------    
            
-    path('', include(router.urls)), # TO USE ALL CRUD AT ONCE... The API URLs are now determined automatically by the router.
+    path('', include(router.urls)), # TO USE ALL CRUD AT ONCE... The API URLs are now determined automatically by the router. This breaks non-API calls to django
     # # or indiviually 
     # path('', views.MyUserProfileAPIView.as_view(), name='api_list'),
     # path('<int:pk>/', views.MyUserProfileAPIView.as_view(), name='api_details'),

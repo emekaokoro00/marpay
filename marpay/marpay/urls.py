@@ -27,11 +27,10 @@ urlpatterns = [
     # path('', include('myuser.urls')),
     
     path('admin/', admin.site.urls),
-    path('myuser/', include('myuser.urls')),
+
     path('myuser/', include('django.contrib.auth.urls')),
-    path('api/myuser/', include('myuser.urls', 'api_myuser',)),
-#     path('accounts/', include('accounts.urls')),
-#     path('accounts/', include('django.contrib.auth.urls')),  
+    # path('myuser/', include('myuser.urls')),
+    path('api/myuser/', include('myuser.urls', 'api_myuser',)), 
 
     path('api/sign_up/', SignUpAPIView.as_view(), name='sign_up'),
     path('api/log_in/', LogInAPIView.as_view(), name='log_in'),

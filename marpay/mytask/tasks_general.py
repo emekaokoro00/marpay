@@ -15,12 +15,12 @@ def add_number_task(x, y):
 
 @shared_task
 def send_email_task(email_address):
-    # MAKE THIS WORK
     send_mail(
-        'Subject here',
-        'Here is the message.',
+        'Sign Up Complete',
+        'Thanks for signing up',
         'nadspart@gmail.com',
-        ['emeka.okoro.00@gmail.com'],
+        [email_address],
         fail_silently=False,
     )
+    # only works for gmail to gmail for now
     return True
