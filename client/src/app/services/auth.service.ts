@@ -9,8 +9,8 @@ export class User {
 	    public username?: string,
 	    public first_name?: string,
 	    public last_name?: string,
-    	    public current_group?: string,
-    	    public groups?: number[],
+		public current_group?: string,
+		public groups?: number[],
 	    public current_role?: string
 	) {}
 
@@ -20,9 +20,9 @@ export class User {
 	      data.username,
 	      data.first_name,
 	      data.last_name,
-      	      data.current_group,
-      	      data.groups,
-      	      data.current_role
+		  data.current_group,
+		  data.groups,
+		  data.current_role
 	    );
 	}
 
@@ -103,7 +103,7 @@ export class AuthService {
 	    formData.append('password2', password2);
 	    formData.append('current_group', currentGroup);
 	    return this.http.request<User>('POST', url, {body: formData});
-		console.log(formData);
+		// console.log(formData);
 	}
 
 	logIn(username: string, password: string): Observable<User> {

@@ -12,12 +12,22 @@ export class UserSearchResponse {
 	) {}
 }
 
+
+export class PasswordUser {
+	constructor(
+    public old_password?: string,
+    public new_password1?: string,
+    public new_password2?: string,
+	) {}
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
 
   private httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' })}
+  private passwordUser = new PasswordUser();
 
   constructor(
     private http: HttpClient
@@ -35,7 +45,20 @@ export class UserProfileService {
     const url = `/api/myuser/get_by_username/${username}/`;
     return this.http.get(url)
        .pipe(
-	   map(res => { if (res) { return res; } } )
+	        map(res => { if (res) { return res; } } )
+       );
+  }
+
+  change_password(user: User, oldPassword: string, newPassword1: string, newPassword2: string): Observable<User> {
+    const url = `/api/myuser/${user.id}/change_password/`;
+    
+    this.passwordUser.old_password = oldPassword;
+    this.passwordUser.new_password1 = newPassword1;
+    this.passwordUser.new_password2 = newPassword2;
+
+    return this.http.put<User>(url, JSON.stringify(this.passwordUser), this.httpOptions)
+      .pipe(
+        
        );
   }
 

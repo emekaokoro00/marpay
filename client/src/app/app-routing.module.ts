@@ -15,6 +15,7 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserProfileDetailComponent } from './components/user-profile-detail/user-profile-detail.component';
 import { UserProfileUpdateComponent } from './components/user-profile-update/user-profile-update.component';
+import { UserProfileChangePasswordComponent } from './components/user-profile-change-password/user-profile-change-password.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
@@ -31,45 +32,48 @@ import { TopmenuCardComponent } from './components/topmenu-card/topmenu-card.com
  
  
 export const appRoutes: Routes = [
-      {     path: '', 
+      { path: '', 
 	    component: LandingComponent,
 	    canActivate: [ AuthguardService ],
 	    // resolve: { medsessions: MedsessionListResolver }  //<thw_medesession_in_landing>
       },
       { path: 'sign-up', component: SignUpComponent },
       { path: 'log-in', component: LogInComponent },
-      {     path: 'user-profile', 
+      { path: 'user-profile', 
 	    component: UserProfileComponent , 
 	    canActivate: [ AuthguardService ],
 	    children: [
 	      { path: 'update', 
-		component: UserProfileUpdateComponent
+			component: UserProfileUpdateComponent
+	      },
+	      { path: 'change-password', 
+			component: UserProfileChangePasswordComponent
 	      },
 	      { path: '', 
-		component: UserProfileDetailComponent
+			component: UserProfileDetailComponent
 	      }
 	    ]
       },
-      {     path: 'customer', 
+      { path: 'customer', 
 	    component: CustomerComponent , 
 	    canActivate: [ AuthguardService, IsCustomer ],
 	    children: [
 	      { path: 'request', 
-		component: CustomerRequestComponent
+			component: CustomerRequestComponent
 	      },
 	      { path: ':id', 
-		component: CustomerDetailComponent,
+			component: CustomerDetailComponent,
         	resolve: { medsession: MedsessionDetailResolver }
 	      },
 	      { path: '', 
-		component: CustomerDashboardComponent,
-		resolve: { medsessions: MedsessionListResolver }
+			component: CustomerDashboardComponent,
+			resolve: { medsessions: MedsessionListResolver }
 	      }
 	    ]
       },
-      {     path: 'telehealthworker', 
+      { path: 'telehealthworker', 
 	    component: TelehealthworkerComponent,
-            canActivate: [ AuthguardService, IsTelehealthworker ],
+        canActivate: [ AuthguardService, IsTelehealthworker ],
 	    children: [
 	      {
 	        path: ':id',
@@ -83,9 +87,9 @@ export const appRoutes: Routes = [
 	      }
 	    ]
       },
-      {     path: 'physician', 
+      { path: 'physician', 
 	    component: PhysicianComponent,
-            canActivate: [ AuthguardService, IsPhysician ],
+        canActivate: [ AuthguardService, IsPhysician ],
 	    children: [
 	      {
 	        path: ':id',

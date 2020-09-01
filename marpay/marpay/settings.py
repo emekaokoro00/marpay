@@ -282,20 +282,15 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+        # 'django': {
+        #     'handlers': ['file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         # 'myuser.serializers': {
         #     'handlers': ['file'],
         #     'level': 'DEBUG',
         #     'propagate': True,
         # },
-        'myuser.serializers': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
     },
 }

@@ -27,7 +27,7 @@ from twilio.jwt.client import ClientCapabilityToken
 from .models import MyUser, Role, CustomerDetails
 # from business_logic.mvt_helper.multiforms import MultipleFormsView
 from .forms import SignUpForm, MyUserUpdateForm, CustomerDetailsUpdateForm
-from .serializers import MyUserSerializer, MyUserUpdateSerializer
+from .serializers import MyUserSerializer, MyUserUpdateSerializer, MyUserPasswordChangeSerializer
 
 ## YOU CAN
 # from django.conf import settings
@@ -146,6 +146,16 @@ class MyUserProfileCRUDAPIView(viewsets.ModelViewSet):
             return Response({"exists" : True})
         except MyUser.DoesNotExist:
             return Response({"exists" : False})
+
+    @action(detail=True, methods=["put"])
+    def change_password(self, request, pk=None):
+        user = get_user_model().objects.get(pk=pk)
+        # self.check_object_permissions(request, user)
+        serializer = MyUserPasswordChangeSerializer(instance=user,data=request.data,many=False,partial=True,context={"user":user})    
+        # if serializer.is_valid():  
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def partial_update(self, request, pk=None):
         user = self.get_object()

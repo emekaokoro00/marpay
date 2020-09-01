@@ -19,8 +19,38 @@ class MyUserBaseSerializer(serializers.ModelSerializer):
     # groups = serializers.ListField(child=serializers.CharField()) # set so that the group is made string on client side  
   
 class MyUserPasswordChangeSerializer(MyUserBaseSerializer):
-    password1 = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True) 
+    old_password = serializers.CharField(write_only=True)
+    new_password1 = serializers.CharField(write_only=True)
+    new_password2 = serializers.CharField(write_only=True) 
+
+    def validate_old_password(self, value):
+        user = self.context['user']
+        if not user.check_password(value):
+            raise serializers.ValidationError('Your old password was entered incorrectly. Please enter it again.')
+        return value
+
+    def validate(self, data):
+        # logger.debug('validate' + ''.join('{}{}'.format(key, val) for key, val in data.items())) 
+        if data['new_password1'] != data['new_password2']:
+            raise serializers.ValidationError('Passwords must match.')
+        return data
+
+    def save(self, **kwargs):
+        user = self.context['user']
+        password = self.validated_data['new_password1']
+        user.set_password(password)
+        user.save()
+        return user
+
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id', 'old_password', 'new_password1', 'new_password2'
+        )
+        read_only_fields = ('id',)
+
+
+
 
 class MyUserUpdateSerializer(MyUserBaseSerializer):   
     
@@ -77,7 +107,7 @@ class MyUserSerializer(MyUserBaseSerializer):
         if (settings.SEND_EMAIL_ON_USER_CREATE):
             user_email = data['email']        
             # logger.debug('\r\n\r\n\r\ndirect email start')
-            logger.debug('SENDGRID_API_KEY = ' + settings.SENDGRID_API_KEY) 
+            # logger.debug('SENDGRID_API_KEY = ' + settings.SENDGRID_API_KEY) 
             mytask.views.send_email(user_email) # should have instructions for making use become active 
             
         return user

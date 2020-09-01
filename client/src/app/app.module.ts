@@ -37,6 +37,7 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserProfileDetailComponent } from './components/user-profile-detail/user-profile-detail.component';
 import { UserProfileUpdateComponent } from './components/user-profile-update/user-profile-update.component';
+import { UserProfileChangePasswordComponent } from './components/user-profile-change-password/user-profile-change-password.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
@@ -67,6 +68,7 @@ import { ValidateUserNameDirective } from './directives/validate-user-name.direc
     UserProfileComponent,
     UserProfileDetailComponent,
     UserProfileUpdateComponent,
+    UserProfileChangePasswordComponent,
     CustomerComponent,
     CustomerDashboardComponent,
     CustomerRequestComponent,
