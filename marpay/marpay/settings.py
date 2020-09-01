@@ -190,6 +190,9 @@ CHANNEL_LAYERS = {
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", REDIS_URL) # potentially obsolete
 BROKER_URL = os.getenv("BROKER_URL", REDIS_URL)
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", REDIS_URL)
+# CELERY_BROKER_URL = REDIS_URL
+# BROKER_URL = REDIS_URL
+# CELERY_RESULT_BACKEND = REDIS_URL
 
 #=============================================================================== 
 
@@ -274,6 +277,9 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': 'debug.log',
         },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'django': {
@@ -281,8 +287,13 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        # 'myuser.serializers': {
+        #     'handlers': ['file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         'myuser.serializers': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },

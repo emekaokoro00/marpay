@@ -73,11 +73,11 @@ class MyUserSerializer(MyUserBaseSerializer):
         user.current_group = current_group
         user.groups.add(current_group)                    
         user.save()
-              
+        
         if (settings.SEND_EMAIL_ON_USER_CREATE):
             user_email = data['email']        
             # logger.debug('\r\n\r\n\r\ndirect email start')
-            # logger.debug('SENDGRID_API_KEY = ' + settings.SENDGRID_API_KEY) 
+            logger.debug('SENDGRID_API_KEY = ' + settings.SENDGRID_API_KEY) 
             mytask.views.send_email(user_email) # should have instructions for making use become active 
             
         return user

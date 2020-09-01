@@ -1,7 +1,13 @@
 # marpay/Dockerfile.worker
+# Almost the same as the web Dockerfile... except for the last CMD command
 
 FROM python:3.8.3-alpine
 
+RUN apk add --update --no-cache \
+    g++ gcc libxslt-dev musl-dev python3-dev \
+    libffi-dev openssl-dev jpeg-dev zlib-dev 
+
+ENV LIBRARY_PATH=/lib:/usr/lib
 
 # set environment variables
 # Prevents Python from writing pyc files to disc and from buffering stdout and stderr 
@@ -10,6 +16,21 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /usr/src/app
 
+COPY ./requirements.txt /usr/src/app
+
+# for postgres dependencies... psycopg2
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
+
+COPY . /usr/src/app
+
+RUN python manage.py collectstatic --noinput
+
+# add and run as non-root user
+RUN adduser -D myuser
+USER myuser
 
 #run celery
 CMD celery worker --app=marpay --loglevel=info
