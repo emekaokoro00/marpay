@@ -22,5 +22,4 @@ def send_email_task(email_address):
         [email_address],
         fail_silently=False,
     )
-    # only works for gmail to gmail for now
     return True

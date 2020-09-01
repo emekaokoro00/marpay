@@ -78,7 +78,7 @@ class MyUserSerializer(MyUserBaseSerializer):
             user_email = data['email']        
             # logger.debug('\r\n\r\n\r\ndirect email start')
             # logger.debug('SENDGRID_API_KEY = ' + settings.SENDGRID_API_KEY) 
-            res = mytask.views.send_email(user_email) # should have instructions for making use become active   
+            mytask.views.send_email(user_email) # should have instructions for making use become active 
             
         return user
 

@@ -61,8 +61,8 @@ services:
     volumes:
       - ./marpay:/usr/src/app
     environment:
-      - CELERY_BROKER=redis://marpay-redis:6379/0
-      - CELERY_BACKEND=redis://marpay-redis:6379/0
+      - CELERY_BROKER_URL=redis://marpay-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://marpay-redis:6379/0
     depends_on:
       - marpay-server
       - marpay-redis

@@ -150,7 +150,8 @@ DATABASES = {
         'PORT': DATABASE_PORT,
     }
 }
-if (IS_PRODUCTION == 'True'):
+# if (IS_PRODUCTION == 'True'):
+if (IS_PRODUCTION):
     import dj_database_url # for heroku-to-django translation
     # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
@@ -186,8 +187,9 @@ CHANNEL_LAYERS = {
 #=============================================================================== 
 
 # CELERY
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_BACKEND", "redis://localhost:6379/0")
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", REDIS_URL) # potentially obsolete
+BROKER_URL = os.getenv("BROKER_URL", REDIS_URL)
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", REDIS_URL)
 
 #=============================================================================== 
 

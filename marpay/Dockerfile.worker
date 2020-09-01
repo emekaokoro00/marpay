@@ -1,0 +1,15 @@
+# marpay/Dockerfile.worker
+
+FROM python:3.8.3-alpine
+
+
+# set environment variables
+# Prevents Python from writing pyc files to disc and from buffering stdout and stderr 
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /usr/src/app
+
+
+#run celery
+CMD celery worker --app=marpay --loglevel=info
